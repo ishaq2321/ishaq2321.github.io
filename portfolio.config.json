@@ -1,0 +1,161 @@
+{
+  "name": "Muhammad Ishaq Khan",
+  "tagline": "Computer Science student at ELTE — building secure, scalable systems.",
+  "location": "Budapest, Hungary",
+  "email": "muhammadishaqkhan.2321@gmail.com",
+  "social": {
+    "github": "https://github.com/ishaq2321",
+    "linkedin": "https://linkedin.com/in/ishaq2321"
+  },
+  "skills": {
+    "languages": [
+      { "name": "Dart", "level": 95 },
+      { "name": "TypeScript", "level": 90 },
+      { "name": "JavaScript", "level": 90 },
+      { "name": "Python", "level": 85 },
+      { "name": "C++", "level": 75 },
+      { "name": "Bash", "level": 80 },
+      { "name": "SQL", "level": 80 },
+      { "name": "HTML/CSS", "level": 90 }
+    ],
+    "frameworks": [
+      "Flutter",
+      "Next.js",
+      "React",
+      "Node.js",
+      "Tailwind CSS",
+      "Express",
+      "SST"
+    ],
+    "platforms": [
+      "Firebase",
+      "Supabase",
+      "Stripe Connect",
+      "Docker",
+      "GitHub Actions"
+    ],
+    "ai_ml": [
+      "XGBoost",
+      "scikit-learn",
+      "NLP",
+      "SHAP",
+      "OSINT enrichment"
+    ],
+    "security": [
+      "Bettercap",
+      "Wireshark",
+      "Nmap",
+      "Tails OS",
+      "PGP/GPG",
+      "Command injection hardening"
+    ],
+    "tools": ["Git", "VS Code", "Linux", "Bun", "npm"]
+  },
+  "projects": [
+    {
+      "name": "ProxiCall",
+      "url": "https://github.com/ishaq2321/ProxiCall",
+      "live": "https://proxicall.app",
+      "description": "Proximity super-app — location-based content delivery, payment management (Stripe Connect), order management, smart translation to 32 languages, geo-targeted notifications.",
+      "stack": ["Flutter", "Node.js", "Supabase", "Firebase", "Stripe"],
+      "highlights": [
+        "5 integrated systems (CMS, PMS, OMS, NMS, ENS)",
+        "32-language auto-translation pipeline",
+        "Geo-fenced notifications with AI segmentation",
+        "Multi-currency wallet with Stripe Connect"
+      ]
+    },
+    {
+      "name": "backbencher.cc",
+      "url": "https://github.com/anomalyco/opencode",
+      "live": "https://opencode.ai",
+      "description": "Open-source AI coding agent — terminal-first, multi-provider, governance-aware development tool.",
+      "stack": ["TypeScript", "Bun", "SST", "React"],
+      "highlights": [
+        "Open source contributions to core agent logic",
+        "Multi-platform (CLI, Web, Desktop)"
+      ]
+    },
+    {
+      "name": "PhishGuard",
+      "url": "https://github.com/ishaq2321/phishing-detection-osint",
+      "live": "https://project-4soy4.vercel.app",
+      "description": "BSc Thesis — phishing detection system combining XGBoost ML (96.45% accuracy), NLP with 10 tactic detectors, and OSINT enrichment (WHOIS, DNS, VirusTotal).",
+      "stack": ["Python", "Next.js", "XGBoost", "SHAP"],
+      "highlights": [
+        "96.45% accuracy, 99.41% AUC-ROC",
+        "725 automated tests (592 pytest + 133 Jest)",
+        "Full-featured UI with dark/light theme"
+      ]
+    },
+    {
+      "name": "hide-and-lock",
+      "url": "https://github.com/ishaq2321/hide-and-lock",
+      "description": "CLI utility for encrypting sensitive files with session-based isolation and master key recovery.",
+      "stack": ["Shell", "Bash", "GPG"]
+    },
+    {
+      "name": "bb",
+      "url": "https://github.com/ishaq2321/bb",
+      "description": "AST-native code intelligence tool with 39-language brain, 15 AI tools — a codebase operating system.",
+      "stack": ["PowerShell", "TypeScript", "AST"]
+    },
+    {
+      "name": "phantomVault",
+      "url": "https://github.com/ishaq2321/phantomVault",
+      "description": "Secure C++ storage utility with encryption support.",
+      "stack": ["C++", "Security"]
+    }
+  ],
+  "notable_contributions": [
+    {
+      "repo": "microsoft/vscode",
+      "pr_number": 319804,
+      "title": "editor: Cache getComputedStyle result in shadowCaretRangeFromPoint",
+      "url": "https://github.com/microsoft/vscode/pull/319804",
+      "date": "2026-06-05",
+      "description": "Performance optimization for VS Code's editor component caching computed styles."
+    },
+    {
+      "repo": "microsoft/vscode",
+      "pr_number": 319806,
+      "title": "debug: Log errors when loading stored breakpoints/watch expressions",
+      "url": "https://github.com/microsoft/vscode/pull/319806",
+      "date": "2026-06-03",
+      "description": "Improves debugging DX by logging breakpoint/watch expression load errors."
+    },
+    {
+      "repo": "flutter/flutter",
+      "pr_number": 186076,
+      "title": "Harden dev tooling scripts against command injection and log leaks",
+      "url": "https://github.com/flutter/flutter/pull/186076",
+      "date": "2026-05-12",
+      "description": "Security hardening — prevents command injection in Flutter dev tooling scripts."
+    }
+  ],
+  "education": {
+    "degree": "BSc Computer Science",
+    "university": "Eötvös Loránd University (ELTE)",
+    "faculty": "Faculty of Informatics",
+    "status": "Final Semester",
+    "thesis": "Phishing Detection Using OSINT-Enhanced Features",
+    "tdk": "Scientific Students' Association (TDK) paper on phishing detection"
+  },
+  "books": [
+    {
+      "title": "The Brothers Karamazov",
+      "author": "Fyodor Dostoyevsky",
+      "status": "read"
+    },
+    {
+      "title": "Demons",
+      "author": "Fyodor Dostoyevsky",
+      "status": "read"
+    },
+    {
+      "title": "The Stranger",
+      "author": "Albert Camus",
+      "status": "read"
+    }
+  ]
+}
