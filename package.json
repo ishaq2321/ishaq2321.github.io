@@ -1,12 +1,15 @@
 {
-  "name": "portfolio-scaffold",
-  "version": "0.1.0",
+  "name": "ishaq2321.github.io",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "preview": "npx serve out"
   },
   "dependencies": {
     "next": "16.2.7",
