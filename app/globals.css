@@ -37,10 +37,6 @@
     @apply border-zinc-200 bg-white hover:border-zinc-300;
   }
 
-  html:not(.dark) .pill {
-    @apply bg-zinc-100 text-zinc-700;
-  }
-
   html:not(.dark) .section-title {
     @apply text-zinc-900;
   }

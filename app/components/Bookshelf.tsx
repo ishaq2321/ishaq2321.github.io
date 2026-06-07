@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { books, type BookData } from "@/lib/books";
 
@@ -88,14 +89,15 @@ function BookCard({ book, index }: { book: BookData; index: number }) {
       transition={{ duration: 0.4, delay: index * 0.03 }}
     >
       <div className="group w-36 sm:w-40">
-        <div className="mb-2 flex h-52 w-full items-center justify-center overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50 transition-colors group-hover:border-zinc-700 sm:h-56">
+        <div className="relative mb-2 flex h-52 w-full items-center justify-center overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/50 transition-colors group-hover:border-zinc-700 sm:h-56">
           {loading ? (
             <div className="h-full w-full animate-pulse bg-zinc-800/50" />
           ) : coverUrl ? (
-            <img
+            <Image
               src={coverUrl}
               alt={book.title}
-              className="h-full w-full object-cover"
+              fill
+              className="object-cover"
               loading="lazy"
             />
           ) : (

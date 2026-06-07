@@ -1,6 +1,6 @@
 {
   "name": "Muhammad Ishaq Khan",
-  "tagline": "Computer Science student at ELTE — building open-source AI tooling, secure systems, and cross-platform apps.",
+  "tagline": "Code running in VS Code and Flutter. Building AI-powered dev tools, secure systems, and production apps at ELTE.",
   "about": [
     "I'm a final-year Computer Science student at Eötvös Loránd University (ELTE) in Budapest, building backbencher.cc — an AST-native code intelligence platform that indexes codebases into a queryable knowledge graph with 25+ AI-powered tools.",
     "I've contributed to VS Code (performance optimization) and Flutter (security hardening), and built ProxiCall — a production Flutter super-app with Stripe payments, geo-fencing, and 32-language translation. My BSc thesis on ML-based phishing detection achieved 96.45% accuracy."
@@ -63,7 +63,8 @@
       "name": "backbencher.cc (bb)",
       "url": "https://github.com/ishaq2321/bb",
       "live": "https://backbencher.cc",
-      "description": "AST-native code intelligence platform — indexes entire codebases into a local SQLite knowledge graph with 25+ AI-powered tools: semantic search, full call-graph traversal, AST-precise refactoring, pattern detection (god classes, circular deps), cross-language migration, and security scanning across 40+ languages.",
+      "featured": true,
+      "description": "My primary project — an open-core AST-native code intelligence platform that indexes entire codebases into a local SQLite knowledge graph. Ships with 25+ AI-powered brain tools for semantic search, call-graph traversal, AST-precise refactoring, architectural pattern detection, cross-language migration, and security scanning across 40+ languages.",
       "stack": ["TypeScript", "Tree-sitter", "SQLite", "Bun", "PowerShell", "SST"],
       "highlights": [
         "25+ brain tools (bb_search, bb_trace, bb_refactor, bb_security, bb_migrate)",

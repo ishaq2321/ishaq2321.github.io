@@ -112,6 +112,17 @@ export function GitHubStats() {
           <StatCard label="Pull Requests" value={totalPRs} index={3} />
         </div>
       )}
+      {!loading && !error && (
+        <div className="mt-8 overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-900/50 p-1">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://ghchart.rshah.org/ishaq2321"
+            alt="GitHub contribution graph"
+            className="min-w-[720px] dark:[filter:invert(0.92)_hue-rotate(180deg)_saturate(0.6)]"
+            loading="lazy"
+          />
+        </div>
+      )}
       <motion.a
         href="https://github.com/ishaq2321"
         target="_blank"
