@@ -118,7 +118,7 @@ export function GitHubStats() {
           <img
             src="https://ghchart.rshah.org/ishaq2321"
             alt="GitHub contribution graph"
-            className="block dark:[filter:invert(0.92)_hue-rotate(180deg)_saturate(0.6)]"
+            className="w-full h-auto dark:[filter:invert(0.92)_hue-rotate(180deg)_saturate(0.6)]"
             loading="lazy"
           />
         </div>
