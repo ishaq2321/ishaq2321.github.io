@@ -40,7 +40,7 @@ function ProjectCard({
               rel="noopener noreferrer"
               className="font-mono text-xs text-accent hover:underline"
             >
-              live →
+              live
             </a>
           )}
           <a
