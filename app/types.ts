@@ -2,6 +2,7 @@ export interface Project {
   name: string;
   url: string;
   live?: string;
+  benchmarkUrl?: string;
   description: string;
   stack: string[];
   highlights?: string[];
