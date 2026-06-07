@@ -58,7 +58,7 @@ function ProjectCard({
               rel="noopener noreferrer"
               className="font-mono text-xs text-emerald-400 hover:text-emerald-300"
             >
-              vs Copilot →
+              benchmark →
             </a>
           )}
         </div>
