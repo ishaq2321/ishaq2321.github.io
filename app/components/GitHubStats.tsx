@@ -112,7 +112,7 @@ export function GitHubStats() {
           <StatCard label="Pull Requests" value={totalPRs} index={3} />
         </div>
       )}
-      {!loading && !error && (
+      {!loading && (
         <div className="mt-8 overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-900/50 p-1">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
