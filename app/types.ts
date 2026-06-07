@@ -5,6 +5,7 @@ export interface Project {
   description: string;
   stack: string[];
   highlights?: string[];
+  featured?: boolean;
 }
 
 export interface NotablePR {

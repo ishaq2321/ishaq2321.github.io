@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { config } from "@/lib/config";
 import { motion } from "framer-motion";
 
@@ -16,10 +17,12 @@ export function Hero() {
         <div className="shrink-0">
           <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-zinc-700 bg-zinc-800 sm:h-36 sm:w-36">
             {config.photo ? (
-              <img
+              <Image
                 src={config.photo}
                 alt={config.name}
-                className="h-full w-full object-cover"
+                fill
+                className="object-cover"
+                priority
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center text-4xl font-bold text-zinc-600">
