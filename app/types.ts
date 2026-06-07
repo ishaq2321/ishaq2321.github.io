@@ -1,8 +1,3 @@
-export interface Skill {
-  name: string;
-  level?: number;
-}
-
 export interface Project {
   name: string;
   url: string;
@@ -21,12 +16,6 @@ export interface NotablePR {
   description: string;
 }
 
-export interface Book {
-  title: string;
-  author: string;
-  status: string;
-}
-
 export interface Social {
   github: string;
   linkedin: string;
@@ -35,15 +24,22 @@ export interface Social {
 export interface PortfolioConfig {
   name: string;
   tagline: string;
+  about: string[];
   location: string;
   email: string;
+  emails?: string[];
+  contactCategories?: Array<{ label: string; email: string }>;
+  photo: string;
+  resumeUrl?: string;
   social: Social;
   skills: {
-    languages: Skill[];
+    languages: string[];
     frameworks: string[];
-    platforms: string[];
+    mobile?: string[];
     ai_ml: string[];
     security: string[];
+    platforms: string[];
+    operating_systems?: string[];
     tools: string[];
   };
   projects: Project[];
@@ -52,29 +48,17 @@ export interface PortfolioConfig {
     degree: string;
     university: string;
     faculty: string;
-    status: string;
+    period: string;
     thesis: string;
-    tdk: string;
+    scholarship?: string;
+    highSchool?: Array<{
+      degree: string;
+      school: string;
+      board: string;
+      period: string;
+      achievements?: string[];
+    }>;
+    achievements?: string[];
   };
-  books: Book[];
 }
 
-export interface GitHubRepo {
-  name: string;
-  description: string | null;
-  html_url: string;
-  language: string | null;
-  stargazers_count: number;
-  forks_count: number;
-  topics: string[];
-  fork: boolean;
-}
-
-export interface GitHubUser {
-  login: string;
-  avatar_url: string;
-  public_repos: number;
-  followers: number;
-  following: number;
-  bio: string | null;
-}

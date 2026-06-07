@@ -1,63 +1,83 @@
 {
   "name": "Muhammad Ishaq Khan",
-  "tagline": "Computer Science student at ELTE — building secure, scalable systems.",
+  "tagline": "Computer Science student at ELTE — building open-source AI tooling, secure systems, and cross-platform apps.",
+  "about": [
+    "I'm a final-year Computer Science student at Eötvös Loránd University (ELTE) in Budapest, building backbencher.cc — an AST-native code intelligence platform that indexes codebases into a queryable knowledge graph with 25+ AI-powered tools.",
+    "I've contributed to VS Code (performance optimization) and Flutter (security hardening), and built ProxiCall — a production Flutter super-app with Stripe payments, geo-fencing, and 32-language translation. My BSc thesis on ML-based phishing detection achieved 96.45% accuracy."
+  ],
   "location": "Budapest, Hungary",
   "email": "muhammadishaqkhan.2321@gmail.com",
+  "photo": "/photo.svg",
+  "resumeUrl": "/resume.pdf",
   "social": {
     "github": "https://github.com/ishaq2321",
-    "linkedin": "https://linkedin.com/in/ishaq2321"
+    "linkedin": "https://linkedin.com/in/2321ishaq"
   },
+  "emails": ["ishaq@proxicall.app", "ishaq2321@proton.me", "ishaq2321@disroot.org", "muhammadishaqkhan.2321@gmail.com"],
+  "contactCategories": [
+    { "label": "ProxiCall", "email": "ishaq@proxicall.app" },
+    { "label": "backbencher.cc", "email": "info@backbencher.cc" },
+    { "label": "Personal", "email": "muhammadishaqkhan.2321@gmail.com" }
+  ],
   "skills": {
     "languages": [
-      { "name": "Dart", "level": 95 },
-      { "name": "TypeScript", "level": 90 },
-      { "name": "JavaScript", "level": 90 },
-      { "name": "Python", "level": 85 },
-      { "name": "C++", "level": 75 },
-      { "name": "Bash", "level": 80 },
-      { "name": "SQL", "level": 80 },
-      { "name": "HTML/CSS", "level": 90 }
+      "TypeScript", "JavaScript", "Python", "Dart", "C++",
+      "Shell/Bash", "PowerShell", "SQL", "HTML/CSS", "Go",
+      "Rust", "Java", "Kotlin"
     ],
     "frameworks": [
-      "Flutter",
-      "Next.js",
-      "React",
-      "Node.js",
-      "Tailwind CSS",
-      "Express",
-      "SST"
+      "Flutter", "Next.js", "React", "Node.js", "Express",
+      "Tailwind CSS", "Flutter Bloc", "tRPC"
     ],
-    "platforms": [
-      "Firebase",
-      "Supabase",
-      "Stripe Connect",
-      "Docker",
-      "GitHub Actions"
+    "mobile": [
+      "Android", "Firebase SDK (Auth, Firestore, Storage, Functions, Messaging)",
+      "Google Sign-In", "Stripe Connect", "Geolocator", "Push Notifications"
     ],
     "ai_ml": [
-      "XGBoost",
-      "scikit-learn",
-      "NLP",
-      "SHAP",
-      "OSINT enrichment"
+      "XGBoost", "scikit-learn", "NLP", "SHAP", "OSINT enrichment",
+      "Word Embeddings", "Tree-sitter AST", "Semantic Search",
+      "OpenAI API", "Google AI Studio", "Mistral", "Cohere"
     ],
     "security": [
-      "Bettercap",
-      "Wireshark",
-      "Nmap",
-      "Tails OS",
-      "PGP/GPG",
-      "Command injection hardening"
+      "Kali Linux", "Parrot Security", "Tails OS", "Bettercap", "Wireshark",
+      "Nmap", "Metasploit", "Nessus", "Amass", "SpiderFoot", "recon-ng", "PGP/GPG",
+      "SecureDrop", "OnionShare", "Command injection hardening",
+      "Vulnerability scanning (SQLi, XSS, secrets)"
     ],
-    "tools": ["Git", "VS Code", "Linux", "Bun", "npm"]
+    "platforms": [
+      "Supabase", "Firebase", "Stripe", "Docker", "GitHub Actions",
+      "SST (Serverless Stack)", "SQLite", "PostgreSQL", "Sentry",
+      "Vercel", "Netlify"
+    ],
+    "operating_systems": [
+      "Linux (Arch, Pop!_OS, EndeavourOS)",
+      "macOS", "Windows"
+    ],
+    "tools": [
+      "Git", "VS Code", "Bun", "npm/pnpm", "Tree-sitter",
+      "LSP", "MCP", "curl/jq"
+    ]
   },
   "projects": [
+    {
+      "name": "backbencher.cc (bb)",
+      "url": "https://github.com/ishaq2321/bb",
+      "live": "https://backbencher.cc",
+      "description": "AST-native code intelligence platform — indexes entire codebases into a local SQLite knowledge graph with 25+ AI-powered tools: semantic search, full call-graph traversal, AST-precise refactoring, pattern detection (god classes, circular deps), cross-language migration, and security scanning across 40+ languages.",
+      "stack": ["TypeScript", "Tree-sitter", "SQLite", "Bun", "PowerShell", "SST"],
+      "highlights": [
+        "25+ brain tools (bb_search, bb_trace, bb_refactor, bb_security, bb_migrate)",
+        "40+ language AST parsing via Tree-sitter",
+        "Offline semantic search with word vectors",
+        "Beats Copilot on compiler-level code reasoning (benchmarked)"
+      ]
+    },
     {
       "name": "ProxiCall",
       "url": "https://github.com/ishaq2321/ProxiCall",
       "live": "https://proxicall.app",
-      "description": "Proximity super-app — location-based content delivery, payment management (Stripe Connect), order management, smart translation to 32 languages, geo-targeted notifications.",
-      "stack": ["Flutter", "Node.js", "Supabase", "Firebase", "Stripe"],
+      "description": "Production Flutter proximity super-app — location-based content delivery, Stripe Connect payment management, order management, 32-language auto-translation, and geo-targeted notifications with AI segmentation.",
+      "stack": ["Flutter", "Node.js", "Supabase", "Firebase", "Stripe", "Sentry"],
       "highlights": [
         "5 integrated systems (CMS, PMS, OMS, NMS, ENS)",
         "32-language auto-translation pipeline",
@@ -66,22 +86,11 @@
       ]
     },
     {
-      "name": "backbencher.cc",
-      "url": "https://github.com/anomalyco/opencode",
-      "live": "https://opencode.ai",
-      "description": "Open-source AI coding agent — terminal-first, multi-provider, governance-aware development tool.",
-      "stack": ["TypeScript", "Bun", "SST", "React"],
-      "highlights": [
-        "Open source contributions to core agent logic",
-        "Multi-platform (CLI, Web, Desktop)"
-      ]
-    },
-    {
       "name": "PhishGuard",
       "url": "https://github.com/ishaq2321/phishing-detection-osint",
       "live": "https://project-4soy4.vercel.app",
       "description": "BSc Thesis — phishing detection system combining XGBoost ML (96.45% accuracy), NLP with 10 tactic detectors, and OSINT enrichment (WHOIS, DNS, VirusTotal).",
-      "stack": ["Python", "Next.js", "XGBoost", "SHAP"],
+      "stack": ["Python", "Next.js", "XGBoost", "SHAP", "scikit-learn"],
       "highlights": [
         "96.45% accuracy, 99.41% AUC-ROC",
         "725 automated tests (592 pytest + 133 Jest)",
@@ -93,12 +102,6 @@
       "url": "https://github.com/ishaq2321/hide-and-lock",
       "description": "CLI utility for encrypting sensitive files with session-based isolation and master key recovery.",
       "stack": ["Shell", "Bash", "GPG"]
-    },
-    {
-      "name": "bb",
-      "url": "https://github.com/ishaq2321/bb",
-      "description": "AST-native code intelligence tool with 39-language brain, 15 AI tools — a codebase operating system.",
-      "stack": ["PowerShell", "TypeScript", "AST"]
     },
     {
       "name": "phantomVault",
@@ -137,25 +140,20 @@
     "degree": "BSc Computer Science",
     "university": "Eötvös Loránd University (ELTE)",
     "faculty": "Faculty of Informatics",
-    "status": "Final Semester",
+    "period": "September 2023 - July 2026",
     "thesis": "Phishing Detection Using OSINT-Enhanced Features",
-    "tdk": "Scientific Students' Association (TDK) paper on phishing detection"
-  },
-  "books": [
-    {
-      "title": "The Brothers Karamazov",
-      "author": "Fyodor Dostoyevsky",
-      "status": "read"
-    },
-    {
-      "title": "Demons",
-      "author": "Fyodor Dostoyevsky",
-      "status": "read"
-    },
-    {
-      "title": "The Stranger",
-      "author": "Albert Camus",
-      "status": "read"
-    }
-  ]
+    "scholarship": "Stipendium Hungaricum scholarship",
+    "highSchool": [
+      {
+        "degree": "ICS (Intermediate in Computer Science)",
+        "school": "Balochistan Residential College Loralai (BRC)",
+        "board": "Balochistan Board of Intermediate & Secondary Education",
+        "period": "March 2016 - July 2022",
+        "achievements": ["Provincial Topper"]
+      }
+    ],
+    "achievements": [
+      "Selected for BSc Computer Science at Tsinghua University — full scholarship (world #1 in CS, US News)"
+    ]
+  }
 }

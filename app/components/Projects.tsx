@@ -1,15 +1,28 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { config } from "@/lib/config";
 
 export function Projects() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+
   return (
     <section className="section-container" id="projects">
       <h2 className="section-title">Projects</h2>
-      <div className="grid gap-6 sm:grid-cols-2">
-        {config.projects.map((project) => (
-          <div key={project.name} className="card">
+      <div ref={ref} className="grid gap-6 sm:grid-cols-2">
+        {config.projects.map((project, i) => (
+          <motion.div
+            key={project.name}
+            className="card"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4, delay: i * 0.1 }}
+          >
             <div className="mb-3 flex items-start justify-between">
               <h3 className="text-xl font-semibold">{project.name}</h3>
-              <div className="flex gap-2">
+              <div className="flex shrink-0 gap-2">
                 {project.live && (
                   <a
                     href={project.live}
@@ -17,7 +30,7 @@ export function Projects() {
                     rel="noopener noreferrer"
                     className="font-mono text-xs text-accent hover:underline"
                   >
-                    live
+                    live →
                   </a>
                 )}
                 <a
@@ -53,7 +66,7 @@ export function Projects() {
                 </span>
               ))}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

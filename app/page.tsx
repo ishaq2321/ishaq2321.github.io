@@ -1,4 +1,5 @@
 import { Hero } from "@/app/components/Hero";
+import { About } from "@/app/components/About";
 import { GitHubStats } from "@/app/components/GitHubStats";
 import { NotablePRs } from "@/app/components/NotablePRs";
 import { Projects } from "@/app/components/Projects";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <About />
       <GitHubStats />
       <NotablePRs />
       <Projects />

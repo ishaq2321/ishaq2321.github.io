@@ -20,15 +20,29 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
   }
 
+  /* Default: dark mode */
   body {
     @apply bg-zinc-950 text-zinc-100 antialiased;
   }
 
-  .light body,
-  body.light {
+  /* Light mode via class on html */
+  html:not(.dark) body {
     @apply bg-zinc-50 text-zinc-900;
+  }
+
+  html:not(.dark) .card {
+    @apply border-zinc-200 bg-white hover:border-zinc-300;
+  }
+
+  html:not(.dark) .pill {
+    @apply bg-zinc-100 text-zinc-700;
+  }
+
+  html:not(.dark) .section-title {
+    @apply text-zinc-900;
   }
 }
 
@@ -45,17 +59,11 @@
     @apply rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 transition-colors hover:border-zinc-700;
   }
 
-  .light .card,
-  .light body .card {
-    @apply border-zinc-200 bg-white hover:border-zinc-300;
-  }
-
   .pill {
     @apply inline-flex items-center rounded-full bg-zinc-800 px-3 py-1 text-sm font-medium text-zinc-300;
   }
 
-  .light .pill,
-  .light body .pill {
+  html:not(.dark) .pill {
     @apply bg-zinc-100 text-zinc-700;
   }
 }
