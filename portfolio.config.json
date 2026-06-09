@@ -91,6 +91,7 @@
       "name": "PhishGuard",
       "url": "https://github.com/ishaq2321/phishing-detection-osint",
       "live": "https://project-4soy4.vercel.app",
+      "docsUrl": "https://github.com/ishaq2321/phishing-detection-osint/blob/main/docs/PhishGuard_Thesis.pdf",
       "description": "BSc Thesis — phishing detection system combining XGBoost ML (96.45% accuracy), NLP with 10 tactic detectors, and OSINT enrichment (WHOIS, DNS, VirusTotal).",
       "stack": ["Python", "Next.js", "XGBoost", "SHAP", "scikit-learn"],
       "highlights": [

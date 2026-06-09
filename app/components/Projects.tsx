@@ -51,6 +51,16 @@ function ProjectCard({
           >
             repo
           </a>
+          {project.docsUrl && (
+            <a
+              href={project.docsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-xs text-amber-400 hover:text-amber-300"
+            >
+              thesis
+            </a>
+          )}
           {project.benchmarkUrl && (
             <a
               href={project.benchmarkUrl}
