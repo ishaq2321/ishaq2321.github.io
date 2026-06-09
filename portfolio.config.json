@@ -39,10 +39,11 @@
       "OpenAI API", "Google AI Studio", "Mistral", "Cohere"
     ],
     "security": [
-      "Kali Linux", "Parrot Security", "Tails OS", "Bettercap", "Wireshark",
-      "Nmap", "Metasploit", "Nessus", "Amass", "SpiderFoot", "recon-ng", "PGP/GPG",
-      "SecureDrop", "OnionShare", "Command injection hardening",
-      "Vulnerability scanning (SQLi, XSS, secrets)"
+      "Aircrack-ng", "Amass", "Bettercap", "BLE recon", "Command injection hardening",
+      "DNS spoofing", "Kali Linux", "Metasploit", "Nessus", "Nmap",
+      "OnionShare", "Parrot Security", "PGP/GPG", "Phishing", "recon-ng",
+      "SecureDrop", "SpiderFoot", "Tails OS", "Vulnerability scanning (SQLi, XSS, secrets)",
+      "Wireshark"
     ],
     "platforms": [
       "Supabase", "Firebase", "Stripe", "Docker", "GitHub Actions",
