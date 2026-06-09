@@ -143,3 +143,11 @@ html:not(.dark) .overflow-x-auto {
   background-color: #ffffff !important;
   border-color: #e4e4e7 !important;
 }
+
+/* Skill brand icons — ensure visibility on both dark and light backgrounds */
+.skill-icon {
+  filter: brightness(0.9) saturate(0.9);
+}
+html:not(.dark) .skill-icon {
+  filter: brightness(0.5) saturate(1.1);
+}
