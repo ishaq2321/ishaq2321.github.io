@@ -1,19 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore, useCallback } from "react";
+
+function getSnapshot(): string {
+  try {
+    return localStorage.getItem("theme") ?? "dark";
+  } catch {
+    return "dark";
+  }
+}
+
+function getServerSnapshot(): string {
+  return "dark";
+}
+
+function subscribe(callback: () => void): () => void {
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
+}
 
 export function ThemeToggle() {
-  const [dark, setDark] = useState(() => {
-    if (typeof window === "undefined") return true;
-    return localStorage.getItem("theme") !== "light";
-  });
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const dark = theme !== "light";
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    localStorage.setItem("theme", dark ? "dark" : "light");
+  const toggle = useCallback(() => {
+    const next = !dark;
+    localStorage.setItem("theme", next ? "dark" : "light");
+    document.documentElement.classList.toggle("dark", next);
+    // Notify useSyncExternalStore that the store changed
+    window.dispatchEvent(new Event("storage"));
   }, [dark]);
-
-  const toggle = () => setDark((prev) => !prev);
 
   return (
     <button

@@ -33,13 +33,6 @@
     @apply bg-zinc-50 text-zinc-900;
   }
 
-  html:not(.dark) .card {
-    @apply border-zinc-200 bg-white hover:border-zinc-300;
-  }
-
-  html:not(.dark) .section-title {
-    @apply text-zinc-900;
-  }
 }
 
 @layer components {
@@ -59,6 +52,15 @@
     @apply inline-flex items-center rounded-full bg-zinc-800 px-3 py-1 text-sm font-medium text-zinc-300;
   }
 
+  /* Light mode overrides (same layer = higher specificity wins) */
+  html:not(.dark) .card {
+    @apply border-zinc-200 bg-white hover:border-zinc-300;
+  }
+
+  html:not(.dark) .section-title {
+    @apply text-zinc-900;
+  }
+
   html:not(.dark) .pill {
     @apply bg-zinc-100 text-zinc-700;
   }
@@ -68,4 +70,76 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* ============================================
+   LIGHT MODE CONTRAST FIXES
+   ============================================
+   Override ALL text colors for light mode to ensure
+   readable contrast on white/zinc-50 backgrounds.
+   !important used to guarantee wins over all layers.
+*/
+
+/* All muted/secondary text — darken for readability */
+html:not(.dark) .text-zinc-200,
+html:not(.dark) .text-zinc-300,
+html:not(.dark) .text-zinc-400,
+html:not(.dark) .text-zinc-500 { color: #3f3f46 !important; }  /* zinc-700 */
+
+/* Nav active link */
+html:not(.dark) .text-zinc-100 { color: #09090b !important; }  /* zinc-950 */
+
+/* Accent colors — bright neon tones invisible on white */
+html:not(.dark) .text-amber-400,
+html:not(.dark) .text-amber-300 { color: #92400e !important; }  /* amber-800 */
+html:not(.dark) .text-emerald-400 { color: #065f46 !important; }  /* emerald-800 */
+html:not(.dark) .text-red-400 { color: #991b1b !important; }  /* red-800 */
+
+/* Cards — ensure white backgrounds with readable text */
+html:not(.dark) .card {
+  background-color: #ffffff !important;
+  border-color: #e4e4e7 !important;
+}
+html:not(.dark) .card:hover {
+  border-color: #d4d4d8 !important;
+}
+
+/* Featured project cards keep subtle accent bg */
+html:not(.dark) .card.border-accent\/30 {
+  background-color: #f0f5ff !important;  /* very light blue */
+}
+
+/* Skill tags — switch from dark overlay to light bg */
+html:not(.dark) [class*="bg-zinc-900\/50"] {
+  background-color: #f4f4f5 !important;  /* zinc-100 */
+  border-color: #e4e4e7 !important;
+}
+
+/* Pills — already handled in @layer components, but ensure it sticks */
+html:not(.dark) .pill {
+  background-color: #e4e4e7 !important;
+  color: #3f3f46 !important;
+}
+
+/* Nav background — dark glass → light glass */
+html:not(.dark) nav.fixed {
+  background-color: rgb(250 250 250 / 0.8) !important;
+  border-bottom-color: #e4e4e7 !important;
+}
+
+/* Mobile menu */
+html:not(.dark) nav.fixed > .border-t {
+  background-color: #ffffff !important;
+  border-top-color: #e4e4e7 !important;
+}
+
+/* Book cover placeholders — keep their dark gradient (they overlay on images) */
+html:not(.dark) [class*="bg-gradient-to-br"] {
+  /* keep as-is — these are fallback placeholders with their own dark bg */
+}
+
+/* GitHub chart container */
+html:not(.dark) .overflow-x-auto {
+  background-color: #ffffff !important;
+  border-color: #e4e4e7 !important;
 }
