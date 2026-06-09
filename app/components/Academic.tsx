@@ -76,17 +76,6 @@ export function Academic() {
               <li className="flex items-start gap-2 text-sm text-zinc-400">
                 <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-zinc-600" />
                 Thesis: {edu.thesis}
-                <a
-                  href="https://raw.githubusercontent.com/ishaq2321/phishing-detection-osint/main/docs/PhishGuard_Thesis.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-1.5 inline-flex items-center gap-1 rounded-md bg-accent/10 px-2 py-0.5 font-mono text-[11px] text-accent transition-colors hover:bg-accent/20"
-                >
-                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
-                  PDF
-                </a>
               </li>
               {edu.scholarship && (
                 <li className="flex items-start gap-2 text-sm text-emerald-400">

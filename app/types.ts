@@ -3,6 +3,7 @@ export interface Project {
   url: string;
   live?: string;
   benchmarkUrl?: string;
+  docsUrl?: string;
   description: string;
   stack: string[];
   highlights?: string[];
