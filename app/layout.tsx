@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/app/components/Nav";
 import { ThemeToggle } from "@/app/components/ThemeToggle";
+import { config } from "@/lib/config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -65,6 +66,14 @@ export default function RootLayout({
             `,
           }}
         />
+        {config.goatcounter && (
+          <script
+            data-goatcounter={`https://${config.goatcounter}.goatcounter.com/count`}
+            data-goatcounter-settings='{"allow_local": false}'
+            async
+            src="//gc.zgo.at/count.js"
+          />
+        )}
       </head>
       <body className="font-sans">
         <Nav />

@@ -4,6 +4,7 @@ export interface Project {
   live?: string;
   benchmarkUrl?: string;
   docsUrl?: string;
+  npm?: string;
   description: string;
   stack: string[];
   highlights?: string[];
@@ -47,6 +48,7 @@ export interface PortfolioConfig {
   };
   projects: Project[];
   notable_contributions: NotablePR[];
+  goatcounter?: string;
   education: {
     degree: string;
     university: string;

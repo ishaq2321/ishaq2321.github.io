@@ -3,20 +3,12 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
-interface GitHubUser {
-  login: string;
-  avatar_url: string;
-  public_repos: number;
+interface GitHubStats {
+  repos: number;
   followers: number;
-  following: number;
-  bio: string | null;
-}
-
-interface GitHubRepo {
-  name: string;
-  html_url: string;
-  stargazers_count: number;
-  fork: boolean;
+  stars: number;
+  prs: number;
+  updatedAt: string;
 }
 
 function StatCard({ label, value, index }: { label: string; value: string | number; index: number }) {
@@ -38,62 +30,28 @@ function StatCard({ label, value, index }: { label: string; value: string | numb
 }
 
 export function GitHubStats() {
-  const [user, setUser] = useState<GitHubUser | null>(null);
-  const [totalStars, setTotalStars] = useState(0);
-  const [totalPRs, setTotalPRs] = useState(0);
-  const [error, setError] = useState<string | null>(null);
+  const [stats, setStats] = useState<GitHubStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        const [userRes, reposRes, prsRes] = await Promise.all([
-          fetch("https://api.github.com/users/ishaq2321", {
-            headers: { Accept: "application/vnd.github.v3+json" },
-          }),
-          fetch(
-            "https://api.github.com/users/ishaq2321/repos?per_page=100",
-            { headers: { Accept: "application/vnd.github.v3+json" } }
-          ),
-          fetch(
-            "https://api.github.com/search/issues?q=author:ishaq2321+type:pr+is:merged&per_page=1",
-            { headers: { Accept: "application/vnd.github.v3+json" } }
-          ),
-        ]);
-
-        if (!userRes.ok || !reposRes.ok || !prsRes.ok) {
-          throw new Error("API rate limited or unavailable");
-        }
-
-        const userData: GitHubUser = await userRes.json();
-        const reposData: GitHubRepo[] = await reposRes.json();
-        const prsData: { total_count: number } = await prsRes.json();
-
-        setUser(userData);
-        setTotalStars(
-          reposData
-            .filter((r) => !r.fork)
-            .reduce((sum, r) => sum + r.stargazers_count, 0)
-        );
-        setTotalPRs(prsData.total_count);
-      } catch (e) {
-        setError(e instanceof Error ? e.message : "Failed to load");
+        const res = await fetch("/github-stats.json");
+        if (!res.ok) throw new Error("Stats unavailable");
+        const data: GitHubStats = await res.json();
+        setStats(data);
+      } catch {
+        // stats unavailable — show placeholder
       } finally {
         setLoading(false);
       }
     }
-
     fetchStats();
   }, []);
 
   return (
     <section className="section-container" id="stats">
       <h2 className="section-title">GitHub</h2>
-      {error && (
-        <p className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
-          {error}
-        </p>
-      )}
       {loading ? (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[0, 1, 2, 3].map((i) => (
@@ -106,10 +64,10 @@ export function GitHubStats() {
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <StatCard label="Repositories" value={user?.public_repos ?? 0} index={0} />
-          <StatCard label="Stars" value={totalStars} index={1} />
-          <StatCard label="Followers" value={user?.followers ?? 0} index={2} />
-          <StatCard label="Pull Requests" value={totalPRs} index={3} />
+          <StatCard label="Repositories" value={stats?.repos ?? 0} index={0} />
+          <StatCard label="Stars" value={stats?.stars ?? 0} index={1} />
+          <StatCard label="Followers" value={stats?.followers ?? 0} index={2} />
+          <StatCard label="Pull Requests" value={stats?.prs ?? 0} index={3} />
         </div>
       )}
       {!loading && (
