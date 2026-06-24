@@ -69,7 +69,6 @@ export default function RootLayout({
         {config.goatcounter && (
           <script
             data-goatcounter={`https://${config.goatcounter}.goatcounter.com/count`}
-            data-goatcounter-settings='{"allow_local": false}'
             async
             src="//gc.zgo.at/count.js"
           />
