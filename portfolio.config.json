@@ -102,6 +102,16 @@
       ]
     },
     {
+      "name": "tree-sitter-clean",
+      "url": "https://github.com/ishaq2321/tree-sitter-clean",
+      "npm": "tree-sitter-clean",
+      "description": "Clean grammar for tree-sitter — enables code intelligence, syntax highlighting, and AST parsing for the Clean programming language.",
+      "stack": ["Tree-sitter", "JavaScript", "Grammar"],
+      "highlights": [
+        "Enables Clean language support in the Tree-sitter ecosystem"
+      ]
+    },
+    {
       "name": "hide-and-lock",
       "url": "https://github.com/ishaq2321/hide-and-lock",
       "description": "CLI utility for encrypting sensitive files with session-based isolation and master key recovery.",
@@ -140,6 +150,7 @@
       "description": "Security hardening — prevents command injection in Flutter dev tooling scripts."
     }
   ],
+  "goatcounter": "",
   "education": {
     "degree": "BSc Computer Science",
     "university": "Eötvös Loránd University (ELTE)",
