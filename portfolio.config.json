@@ -36,7 +36,10 @@
     "ai_ml": [
       "XGBoost", "scikit-learn", "NLP", "SHAP", "OSINT enrichment",
       "Word Embeddings", "Tree-sitter AST", "Semantic Search",
-      "OpenAI API", "Google AI Studio", "Mistral", "Cohere"
+      "OpenAI API", "Google AI Studio", "Mistral", "Cohere",
+      "GitHub Copilot", "Claude Code", "Antigravity", "OpenCode",
+      "DeepSeek v4 Pro", "MiniMax M2.7", "Kimi K2.6", "Sonnet 4.6",
+      "Gemini 3.1 Pro Preview", "GLM 5.1"
     ],
     "security": [
       "Aircrack-ng", "Amass", "Bettercap", "BLE recon", "Command injection hardening",

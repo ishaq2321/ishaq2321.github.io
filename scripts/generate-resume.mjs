@@ -45,10 +45,14 @@ function projectEntry(proj) {
 }
 
 function prEntry(pr) {
+  const orgMap = { "microsoft/vscode": "Microsoft (VS Code)", "flutter/flutter": "Flutter" };
+  const org = orgMap[pr.repo] || pr.repo.split("/")[0].replace(/\b\w/g, (c) => c.toUpperCase());
   return `
-  <div style="margin-bottom:6pt;font-size:9pt;line-height:1.45;">
+  <div style="margin-bottom:5pt;font-size:9pt;line-height:1.4;">
     &bull;&nbsp;
-    <a href="${pr.url}" style="color:#3b82f6;text-decoration:none;">${pr.repo}#${pr.pr_number}</a>
+    <span style="font-weight:600;">${org}</span>
+    &mdash;
+    <a href="${pr.url}" style="color:#3b82f6;text-decoration:none;">PR #${pr.pr_number}</a>
     &mdash; ${pr.description}
   </div>`;
 }
@@ -119,7 +123,7 @@ ${achievement}
 ${config.experience.map(experienceEntry).join("")}
 
 <h2>Projects</h2>
-${config.projects.filter((p) => p.featured).map(projectEntry).join("")}
+${config.projects.slice(0, 5).map(projectEntry).join("")}
 
 <h2>Open Source</h2>
 ${config.notable_contributions.map(prEntry).join("")}
@@ -137,6 +141,8 @@ ${config.notable_contributions.map(prEntry).join("")}
   <div>
     <p style="font-weight:600;font-size:9pt;margin-bottom:4pt;">AI / ML</p>
     ${pill(config.skills.ai_ml.slice(0, 8))}
+    <p style="font-weight:600;font-size:9pt;margin:7pt 0 4pt 0;">AI Assistants &amp; Models</p>
+    ${pill(config.skills.ai_ml.slice(12))}
     <p style="font-weight:600;font-size:9pt;margin:7pt 0 4pt 0;">Security</p>
     ${pill(config.skills.security.slice(0, 10))}
     <p style="font-weight:600;font-size:9pt;margin:7pt 0 4pt 0;">Tools</p>
