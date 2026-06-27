@@ -25,6 +25,14 @@ export interface Social {
   linkedin: string;
 }
 
+export interface Experience {
+  role: string;
+  organization?: string;
+  period: string;
+  description: string;
+  skills: string[];
+}
+
 export interface PortfolioConfig {
   name: string;
   tagline: string;
@@ -48,6 +56,7 @@ export interface PortfolioConfig {
   };
   projects: Project[];
   notable_contributions: NotablePR[];
+  experience: Experience[];
   goatcounter?: string;
   education: {
     degree: string;
