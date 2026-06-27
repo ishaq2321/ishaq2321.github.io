@@ -29,6 +29,7 @@ function projectEntry(proj) {
   const links = [];
   if (proj.live) links.push(`<a href="${proj.live}" style="color:#3b82f6;text-decoration:none;font-size:8pt;">live</a>`);
   links.push(`<a href="${proj.url}" style="color:#3b82f6;text-decoration:none;font-size:8pt;">repo</a>`);
+  if (proj.npm) links.push(`<a href="https://www.npmjs.com/package/${proj.npm}" style="color:#3b82f6;text-decoration:none;font-size:8pt;">npm</a>`);
   const linkStr = links.join(" &middot; ");
 
   return `
