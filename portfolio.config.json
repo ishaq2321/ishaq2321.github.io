@@ -150,6 +150,40 @@
       "description": "Security hardening — prevents command injection in Flutter dev tooling scripts."
     }
   ],
+  "experience": [
+    {
+      "role": "Founder & Developer",
+      "organization": "backbencher.cc",
+      "period": "March 2026 - Present",
+      "description": "Building an open-core AST-native code intelligence platform. Indexes codebases into a queryable SQLite knowledge graph with 13 brain tools for semantic search, call-graph traversal, AST-precise refactoring, and security scanning across 39 languages.",
+      "skills": ["TypeScript", "Tree-sitter", "SQLite", "Bun", "LSP", "MCP"]
+    },
+    {
+      "role": "Full-Stack Developer",
+      "organization": "ProxiCall",
+      "period": "September 2025 - Present",
+      "description": "Developing a production Flutter proximity super-app with Stripe Connect payments, geo-fencing, 32-language auto-translation, and geo-targeted notifications with AI segmentation. Built 5 integrated systems: CMS, PMS, OMS, NMS, and ENS.",
+      "skills": ["Flutter", "Node.js", "Supabase", "Firebase", "Stripe", "Sentry"]
+    },
+    {
+      "role": "Privacy & Security Intern",
+      "period": "September 2024 - May 2025",
+      "description": "Hands-on training in privacy-preserving technologies and OSINT. Worked with secure operating systems, anonymous communication tools, PGP encryption, and advanced information gathering techniques including Shodan and social media reconnaissance.",
+      "skills": ["Tails OS", "SecureDrop", "OnionShare", "PGP/GPG", "Parrot Security", "OSINT", "Shodan", "VPNs"]
+    },
+    {
+      "role": "Wireless Network Security Intern",
+      "period": "July 2022 - February 2023",
+      "description": "Practical training in wireless network penetration testing and vulnerability assessment. Gained proficiency with industry-standard tools for network reconnaissance, packet analysis, and exploitation.",
+      "skills": ["Bettercap", "Aircrack-ng", "Nessus", "Burp Suite", "Nmap", "Wireshark"]
+    },
+    {
+      "role": "Pentester Intern",
+      "period": "April 2020 - September 2020",
+      "description": "Remote internship during COVID-19 focused on offensive security. Learned payload generation, Android APK reverse engineering, web application attacks including XSS, and post-exploitation techniques with Metasploit.",
+      "skills": ["Kali Linux", "Metasploit", "Termux", "APK Tool", "XSS", "Payloads", "Backdoor Factory"]
+    }
+  ],
   "goatcounter": "ishaq2321",
   "education": {
     "degree": "BSc Computer Science",
