@@ -145,12 +145,28 @@
       "description": "Improves debugging DX by logging breakpoint/watch expression load errors."
     },
     {
+      "repo": "microsoft/vscode",
+      "pr_number": 314005,
+      "title": "Fix listener leak when rerendering title file widgets in chat content parts",
+      "url": "https://github.com/microsoft/vscode/pull/314005",
+      "date": "2026-05-21",
+      "description": "Memory leak fix in chat components — merged via #319176, credited in PR body."
+    },
+    {
       "repo": "flutter/flutter",
       "pr_number": 186076,
       "title": "Harden dev tooling scripts against command injection and log leaks",
       "url": "https://github.com/flutter/flutter/pull/186076",
       "date": "2026-05-12",
       "description": "Security hardening — prevents command injection in Flutter dev tooling scripts."
+    },
+    {
+      "repo": "flutter/flutter",
+      "pr_number": 187008,
+      "title": "Fix stale eagerWinner reference in GestureArenaManager",
+      "url": "https://github.com/flutter/flutter/pull/187008",
+      "date": "2026-06-14",
+      "description": "Gesture arena memory fix — approved by Flutter team, pending merge."
     }
   ],
   "experience": [
@@ -169,22 +185,10 @@
       "skills": ["Flutter", "Node.js", "Supabase", "Firebase", "Stripe", "Sentry"]
     },
     {
-      "role": "Privacy & Security Intern",
-      "period": "September 2024 - May 2025",
-      "description": "Hands-on training in privacy-preserving technologies and OSINT. Worked with secure operating systems, anonymous communication tools, PGP encryption, and advanced information gathering techniques including Shodan and social media reconnaissance.",
-      "skills": ["Tails OS", "SecureDrop", "OnionShare", "PGP/GPG", "Parrot Security", "OSINT", "Shodan", "VPNs"]
-    },
-    {
-      "role": "Wireless Network Security Intern",
-      "period": "July 2022 - February 2023",
-      "description": "Practical training in wireless network penetration testing and vulnerability assessment. Gained proficiency with industry-standard tools for network reconnaissance, packet analysis, and exploitation.",
-      "skills": ["Bettercap", "Aircrack-ng", "Nessus", "Burp Suite", "Nmap", "Wireshark"]
-    },
-    {
-      "role": "Pentester Intern",
-      "period": "April 2020 - September 2020",
-      "description": "Remote internship during COVID-19 focused on offensive security. Learned payload generation, Android APK reverse engineering, web application attacks including XSS, and post-exploitation techniques with Metasploit.",
-      "skills": ["Kali Linux", "Metasploit", "Termux", "APK Tool", "XSS", "Payloads", "Backdoor Factory"]
+      "role": "Security Engineer",
+      "period": "April 2020 - May 2025",
+      "description": "Offensive security, wireless network penetration testing, OSINT, and privacy-preserving technologies across multiple engagements. Proficient with Kali Linux, Metasploit, Nmap, Wireshark, Burp Suite, Aircrack-ng, Bettercap, Tails OS, SecureDrop, PGP/GPG, and OSINT reconnaissance.",
+      "skills": ["Kali Linux", "Metasploit", "Nmap", "Wireshark", "Burp Suite", "Aircrack-ng", "Bettercap", "Tails OS", "SecureDrop", "PGP/GPG", "OSINT", "Shodan"]
     }
   ],
   "goatcounter": "ishaq2321",
