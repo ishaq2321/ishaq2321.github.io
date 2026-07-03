@@ -8,20 +8,17 @@ const config = JSON.parse(readFileSync(join(__dirname, "..", "portfolio.config.j
 
 const edu = config.education;
 
-function link(href, text, subtle) {
-  const style = subtle
-    ? "color:#333;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:0.5px;text-decoration-color:#999;"
-    : "color:#111;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:0.6px;";
-  return `<a href="${href}" style="${style}">${text}</a>`;
+function link(href, text) {
+  return `<a href="${href}" style="color:#3b82f6;text-decoration:none;">${text}</a>`;
 }
 
 function prEntry(pr, isLastOrg) {
   return `
   <tr>
-    <td style="width:14pt;vertical-align:top;padding-top:3pt;padding-right:6pt;text-align:right;">
-      ${link(pr.url, `#${pr.pr_number}`, true)}
+    <td style="width:14pt;vertical-align:top;padding-top:2pt;padding-right:6pt;text-align:right;">
+      ${link(pr.url, `#${pr.pr_number}`)}
     </td>
-    <td style="vertical-align:top;padding-top:3pt;font-size:8pt;line-height:1.28;${isLastOrg ? 'padding-bottom:6pt;' : ''}">
+    <td style="vertical-align:top;padding-top:2pt;font-size:8pt;line-height:1.3;${isLastOrg ? 'padding-bottom:6pt;' : ''}">
       ${pr.description}
     </td>
   </tr>`;
@@ -42,16 +39,22 @@ const flutterPRs = config.notable_contributions.filter((p) => p.repo === "flutte
 
 function projectLine(proj) {
   const links = [];
-  if (proj.live) links.push(link(proj.live, "live", true));
-  links.push(link(proj.url, "repo", true));
-  if (proj.npm) links.push(link(`https://www.npmjs.com/package/${proj.npm}`, "npm", true));
+  if (proj.live) links.push(link(proj.live, "site"));
+  links.push(link(proj.url, "repo"));
+  if (proj.npm) links.push(link(`https://www.npmjs.com/package/${proj.npm}`, "npm"));
+  if (proj.benchmarkUrl) links.push(link(proj.benchmarkUrl, "benchmark"));
+
+  const desc = proj.description.length > 140
+    ? proj.description.slice(0, 137) + "..."
+    : proj.description;
+
   return `
   <tr>
     <td style="width:4pt;vertical-align:top;padding-top:2pt;">&#8226;</td>
-    <td style="vertical-align:top;padding-top:2pt;font-size:8pt;line-height:1.25;">
+    <td style="vertical-align:top;padding-top:2pt;font-size:8pt;line-height:1.3;">
       <span style="font-weight:600;">${proj.name}</span>
-      <span style="font-size:7pt;margin-left:4pt;">${links.join(" &middot; ")}</span>
-      &mdash; <span style="color:#444;">${proj.description.length > 160 ? proj.description.slice(0, 157) + "..." : proj.description}</span>
+      ${links.length ? `<span style="font-size:7pt;color:#3b82f6;"> [${links.join(" &middot; ")}]</span>` : ""}
+      <br/><span style="font-size:7.5pt;color:#444;">${desc}</span>
     </td>
   </tr>`;
 }
@@ -62,13 +65,13 @@ const html = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <title>${config.name} — Resume</title>
 <style>
-  @page { size: letter; margin: 0.4in 0.45in; }
+  @page { size: letter; margin: 0.38in 0.42in; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #111;
     font-size: 8.5pt;
-    line-height: 1.3;
+    line-height: 1.32;
   }
   a { text-decoration: none; }
   h2 {
@@ -77,32 +80,23 @@ const html = `<!DOCTYPE html>
     text-transform: uppercase;
     letter-spacing: 0.4pt; color: #111;
     border-bottom: 0.8pt solid #222;
-    padding-bottom: 1.5pt; margin: 9pt 0 4pt 0;
+    padding-bottom: 1.5pt; margin: 8pt 0 3pt 0;
   }
-  header { text-align: center; margin-bottom: 9pt; }
+  header { text-align: center; margin-bottom: 8pt; }
   header h1 {
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 15pt; font-weight: 700;
-    letter-spacing: 0.5pt;
+    font-size: 15pt; font-weight: 700; letter-spacing: 0.5pt;
     margin-bottom: 3pt;
   }
   header .contact { font-size: 7.5pt; }
-  header .contact a { margin: 0 4pt; }
-  .icon-link {
-    display: inline-flex; align-items: center; gap: 2pt;
-    border: 0.5pt solid #999; border-radius: 3pt;
-    padding: 0.5pt 4pt;
-    font-size: 7pt; color: #333;
-  }
+  header .contact a { margin: 0 6pt; }
   .profile { font-size: 8pt; line-height: 1.32; margin-bottom: 0pt; }
   .entry { margin-bottom: 6pt; }
   .entry-title { display: flex; justify-content: space-between; align-items: baseline; }
   .entry-title .role { font-weight: 600; font-size: 8.5pt; }
   .entry-title .period { font-size: 7.5pt; color: #444; }
-  .entry-org { font-size: 8pt; font-style: italic; }
+  .entry-org { font-size: 8pt; font-style: italic; margin-top: 0.5pt; }
   .entry-desc { font-size: 8pt; margin-top: 1pt; line-height: 1.28; }
-  .entry-points { margin-top: 2pt; margin-left: 10pt; }
-  .entry-points li { font-size: 7.8pt; line-height: 1.28; margin-bottom: 0.5pt; }
   .skills-cat { margin-bottom: 1.5pt; line-height: 1.25; }
   .skills-cat strong { font-size: 8pt; font-family: Georgia, serif; font-weight: 600; }
   .skills-cat span { font-size: 7.5pt; }
@@ -113,25 +107,17 @@ const html = `<!DOCTYPE html>
 <header>
   <h1>${config.name}</h1>
   <p class="contact">
-    <a href="https://ishaq2321.github.io" class="icon-link" style="text-decoration:none;">
-      <span style="font-weight:700;">&#9741;</span> Portfolio
-    </a>
-    <a href="https://github.com/ishaq2321" class="icon-link" style="text-decoration:none;">
-      <span style="font-weight:700;font-family:monospace;">&#10209;</span> GitHub
-    </a>
-    <a href="https://linkedin.com/in/2321ishaq" class="icon-link" style="text-decoration:none;">
-      <span style="font-weight:700;">&#9654;</span> LinkedIn
-    </a>
-    <a href="mailto:${config.email}" class="icon-link" style="text-decoration:none;">
-      <span style="font-weight:700;">@</span> Email
-    </a>
-    <span style="margin-left:8pt;color:#555;">${config.location}</span>
+    ${link("https://ishaq2321.github.io", "ishaq2321.github.io")} &middot;
+    ${link("https://github.com/ishaq2321", "github.com/ishaq2321")} &middot;
+    ${link("https://linkedin.com/in/2321ishaq", "linkedin.com/in/2321ishaq")} &middot;
+    ${link("mailto:" + config.email, config.email)}
+    &nbsp;&middot;&nbsp; <span style="color:#555;">${config.location}</span>
   </p>
 </header>
 
 <h2>Profile</h2>
 <p class="profile">
-  Computer Science graduate from ELTE, Budapest. Founded <strong>backbencher.cc</strong>, an AST-native code intelligence platform with 13 brain tools. Contributed to <strong>Microsoft VS Code</strong> (3 merged PRs) and <strong>Flutter</strong> (2 PRs, 1 approved). Built <strong>ProxiCall</strong>, a production super-app with Stripe payments and 32-language translation. BSc thesis on ML-based phishing detection achieved 96.45% accuracy with 725 automated tests.
+  Computer Science graduate from ELTE, Budapest. Founded <strong>backbencher.cc</strong>, an AST-native code intelligence platform shipping 13 brain tools for semantic search, call-graph traversal, AST-precise refactoring, and security scanning across 39 languages. Contributed to <strong>Microsoft VS Code</strong> (3 fixes merged) and <strong>Flutter</strong> (security hardening and gesture engine fix). Built <strong>ProxiCall</strong>, a production super-app with Stripe Connect payments and 32-language translation. BSc thesis on ML-based phishing detection achieved 96.45% accuracy across 725 automated tests.
 </p>
 
 <h2>Education</h2>
@@ -141,8 +127,7 @@ const html = `<!DOCTYPE html>
     <span class="period">${edu.period}</span>
   </div>
   <p class="entry-desc">
-    ${edu.faculty}. ${edu.scholarship ? edu.scholarship + "." : ""}
-    <br/>Selected for BSc Computer Science at <strong>Tsinghua University</strong> (world #1 in CS, US News) with full scholarship.
+    ${edu.faculty}. ${edu.scholarship ? edu.scholarship + ". " : ""}Selected for <strong>Tsinghua University</strong> (world #1 in CS, US News) with full scholarship.
   </p>
 </div>
 
@@ -150,12 +135,12 @@ const html = `<!DOCTYPE html>
 
 <div class="entry">
   <div class="entry-title">
-    <span class="role">Founder & Developer</span>
+    <span class="role">Founder &amp; Developer</span>
     <span class="period">March 2026 &ndash; Present</span>
   </div>
   <p class="entry-org">backbencher.cc</p>
   <p class="entry-desc">
-    Building an open-core AST-native code intelligence platform that indexes codebases into a SQLite knowledge graph. Ships with 13 brain tools for semantic search, call-graph traversal, AST-precise refactoring, architecture detection, cross-language migration planning, and security scanning across 39 languages.
+    Building an open-core code intelligence platform that indexes codebases into a SQLite knowledge graph. Ships 13 brain tools (bb_search, bb_select, bb_refactor, bb_security, bb_migrate, bb_relationships, and more). Benchmarked against TypeScript and Roslyn codebases.
   </p>
 </div>
 
@@ -166,27 +151,8 @@ const html = `<!DOCTYPE html>
   </div>
   <p class="entry-org">ProxiCall</p>
   <p class="entry-desc">
-    Production Flutter super-app: Stripe Connect payments, geo-fenced content delivery, 32-language auto-translation pipeline, and AI-segmented notifications. Built five integrated systems: Content Management, Payment Management, Order Management, Notification Management, and Entity Notification System.
+    Production Flutter super-app: Stripe Connect payment management, geo-fenced content delivery, 32-language auto-translation, and AI-segmented push notifications. Five integrated systems: CMS, PMS, OMS, NMS, ENS.
   </p>
-</div>
-
-<div class="entry">
-  <div class="entry-title">
-    <span class="role">Security Engineer</span>
-    <span class="period">April 2020 &ndash; May 2025</span>
-  </div>
-  <p class="entry-desc">
-    Offensive security and privacy-preserving technology across multiple independent engagements.
-  </p>
-  <ul class="entry-points">
-    <li>DNS spoofing attack simulation and network-layer prevention techniques</li>
-    <li>MITM attack execution, traffic analysis, and defense hardening</li>
-    <li>Cross-site scripting (XSS) exploitation, payload crafting, and input sanitization</li>
-    <li>Wireless network penetration: WPA/WPA2 cracking, deauthentication, rogue AP deployment</li>
-    <li>OSINT reconnaissance: passive and active information gathering via social media, Shodan, WHOIS</li>
-    <li>Privacy-preserving communication: PGP/GPG encryption, Tails OS, OnionShare, SecureDrop</li>
-    <li>Vulnerability scanning: SQLi, XSS, and secrets detection across web applications</li>
-  </ul>
 </div>
 
 <h2>Open Source Contributions</h2>
@@ -201,8 +167,8 @@ ${orgBlock("Flutter", flutterPRs)}
 <h2>Technical Skills</h2>
 <div class="skills-cat"><strong>Languages</strong> <span>${config.skills.languages.join(", ")}</span></div>
 <div class="skills-cat"><strong>Frameworks</strong> <span>${config.skills.frameworks.join(", ")}</span></div>
-<div class="skills-cat"><strong>AI &amp; Models</strong> <span>${config.skills.ai_ml.slice(8, 22).join(", ")}</span></div>
-<div class="skills-cat"><strong>Tools &amp; Platforms</strong> <span>${config.skills.tools.slice(0, 8).join(", ")} &middot; ${config.skills.platforms.slice(0, 8).join(", ")}</span></div>
+<div class="skills-cat"><strong>AI &amp; Models</strong> <span>${config.skills.ai_ml.slice(8, 23).join(", ")}</span></div>
+<div class="skills-cat"><strong>Tools &amp; Platforms</strong> <span>${config.skills.tools.slice(0, 8).join(", ")} &middot; ${config.skills.platforms.join(", ")}</span></div>
 
 </body>
 </html>`;
@@ -220,11 +186,11 @@ async function main() {
     path: outPath,
     format: "letter",
     printBackground: true,
-    margin: { top: "0.4in", bottom: "0.4in", left: "0.45in", right: "0.45in" },
+    margin: { top: "0.38in", bottom: "0.38in", left: "0.42in", right: "0.42in" },
     scale: 0.91,
   });
   await browser.close();
-  console.log("Resume → public/resume.pdf");
+  console.log("Resume -> public/resume.pdf");
 }
 
 main().catch((err) => {

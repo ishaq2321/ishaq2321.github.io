@@ -22,8 +22,7 @@
   "skills": {
     "languages": [
       "TypeScript", "JavaScript", "Python", "Dart", "C++",
-      "Shell/Bash", "PowerShell", "SQL", "HTML/CSS", "Go",
-      "Rust", "Java", "Kotlin"
+      "Shell/Bash", "PowerShell", "SQL", "HTML/CSS", "Java"
     ],
     "frameworks": [
       "Flutter", "Next.js", "React", "Node.js", "Express",
@@ -37,7 +36,7 @@
       "XGBoost", "scikit-learn", "NLP", "SHAP", "OSINT enrichment",
       "Word Embeddings", "Tree-sitter AST", "Semantic Search",
       "OpenAI API", "Google AI Studio", "Mistral", "Cohere",
-      "GitHub Copilot", "Claude Code", "Antigravity", "OpenCode",
+      "GitHub Copilot", "Claude Code", "Antigravity", "OpenCode", "backbencher",
       "DeepSeek v4 Pro", "MiniMax M2.7", "Kimi K2.6", "Sonnet 4.6",
       "Gemini 3.1 Pro Preview", "GLM 5.1"
     ],
@@ -50,7 +49,7 @@
     ],
     "platforms": [
       "Supabase", "Firebase", "Stripe", "Docker", "GitHub Actions",
-      "SST (Serverless Stack)", "SQLite", "PostgreSQL", "Sentry",
+      "SST (Serverless Stack)", "SQLite", "PostgreSQL",       "Sentry", "Mapbox", "Brevo", "Zoho",
       "Vercel", "Netlify"
     ],
     "operating_systems": [
@@ -148,9 +147,9 @@
       "repo": "microsoft/vscode",
       "pr_number": 314005,
       "title": "Fix listener leak when rerendering title file widgets in chat content parts",
-      "url": "https://github.com/microsoft/vscode/pull/314005",
+      "url": "https://github.com/microsoft/vscode/pull/319176",
       "date": "2026-05-21",
-      "description": "Memory leak fix in chat components — merged via #319176, credited in PR body."
+      "description": "Fixed listener leak when rerendering title file widgets in chat content parts."
     },
     {
       "repo": "flutter/flutter",
@@ -166,7 +165,7 @@
       "title": "Fix stale eagerWinner reference in GestureArenaManager",
       "url": "https://github.com/flutter/flutter/pull/187008",
       "date": "2026-06-14",
-      "description": "Gesture arena memory fix — approved by Flutter team, pending merge."
+      "description": "Fixed stale eagerWinner reference in GestureArenaManager when gesture rejected before arena close."
     }
   ],
   "experience": [
@@ -183,12 +182,6 @@
       "period": "September 2025 - Present",
       "description": "Developing a production Flutter proximity super-app with Stripe Connect payments, geo-fencing, 32-language auto-translation, and geo-targeted notifications with AI segmentation. Built 5 integrated systems: CMS, PMS, OMS, NMS, and ENS.",
       "skills": ["Flutter", "Node.js", "Supabase", "Firebase", "Stripe", "Sentry"]
-    },
-    {
-      "role": "Security Engineer",
-      "period": "April 2020 - May 2025",
-      "description": "Offensive security, wireless network penetration testing, OSINT, and privacy-preserving technologies across multiple engagements. Proficient with Kali Linux, Metasploit, Nmap, Wireshark, Burp Suite, Aircrack-ng, Bettercap, Tails OS, SecureDrop, PGP/GPG, and OSINT reconnaissance.",
-      "skills": ["Kali Linux", "Metasploit", "Nmap", "Wireshark", "Burp Suite", "Aircrack-ng", "Bettercap", "Tails OS", "SecureDrop", "PGP/GPG", "OSINT", "Shodan"]
     }
   ],
   "goatcounter": "ishaq2321",
