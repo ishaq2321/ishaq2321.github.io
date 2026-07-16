@@ -1,49 +1,141 @@
-# ishaq2321.github.io
+# Developer Portfolio
 
-Personal developer portfolio — [ishaq2321.github.io](https://ishaq2321.github.io)
+A fast, config-driven developer portfolio built with **Next.js 16**, **Tailwind CSS v4**, and **TypeScript**, statically exported to GitHub Pages. Editorial "engineered monograph" design with a distinctive serif/mono/sans type system, dual light/dark themes, and scroll-triggered motion.
 
-Built with **Next.js 16 + Tailwind CSS v4 + TypeScript**, statically exported to GitHub Pages. Animations via **Framer Motion**.
+**Live:** [ishaq2321.github.io](https://ishaq2321.github.io)
 
-### Sections
-- **Hero** — photo, tagline, GitHub / Contact / Resume links
-- **About** — two-paragraph bio (ELTE, backbencher.cc, VS Code, Flutter, thesis)
-- **GitHub Stats** — live stats (repos, stars, followers, merged PRs) via GitHub REST API v3
-- **Notable Contributions** — open-source PRs to VS Code and Flutter
-- **Projects** — 5 project cards (backbencher.cc, ProxiCall, PhishGuard, hide-and-lock, phantomVault) with stack tags and highlights
-- **Skills & Tools** — 2-column grid: Languages, Frameworks, Mobile, AI/ML, Security, Platforms, OS, Tools
-- **Education & Achievements** — Tsinghua University full-scholarship highlight, ELTE (BSc, thesis, Stipendium Hungaricum), BRC Loralai (Provincial Topper)
-- **Bookshelf** — 72 books across existentialist philosophy, Sufism, Urdu Islamic scholarship, and Pashto poetry. Covers fetched live from Open Library with ISBN fallback.
-- **Contact** — categorized email buttons + GitHub, LinkedIn, Resume, Email links
+![Portfolio preview](public/og.png)
 
-### Design
-- Dark/light mode with persistent toggle and flash-prevention script
-- Responsive: mobile-first with collapsible navigation
-- Framer Motion scroll-triggered animations throughout
-- Section-scoped active link highlighting in nav bar
-- Consistent card, pill, and section layout system using custom Tailwind components
+---
 
-### Development
+## Highlights
+
+- **Single source of truth** — nearly all content lives in `portfolio.config.json`. No component edits needed to update your info.
+- **Static export** — ships as plain HTML/CSS/JS to GitHub Pages (or any static host). No server required.
+- **Build-time data** — GitHub stats, npm download counts, the OG social image, and your PDF résumé are all generated during `prebuild`.
+- **Accessible** — respects `prefers-reduced-motion`, visible focus rings, skip-to-content link, ARIA-annotated navigation, WCAG AA contrast in both themes.
+- **SEO-ready** — rich metadata, JSON-LD `Person` schema, sitemap, robots, and an auto-generated Open Graph image.
+- **Dual theme** — CSS-variable-driven light/dark with a flash-prevention script and persisted preference.
+
+---
+
+## Tech Stack
+
+| Layer      | Choice                              |
+|------------|-------------------------------------|
+| Framework  | Next.js 16 (App Router, static export) |
+| Styling    | Tailwind CSS v4 + CSS variables     |
+| Motion     | Framer Motion                       |
+| Type       | Fraunces (display), Hanken Grotesk (body), JetBrains Mono (mono) |
+| Language   | TypeScript                          |
+| PDF / OG   | Puppeteer (build-time generation)   |
+| Hosting    | GitHub Pages via GitHub Actions     |
+
+---
+
+## Quick Start
 
 ```bash
 npm install
-npm run dev        # Development server (http://localhost:3000)
-npm run build      # Static export to out/
-npm run lint       # ESLint
-npm run typecheck  # TypeScript check
-npm run preview    # Serve out/ locally
+npm run dev        # http://localhost:3000
 ```
 
-### CI/CD
+```bash
+npm run build      # static export to out/
+npm run preview    # serve the exported out/ locally
+npm run lint       # ESLint
+npm run typecheck  # tsc --noEmit
+```
 
-GitHub Actions workflow (`.github/workflows/deploy.yml`):
-- TypeScript check and lint on every push to `main`
-- Builds and deploys to GitHub Pages only when `app/`, `lib/`, `public/`, or `portfolio.config.json` change
-- Uses `actions/deploy-pages` for the deployment step
+---
 
-### Configuration
+## Make It Yours
 
-| Data | Source |
-|------|--------|
-| Personal info, skills, projects, education | `portfolio.config.json` |
-| Books (72 titles) | `lib/books.ts` |
-| GitHub stats | Live API fetch (unauthenticated, rate-limited) |
+This portfolio is designed to be forked and reused. Most changes require editing **one file**.
+
+### 1. Content — `portfolio.config.json`
+
+| Key | What it controls |
+|-----|------------------|
+| `name`, `tagline`, `about` | Hero + About section |
+| `location`, `email`, `emails`, `contactCategories` | Contact section |
+| `social` | GitHub / LinkedIn links |
+| `skills` | Toolkit section (languages, frameworks, AI/ML, security, platforms, tools) |
+| `projects` | Project cards (see fields below) |
+| `notable_contributions` | Open-source PR cards |
+| `experience` | Experience timeline |
+| `education` | Education section (university, thesis, high school, achievements) |
+| `goatcounter` | GoatCounter analytics code (optional; leave `""` to disable) |
+
+**Project fields:** `name`, `url`, `description`, `stack[]` are required. Optional: `live`, `benchmarkUrl`, `docsUrl`, `npm`, `pypi`, `highlights[]`, `featured`.
+
+### 2. Books — `lib/books.ts`
+
+An optional "Bookshelf" section. Each entry is `{ title, author, isbn? }`. Covers are fetched from Open Library by ISBN with a text fallback.
+
+### 3. Skill icons — `lib/iconMap.ts`
+
+Maps a skill name to a [Simple Icons](https://simpleicons.org) slug. Unmapped skills render a neutral dot. Add entries to give a skill its brand icon.
+
+### 4. Theme & design — `app/globals.css`
+
+All colors are CSS variables under `:root` (dark) and `html.light` (light). Change the accent by editing `--accent` / `--accent-text` in both blocks. Fonts are wired in `app/layout.tsx`.
+
+### 5. Assets — `public/`
+
+Replace `photo.svg` with your portrait, and drop in `resume.pdf` (or let the generator build one). `og.png` is generated automatically.
+
+---
+
+## Build-Time Generation
+
+The `prebuild` script runs automatically before every build:
+
+```
+fetch-github-stats.mjs  → public/github-stats.json   (repos, stars, followers, merged PRs)
+fetch-npm-stats.mjs     → public/npm-stats.json       (weekly + total downloads per package)
+generate-og.mjs         → public/og.png               (1200×630 social share card)
+generate-resume.mjs     → public/resume.pdf           (one-page PDF résumé from config)
+```
+
+To refresh GitHub stats without hitting rate limits, set a `GITHUB_TOKEN` environment variable before building.
+
+---
+
+## Project Structure
+
+```
+app/
+  components/        UI components (Hero, About, Projects, Skills, …)
+  globals.css        Design system: theme tokens, component utilities
+  layout.tsx         Metadata, fonts, JSON-LD, theme script
+  page.tsx           Section composition
+  opengraph-image…   (generated) — see scripts/generate-og.mjs
+  robots.ts          robots.txt
+  sitemap.ts         sitemap.xml
+lib/
+  config.ts          Typed loader for portfolio.config.json
+  books.ts           Bookshelf data
+  iconMap.ts         Skill → Simple Icons slug map
+scripts/             Build-time generators (stats, OG, résumé)
+public/              Static assets + generated JSON/PDF/PNG
+portfolio.config.json  ← your content lives here
+```
+
+---
+
+## Deployment
+
+Pushing to `main` triggers the GitHub Actions workflow (`.github/workflows/deploy.yml`):
+
+1. Type-check and lint
+2. `npm run build` (runs `prebuild` generators, then static export)
+3. Deploy `out/` to GitHub Pages
+
+To deploy elsewhere, run `npm run build` and serve the `out/` directory on any static host.
+
+---
+
+## License
+
+Released under the MIT License. Attribution appreciated but not required — fork it and make it yours.

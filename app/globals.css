@@ -1,153 +1,424 @@
 @import "tailwindcss";
 
-@theme {
-  --color-zinc-50: #fafafa;
-  --color-zinc-100: #f4f4f5;
-  --color-zinc-200: #e4e4e7;
-  --color-zinc-300: #d4d4d8;
-  --color-zinc-400: #a1a1aa;
-  --color-zinc-500: #71717a;
-  --color-zinc-600: #52525b;
-  --color-zinc-700: #3f3f46;
-  --color-zinc-800: #27272a;
-  --color-zinc-900: #18181b;
-  --color-zinc-950: #09090b;
+/* ============================================================
+   THE ENGINEERED MONOGRAPH — design system
+   A refined technical-journal aesthetic.
+   Warm ink canvas · bone text · single vermilion accent.
+   Dual theme driven entirely by CSS variables (no !important).
+   ============================================================ */
 
-  --color-accent: #3b82f6;
-  --color-accent-hover: #2563eb;
+@theme {
+  /* Fonts (wired to next/font CSS variables in layout.tsx) */
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Static brand ramp (used sparingly; theme tokens below do the work) */
+  --color-accent: #e2523b;
+  --color-accent-soft: #f0836f;
 }
 
+/* ------------------------------------------------------------
+   THEME TOKENS
+   Default (:root) = DARK. .light class on <html> flips to light.
+   Every component reads these vars via bg-[var(--..)] etc.
+   ------------------------------------------------------------ */
+:root {
+  --bg: #0d0c0b;            /* warm near-black ink */
+  --bg-raised: #161412;    /* raised panels */
+  --bg-inset: #100e0d;     /* inset wells */
+  --surface: #1b1917;      /* card surface */
+  --surface-hover: #221f1c;
+
+  --text: #f4efe9;         /* bone */
+  --text-muted: #b8afa4;   /* warm grey */
+  --text-faint: #8f8578;   /* faint metadata — lightened to clear 4.5:1 on --bg */
+
+  --line: #2b2723;         /* hairline borders */
+  --line-strong: #3a352f;
+
+  --accent: #e2523b;       /* vermilion */
+  --accent-quiet: #e2523b26;
+  --accent-text: #f0836f;
+
+  --gold: #c9a24b;         /* secondary highlight (Tsinghua etc.) */
+  --gold-quiet: #c9a24b1f;
+
+  --grid-line: #ffffff08;  /* engineering grid */
+  --glow: #e2523b1f;       /* hero glow */
+  --shadow: 0 1px 2px #00000040, 0 8px 30px #00000030;
+}
+
+html.light {
+  --bg: #f4f1ea;           /* clean light paper, subtle warmth */
+  --bg-raised: #ffffff;
+  --bg-inset: #eae5da;     /* recessed wells + chips */
+  --surface: #ffffff;      /* pure white cards */
+  --surface-hover: #faf8f3;
+
+  --text: #17130f;         /* near-black ink, strong contrast */
+  --text-muted: #4a443c;   /* darkened for legibility */
+  --text-faint: #736a5e;
+
+  --line: #ded7ca;
+  --line-strong: #c3b8a5;
+
+  --accent: #c0392a;
+  --accent-quiet: #c0392a12;
+  --accent-text: #a52f1e;
+
+  --gold: #856212;
+  --gold-quiet: #85621212;
+
+  --grid-line: #3a2e1a0d;  /* subtle engineering grid */
+  --glow: #c0392a12;
+  --shadow: 0 1px 2px #2a221514, 0 10px 30px #6b5a3a1c;
+}
+
+/* ------------------------------------------------------------
+   BASE
+   ------------------------------------------------------------ */
 @layer base {
   html {
     scroll-behavior: smooth;
-    color-scheme: dark;
   }
 
-  /* Default: dark mode */
   body {
-    @apply bg-zinc-950 text-zinc-100 antialiased;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    position: relative;
   }
 
-  /* Light mode via class on html */
-  html:not(.dark) body {
-    @apply bg-zinc-50 text-zinc-900;
+  /* Engineering grid + grain atmosphere layered behind everything */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 120% 80% at 50% 0%, #000 30%, transparent 80%);
+    pointer-events: none;
   }
 
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.035;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Grain reads as atmosphere on dark ink but as dirt on light paper — kill it */
+  html.light body::after {
+    display: none;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  a { color: inherit; }
+
+  /* Visible keyboard focus for every interactive element (WCAG 2.4.7) */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  /* Don't show focus rings for mouse users */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Skip-to-content link — visible only when focused */
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -100px;
+    z-index: 100;
+    padding: 0.65rem 1.1rem;
+    border-radius: 2px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    transition: top 0.2s ease;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
 }
 
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   Honour the OS "reduce motion" setting for vestibular safety.
+   Neutralises CSS transitions/animations and smooth scroll.
+   Framer Motion is gated separately via useReducedMotion().
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   COMPONENT UTILITIES
+   ------------------------------------------------------------ */
 @layer components {
-  .section-container {
-    @apply mx-auto max-w-5xl px-6 py-20 sm:px-8;
+  .section-shell {
+    @apply mx-auto max-w-6xl px-6 py-24 sm:px-10 sm:py-28;
   }
 
-  .section-title {
-    @apply mb-10 text-3xl font-bold tracking-tight sm:text-4xl;
+  /* Chapter header: index number + serif title + hairline rule */
+  .chapter-index {
+    font-family: var(--font-mono);
+    color: var(--accent-text);
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    font-weight: 500;
   }
 
-  .card {
-    @apply rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 transition-colors hover:border-zinc-700;
+  .chapter-title {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.0;
+    color: var(--text);
+    font-size: clamp(2.1rem, 5vw, 3.25rem);
   }
 
-  .pill {
-    @apply inline-flex items-center rounded-full bg-zinc-800 px-3 py-1 text-sm font-medium text-zinc-300;
+  .hairline {
+    height: 1px;
+    background: linear-gradient(90deg, var(--line-strong), transparent);
   }
 
-  /* Light mode overrides (same layer = higher specificity wins) */
-  html:not(.dark) .card {
-    @apply border-zinc-200 bg-white hover:border-zinc-300;
+  /* Panel: the base surface for cards */
+  .panel {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    box-shadow: var(--shadow);
+    transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+  }
+  .panel:hover {
+    border-color: var(--line-strong);
+    background-color: var(--surface-hover);
   }
 
-  html:not(.dark) .section-title {
-    @apply text-zinc-900;
+  /* Monospace metadata tag */
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
   }
 
-  html:not(.dark) .pill {
-    @apply bg-zinc-100 text-zinc-700;
+  /* Pill / chip */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+    background: var(--bg-inset);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 0.3rem 0.6rem;
+    transition: color 0.2s ease, border-color 0.2s ease;
   }
+  .chip:hover {
+    color: var(--accent-text);
+    border-color: var(--accent-quiet);
+  }
+
+  /* Passive tech tag — plain label, no box, so it never reads as a button */
+  .tech-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.02em;
+    color: var(--text-faint);
+    white-space: nowrap;
+  }
+
+  /* Borderless skill tag — icon + label, no box. Used in Toolkit. */
+  .skill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.01em;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+  }
+  .skill-tag:hover { color: var(--text); }
+
+  /* Primary + ghost buttons */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    padding: 0.7rem 1.2rem;
+    border-radius: 2px;
+    border: 1px solid var(--accent);
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  .btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    padding: 0.7rem 1.2rem;
+    border-radius: 2px;
+    border: 1px solid var(--line-strong);
+    background: transparent;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  }
+  .btn-ghost:hover { border-color: var(--accent); background: var(--accent-quiet); transform: translateY(-1px); }
+
+  .link-mono {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--text-faint);
+    transition: color 0.2s ease;
+  }
+  .link-mono:hover { color: var(--accent-text); }
+
+  /* Action links in project card footers — clearly buttons, not tags */
+  .action-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    height: 2.25rem;
+    box-sizing: border-box;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--text);
+    padding: 0 0.95rem;
+    border-radius: 3px;
+    border: 1px solid var(--line-strong);
+    background: transparent;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  }
+  .action-link svg { color: var(--text-faint); transition: color 0.2s ease; }
+  .action-link:hover {
+    color: var(--accent-text);
+    border-color: var(--accent);
+    background: var(--accent-quiet);
+    transform: translateY(-1px);
+  }
+  .action-link:hover svg { color: var(--accent-text); }
+
+  .action-link--primary {
+    color: #fff;
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .action-link--primary svg { color: #fff; }
+  .action-link--primary:hover {
+    color: #fff;
+    background: var(--accent);
+    border-color: var(--accent);
+    filter: brightness(1.08);
+  }
+  .action-link--primary:hover svg { color: #fff; }
+
+  /* Cursor-tracked spotlight panel */
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+      340px circle at var(--mx, 50%) var(--my, 50%),
+      var(--accent-quiet),
+      transparent 60%
+    );
+  }
+  .spotlight:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-2px);
+  }
+  .spotlight:hover::before { opacity: 1; }
+  /* Hairline accent that traces the top edge on hover */
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .spotlight:hover::after { transform: scaleX(1); }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  .text-balance { text-wrap: balance; }
+  .font-display { font-family: var(--font-display); }
+  .font-mono { font-family: var(--font-mono); }
+  .text-muted { color: var(--text-muted); }
+  .text-faint { color: var(--text-faint); }
+  .text-accent { color: var(--accent-text); }
+  .bg-canvas { background-color: var(--bg); }
 }
 
-/* ============================================
-   LIGHT MODE CONTRAST FIXES
-   ============================================
-   Override ALL text colors for light mode to ensure
-   readable contrast on white/zinc-50 backgrounds.
-   !important used to guarantee wins over all layers.
-*/
-
-/* All muted/secondary text — darken for readability */
-html:not(.dark) .text-zinc-200,
-html:not(.dark) .text-zinc-300,
-html:not(.dark) .text-zinc-400,
-html:not(.dark) .text-zinc-500 { color: #3f3f46 !important; }  /* zinc-700 */
-
-/* Nav active link */
-html:not(.dark) .text-zinc-100 { color: #09090b !important; }  /* zinc-950 */
-
-/* Accent colors — bright neon tones invisible on white */
-html:not(.dark) .text-amber-400,
-html:not(.dark) .text-amber-300 { color: #92400e !important; }  /* amber-800 */
-html:not(.dark) .text-emerald-400 { color: #065f46 !important; }  /* emerald-800 */
-html:not(.dark) .text-red-400 { color: #991b1b !important; }  /* red-800 */
-
-/* Cards — ensure white backgrounds with readable text */
-html:not(.dark) .card {
-  background-color: #ffffff !important;
-  border-color: #e4e4e7 !important;
-}
-html:not(.dark) .card:hover {
-  border-color: #d4d4d8 !important;
-}
-
-/* Featured project cards keep subtle accent bg */
-html:not(.dark) .card.border-accent\/30 {
-  background-color: #f0f5ff !important;  /* very light blue */
-}
-
-/* Skill tags — switch from dark overlay to light bg */
-html:not(.dark) [class*="bg-zinc-900\/50"] {
-  background-color: #f4f4f5 !important;  /* zinc-100 */
-  border-color: #e4e4e7 !important;
-}
-
-/* Pills — already handled in @layer components, but ensure it sticks */
-html:not(.dark) .pill {
-  background-color: #e4e4e7 !important;
-  color: #3f3f46 !important;
-}
-
-/* Nav background — dark glass → light glass */
-html:not(.dark) nav.fixed {
-  background-color: rgb(250 250 250 / 0.8) !important;
-  border-bottom-color: #e4e4e7 !important;
-}
-
-/* Mobile menu */
-html:not(.dark) nav.fixed > .border-t {
-  background-color: #ffffff !important;
-  border-top-color: #e4e4e7 !important;
-}
-
-/* Book cover placeholders — keep their dark gradient (they overlay on images) */
-html:not(.dark) [class*="bg-gradient-to-br"] {
-  /* keep as-is — these are fallback placeholders with their own dark bg */
-}
-
-/* GitHub chart container */
-html:not(.dark) .overflow-x-auto {
-  background-color: #ffffff !important;
-  border-color: #e4e4e7 !important;
-}
-
-/* Skill brand icons — ensure visibility on both dark and light backgrounds */
+/* Brand skill icons — keep legible on both themes */
 .skill-icon {
-  filter: brightness(0.9) saturate(0.9);
+  filter: brightness(0.95) saturate(0.85);
 }
-html:not(.dark) .skill-icon {
-  filter: brightness(0.5) saturate(1.1);
+html.light .skill-icon {
+  filter: brightness(0.55) saturate(1.05);
 }
