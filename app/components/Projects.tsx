@@ -111,6 +111,16 @@ function ProjectCard({
               npm
             </a>
           )}
+          {project.pypi && (
+            <a
+              href={`https://pypi.org/project/${project.pypi}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-xs text-sky-400 hover:text-sky-300"
+            >
+              PyPI
+            </a>
+          )}
           {project.benchmarkUrl && (
             <a
               href={project.benchmarkUrl}
