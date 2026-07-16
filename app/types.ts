@@ -5,6 +5,7 @@ export interface Project {
   benchmarkUrl?: string;
   docsUrl?: string;
   npm?: string;
+  pypi?: string;
   description: string;
   stack: string[];
   highlights?: string[];

@@ -107,10 +107,12 @@
       "name": "tree-sitter-clean",
       "url": "https://github.com/ishaq2321/tree-sitter-clean",
       "npm": "tree-sitter-clean",
-      "description": "Clean grammar for tree-sitter — enables code intelligence, syntax highlighting, and AST parsing for the Clean programming language.",
+      "pypi": "tree-sitter-clean",
+      "description": "Clean grammar for tree-sitter — enables code intelligence, syntax highlighting, and AST parsing for the Clean programming language. Published to both npm and PyPI.",
       "stack": ["Tree-sitter", "JavaScript", "Grammar"],
       "highlights": [
-        "Enables Clean language support in the Tree-sitter ecosystem"
+        "Enables Clean language support in the Tree-sitter ecosystem",
+        "Available on npm and PyPI (v1.1.0)"
       ]
     },
     {
@@ -164,7 +166,7 @@
       "pr_number": 187008,
       "title": "Fix stale eagerWinner reference in GestureArenaManager",
       "url": "https://github.com/flutter/flutter/pull/187008",
-      "date": "2026-06-14",
+      "date": "2026-07-15",
       "description": "Fixed stale eagerWinner reference in GestureArenaManager when gesture rejected before arena close."
     }
   ],
