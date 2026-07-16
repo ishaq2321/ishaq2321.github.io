@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { SectionHeader } from "@/app/components/SectionHeader";
+import { SpotlightCard } from "@/app/components/SpotlightCard";
 
 interface GitHubStats {
   repos: number;
@@ -11,7 +13,25 @@ interface GitHubStats {
   updatedAt: string;
 }
 
-function StatCard({ label, value, index }: { label: string; value: string | number; index: number }) {
+function CountUp({ value }: { value: number }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => Math.round(v).toLocaleString());
+
+  useEffect(() => {
+    if (!isInView) return;
+    const controls = animate(count, value, {
+      duration: 1.4,
+      ease: [0.22, 1, 0.36, 1],
+    });
+    return controls.stop;
+  }, [isInView, value, count]);
+
+  return <motion.span ref={ref}>{rounded}</motion.span>;
+}
+
+function StatCard({ label, value, index }: { label: string; value: number; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
 
@@ -20,11 +40,17 @@ function StatCard({ label, value, index }: { label: string; value: string | numb
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="card text-center"
+      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
-      <p className="text-3xl font-bold tabular-nums">{value}</p>
-      <p className="mt-1 text-sm text-zinc-400">{label}</p>
+      <SpotlightCard className="p-6">
+        <p className="meta mb-3">{String(index + 1).padStart(2, "0")}</p>
+        <p className="font-display tabular-nums" style={{ fontSize: "2.75rem", lineHeight: 1, color: "var(--text)" }}>
+          <CountUp value={value} />
+        </p>
+        <p className="mt-2 text-sm" style={{ color: "var(--text-muted)" }}>
+          {label}
+        </p>
+      </SpotlightCard>
     </motion.div>
   );
 }
@@ -32,6 +58,8 @@ function StatCard({ label, value, index }: { label: string; value: string | numb
 export function GitHubStats() {
   const [stats, setStats] = useState<GitHubStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [chartError, setChartError] = useState(false);
+  const [chartColor, setChartColor] = useState("e2523b");
 
   useEffect(() => {
     async function fetchStats() {
@@ -49,17 +77,29 @@ export function GitHubStats() {
     fetchStats();
   }, []);
 
+  // Match the contribution chart tint to the active theme's accent.
+  useEffect(() => {
+    const sync = () =>
+      setChartColor(
+        document.documentElement.classList.contains("light") ? "c0392a" : "e2523b",
+      );
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="section-container" id="stats">
-      <h2 className="section-title">GitHub</h2>
+    <section className="section-shell" id="stats">
+      <SectionHeader index="03" title="GitHub" kicker="Activity / Signal" />
+
       {loading ? (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[0, 1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="card h-24 animate-pulse bg-zinc-800/50"
-              style={{ animationDelay: `${i * 0.15}s` }}
-            />
+            <div key={i} className="panel h-32 animate-pulse" />
           ))}
         </div>
       ) : (
@@ -70,36 +110,34 @@ export function GitHubStats() {
           <StatCard label="Pull Requests" value={stats?.prs ?? 0} index={3} />
         </div>
       )}
-      {!loading && (
-        <div className="mt-8 overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-900/50 p-1">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://ghchart.rshah.org/ishaq2321"
-            alt="GitHub contribution graph"
-            className="w-full h-auto dark:[filter:invert(0.92)_hue-rotate(180deg)_saturate(0.6)]"
-            loading="lazy"
-          />
+
+      {!loading && !chartError && (
+        <div className="panel mt-6 overflow-x-auto p-4">
+          {/* Reserve the chart's intrinsic ratio (~9.6:1) to avoid layout shift */}
+          <div style={{ aspectRatio: "104 / 14", minWidth: 640 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`https://ghchart.rshah.org/${chartColor}/ishaq2321`}
+              alt="GitHub contribution graph for the past year"
+              className="h-full w-full"
+              loading="lazy"
+              onError={() => setChartError(true)}
+            />
+          </div>
         </div>
       )}
-      <motion.a
+
+      <a
         href="https://github.com/ishaq2321"
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-6 inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-accent"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
+        className="link-mono mt-6 inline-flex items-center gap-2"
       >
         github.com/ishaq2321
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-          />
+        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
         </svg>
-      </motion.a>
+      </a>
     </section>
   );
 }

@@ -4,27 +4,20 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { config } from "@/lib/config";
 import { skillIcons } from "@/lib/iconMap";
+import { SectionHeader } from "@/app/components/SectionHeader";
 
 function iconUrl(skill: string): string | null {
   const slug = skillIcons[skill];
   return slug ? `https://cdn.simpleicons.org/${slug}` : null;
 }
 
-/** Generic tool icon used as fallback when a skill has no Simple Icons entry. */
-function FallbackIcon() {
+function FallbackDot() {
   return (
-    <svg
-      className="h-4 w-4 shrink-0 text-zinc-500"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="3" />
-      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
-    </svg>
+    <span
+      className="h-1.5 w-1.5 shrink-0 rounded-full"
+      style={{ background: "var(--text-faint)", opacity: 0.55 }}
+      aria-hidden
+    />
   );
 }
 
@@ -32,10 +25,12 @@ function SkillCategory({
   title,
   skills,
   index,
+  isLast,
 }: {
   title: string;
   skills: string[];
   index: number;
+  isLast: boolean;
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
@@ -43,30 +38,33 @@ function SkillCategory({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.4, delay: index * 0.08 }}
+      transition={{ duration: 0.5, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      className="grid grid-cols-1 gap-x-8 gap-y-4 py-7 sm:grid-cols-[minmax(140px,180px)_1fr]"
+      style={isLast ? undefined : { borderBottom: "1px solid var(--line)" }}
     >
-      <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-zinc-500">
-        {title}
-      </h3>
-      <div className="flex flex-wrap gap-2">
+      {/* Left rail: category label */}
+      <div className="flex items-baseline gap-3 sm:flex-col sm:gap-1.5">
+        <h3 className="font-display text-lg" style={{ color: "var(--text)", letterSpacing: "-0.01em" }}>
+          {title}
+        </h3>
+        <span className="meta" style={{ color: "var(--text-faint)" }}>
+          {skills.length} {skills.length === 1 ? "item" : "items"}
+        </span>
+      </div>
+
+      {/* Right: tags flowing */}
+      <div className="flex flex-wrap gap-x-5 gap-y-2.5">
         {skills.map((skill) => {
           const icon = iconUrl(skill);
           return (
-            <span
-              key={skill}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/50 px-3 py-1.5 text-sm transition-colors hover:border-accent/50 hover:text-accent"
-            >
+            <span key={skill} className="skill-tag">
               {icon ? (
-                <img
-                  src={icon}
-                  alt=""
-                  className="skill-icon h-4 w-4 shrink-0"
-                  loading="lazy"
-                />
+                // eslint-disable-next-line @next/next/no-img-element -- tiny external CDN icon, static export
+                <img src={icon} alt="" className="skill-icon h-4 w-4 shrink-0" loading="lazy" />
               ) : (
-                <FallbackIcon />
+                <FallbackDot />
               )}
               {skill}
             </span>
@@ -90,11 +88,17 @@ export function Skills() {
   ].filter((c) => c.skills.length > 0);
 
   return (
-    <section className="section-container" id="skills">
-      <h2 className="section-title">Skills & Tools</h2>
-      <div className="grid gap-8 sm:grid-cols-2">
+    <section className="section-shell" id="skills">
+      <SectionHeader index="06" title="Toolkit" kicker="Languages / Stacks / Tools" />
+      <div style={{ borderTop: "1px solid var(--line)" }}>
         {categories.map((cat, i) => (
-          <SkillCategory key={cat.title} title={cat.title} skills={cat.skills} index={i} />
+          <SkillCategory
+            key={cat.title}
+            title={cat.title}
+            skills={cat.skills}
+            index={i}
+            isLast={i === categories.length - 1}
+          />
         ))}
       </div>
     </section>

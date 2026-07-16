@@ -1,23 +1,22 @@
 {
   "name": "Muhammad Ishaq Khan",
-  "tagline": "Code running in VS Code and Flutter. Building AI-powered dev tools, secure systems, and production apps at ELTE.",
+  "tagline": "Software engineer building ProxiCall — a production Flutter super-app — alongside backbencher.cc, my AST-native code intelligence platform. Code merged into VS Code and Flutter.",
   "about": [
-    "I'm a final-year Computer Science student at Eötvös Loránd University (ELTE) in Budapest, building backbencher.cc — an AST-native code intelligence platform that indexes codebases into a queryable knowledge graph with 13 brain tools.",
-    "I've contributed to VS Code (performance optimization) and Flutter (security hardening), and built ProxiCall — a production Flutter super-app with Stripe payments, geo-fencing, and 32-language translation. My BSc thesis on ML-based phishing detection achieved 96.45% accuracy."
+    "I'm a software engineer based in Budapest and a Computer Science graduate of Eötvös Loránd University (ELTE). Right now I'm building ProxiCall — a production Flutter proximity super-app with Stripe Connect payments, geo-fencing, and 32-language auto-translation.",
+    "Alongside it I develop backbencher.cc, an AST-native code intelligence platform that indexes codebases into a queryable knowledge graph with 13 brain tools. I've contributed to VS Code (performance) and Flutter (security hardening), and my BSc thesis on OSINT-enhanced phishing detection reached 96.45% accuracy."
   ],
   "location": "Budapest, Hungary",
-  "email": "muhammadishaqkhan.2321@gmail.com",
+  "emailEncoded": "aXNoYXEyMzIxQHByb3Rvbi5tZQ==",
   "photo": "/photo.svg",
   "resumeUrl": "/resume.pdf",
   "social": {
     "github": "https://github.com/ishaq2321",
     "linkedin": "https://linkedin.com/in/2321ishaq"
   },
-  "emails": ["ishaq@proxicall.app", "ishaq2321@proton.me", "ishaq2321@disroot.org", "muhammadishaqkhan.2321@gmail.com"],
   "contactCategories": [
-    { "label": "ProxiCall", "email": "ishaq@proxicall.app" },
-    { "label": "backbencher.cc", "email": "info@backbencher.cc" },
-    { "label": "Personal", "email": "muhammadishaqkhan.2321@gmail.com" }
+    { "label": "ProxiCall", "encoded": "aW5mb0Bwcm94aWNhbGwuYXBw" },
+    { "label": "backbencher.cc", "encoded": "aW5mb0BiYWNrYmVuY2hlci5jYw==" },
+    { "label": "Personal", "encoded": "aXNoYXEyMzIxQHByb3Rvbi5tZQ==" }
   ],
   "skills": {
     "languages": [
@@ -35,10 +34,8 @@
     "ai_ml": [
       "XGBoost", "scikit-learn", "NLP", "SHAP", "OSINT enrichment",
       "Word Embeddings", "Tree-sitter AST", "Semantic Search",
-      "OpenAI API", "Google AI Studio", "Mistral", "Cohere",
-      "GitHub Copilot", "Claude Code", "Antigravity", "OpenCode", "backbencher",
-      "DeepSeek v4 Pro", "MiniMax M2.7", "Kimi K2.6", "Sonnet 4.6",
-      "Gemini 3.1 Pro Preview", "GLM 5.1"
+      "OpenAI API", "Google AI Studio",
+      "GitHub Copilot", "Claude Code", "OpenCode"
     ],
     "security": [
       "Aircrack-ng", "Amass", "Bettercap", "BLE recon", "Command injection hardening",
@@ -175,7 +172,7 @@
       "role": "Founder & Developer",
       "organization": "backbencher.cc",
       "period": "March 2026 - Present",
-      "description": "Building an open-core AST-native code intelligence platform. Indexes codebases into a queryable SQLite knowledge graph with 13 brain tools for semantic search, call-graph traversal, AST-precise refactoring, and security scanning across 39 languages.",
+      "description": "Building an open-core AST-native code intelligence platform. Indexes codebases into a queryable SQLite knowledge graph with 13 brain tools for semantic search, call-graph traversal, AST-precise refactoring, and security scanning across 38 languages.",
       "skills": ["TypeScript", "Tree-sitter", "SQLite", "Bun", "LSP", "MCP"]
     },
     {

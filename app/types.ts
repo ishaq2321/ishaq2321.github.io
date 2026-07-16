@@ -39,9 +39,8 @@ export interface PortfolioConfig {
   tagline: string;
   about: string[];
   location: string;
-  email: string;
-  emails?: string[];
-  contactCategories?: Array<{ label: string; email: string }>;
+  emailEncoded: string;
+  contactCategories?: Array<{ label: string; encoded: string }>;
   photo: string;
   resumeUrl?: string;
   social: Social;

@@ -7,6 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const config = JSON.parse(readFileSync(join(__dirname, "..", "portfolio.config.json"), "utf-8"));
 
 const edu = config.education;
+const email = Buffer.from(config.emailEncoded, "base64").toString("utf-8");
 
 function link(href, text) {
   return `<a href="${href}" style="color:#3b82f6;text-decoration:none;">${text}</a>`;
@@ -110,7 +111,7 @@ const html = `<!DOCTYPE html>
     ${link("https://ishaq2321.github.io", "ishaq2321.github.io")} &middot;
     ${link("https://github.com/ishaq2321", "github.com/ishaq2321")} &middot;
     ${link("https://linkedin.com/in/2321ishaq", "linkedin.com/in/2321ishaq")} &middot;
-    ${link("mailto:" + config.email, config.email)}
+    ${link("mailto:" + email, email)}
     &nbsp;&middot;&nbsp; <span style="color:#555;">${config.location}</span>
   </p>
 </header>

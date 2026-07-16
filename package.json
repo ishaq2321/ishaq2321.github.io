@@ -7,7 +7,7 @@
     "build": "next build",
     "export": "next build",
     "start": "next start",
-    "prebuild": "node scripts/fetch-github-stats.mjs && node scripts/generate-resume.mjs",
+    "prebuild": "node scripts/fetch-github-stats.mjs && node scripts/fetch-npm-stats.mjs && node scripts/generate-og.mjs && node scripts/generate-resume.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "preview": "npx serve out"

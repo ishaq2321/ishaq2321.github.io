@@ -7,7 +7,7 @@ export interface BookData {
 export const books: BookData[] = [
   // === English: Fiction & Philosophy ===
   { title: "The Brothers Karamazov", author: "Fyodor Dostoyevsky", isbn: "9780140449242" },
-  { title: "Demons", author: "Fyodor Dostoyevsky", isbn: "9780141441412" },
+  { title: "Notes from Underground", author: "Fyodor Dostoyevsky", isbn: "9780679734529" },
   { title: "White Nights", author: "Fyodor Dostoyevsky", isbn: "9780140446388" },
   { title: "The Stranger", author: "Albert Camus", isbn: "9780679720201" },
   { title: "The Metamorphosis", author: "Franz Kafka", isbn: "9780553213690" },
