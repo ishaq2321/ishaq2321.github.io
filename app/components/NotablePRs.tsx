@@ -12,9 +12,9 @@ export function NotablePRs() {
 
   return (
     <section className="section-shell" id="contributions">
-      <SectionHeader index="04" title="Open Source" kicker="Merged upstream" />
+      <SectionHeader index="01" title="Open Source" kicker="Merged upstream" />
 
-      <div ref={ref} className="grid gap-4 sm:grid-cols-3">
+      <div ref={ref} className="contribution-grid">
         {config.notable_contributions.map((pr, i) => (
           <motion.div
             key={`${pr.repo}-${pr.pr_number}`}

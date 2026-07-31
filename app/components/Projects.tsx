@@ -119,7 +119,7 @@ function ProjectCard({
       transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
     <SpotlightCard
-      className="flex h-full flex-col p-7"
+      className={`flex h-full flex-col p-7${featured ? " spotlight-featured" : ""}`}
       style={featured ? { borderColor: "var(--accent-quiet)" } : undefined}
     >
       <div className="mb-4">
@@ -194,7 +194,7 @@ export function Projects() {
 
   return (
     <section className="section-shell" id="projects">
-      <SectionHeader index="05" title="Selected Work" kicker="Projects & Builds" />
+      <SectionHeader index="02" title="Selected Work" kicker="Projects & Builds" />
 
       {featuredProjects.length > 0 && (
         <div className="grid gap-5 sm:grid-cols-2">

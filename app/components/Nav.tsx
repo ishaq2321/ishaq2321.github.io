@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 
 const sections = [
-  { id: "about", label: "About", num: "01" },
-  { id: "experience", label: "Experience", num: "02" },
-  { id: "stats", label: "GitHub", num: "03" },
-  { id: "contributions", label: "Open Source", num: "04" },
-  { id: "projects", label: "Projects", num: "05" },
+  { id: "contributions", label: "Open Source", num: "01" },
+  { id: "projects", label: "Projects", num: "02" },
+  { id: "experience", label: "Experience", num: "03" },
+  { id: "about", label: "About", num: "04" },
+  { id: "stats", label: "GitHub", num: "05" },
   { id: "skills", label: "Toolkit", num: "06" },
   { id: "education", label: "Education", num: "07" },
   { id: "books", label: "Bookshelf", num: "08" },
@@ -83,7 +83,7 @@ export function Nav() {
               <a
                 href={`#${s.id}`}
                 aria-current={active === s.id ? "true" : undefined}
-                className="group flex items-center gap-1.5 text-sm transition-colors"
+                className="nav-link group flex items-center gap-1.5 text-sm transition-colors"
                 style={{ color: active === s.id ? "var(--text)" : "var(--text-faint)" }}
               >
                 <span

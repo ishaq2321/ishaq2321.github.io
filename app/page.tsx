@@ -13,11 +13,11 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <About />
-      <Experience />
-      <GitHubStats />
       <NotablePRs />
       <Projects />
+      <Experience />
+      <About />
+      <GitHubStats />
       <Skills />
       <Academic />
       <Bookshelf />
