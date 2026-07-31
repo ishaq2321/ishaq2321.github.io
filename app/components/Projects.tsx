@@ -119,10 +119,10 @@ function ProjectCard({
       transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
     <SpotlightCard
-      className={`project-surface flex h-full flex-col p-7${featured ? " spotlight-featured project-surface--featured" : ""}`}
+      className={`flex h-full flex-col p-7${featured ? " spotlight-featured" : ""}`}
       style={featured ? { borderColor: "var(--accent-quiet)" } : undefined}
     >
-      <div className={featured ? "project-main" : "flex min-h-full flex-col"}>
+      <div className="flex min-h-full flex-col">
         <div className="mb-4">
           {featured && (
             <span className="meta mb-1 block" style={{ color: "var(--accent-text)" }}>
@@ -138,7 +138,18 @@ function ProjectCard({
           {project.description}
         </p>
 
-        <div className={featured ? "project-footer" : "mt-auto"}>
+        {featured && project.highlights && (
+          <ul className="mb-6 space-y-2">
+            {project.highlights.map((h) => (
+              <li key={h} className="flex items-start gap-2.5 text-sm" style={{ color: "var(--text)" }}>
+                <span className="mt-2 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--accent)" }} />
+                {h}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div className="mt-auto">
           {downloads && (
             <p
               className="mb-4 flex items-center gap-2 font-mono text-xs"
@@ -174,19 +185,6 @@ function ProjectCard({
         </div>
       </div>
 
-      {featured && project.highlights && (
-        <aside className="project-evidence" aria-label={`${project.name} highlights`}>
-          <p className="meta mb-4" style={{ color: "var(--accent-text)" }}>System evidence</p>
-          <ul className="space-y-3">
-            {project.highlights.map((h) => (
-              <li key={h} className="flex items-start gap-2.5 text-sm" style={{ color: "var(--text)" }}>
-                <span className="mt-2 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--accent)" }} />
-                {h}
-              </li>
-            ))}
-          </ul>
-        </aside>
-      )}
     </SpotlightCard>
     </motion.div>
   );
