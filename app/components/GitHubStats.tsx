@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
 import { SectionHeader } from "@/app/components/SectionHeader";
+import { SpotlightCard } from "@/app/components/SpotlightCard";
 
 interface GitHubStats {
   repos: number;
@@ -30,7 +31,7 @@ function CountUp({ value }: { value: number }) {
   return <motion.span ref={ref}>{rounded}</motion.span>;
 }
 
-function StatRow({ label, value, index }: { label: string; value: number; index: number }) {
+function StatCard({ label, value, index }: { label: string; value: number; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
 
@@ -41,15 +42,15 @@ function StatRow({ label, value, index }: { label: string; value: number; index:
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="github-stat-row">
-        <p className="meta">{String(index + 1).padStart(2, "0")}</p>
-        <p className="font-display tabular-nums" style={{ fontSize: "2.5rem", lineHeight: 1, color: "var(--text)" }}>
+      <SpotlightCard className="p-6">
+        <p className="meta mb-3">{String(index + 1).padStart(2, "0")}</p>
+        <p className="font-display tabular-nums" style={{ fontSize: "2.75rem", lineHeight: 1, color: "var(--text)" }}>
           <CountUp value={value} />
         </p>
-        <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
+        <p className="mt-2 text-sm" style={{ color: "var(--text-muted)" }}>
           {label}
         </p>
-      </div>
+      </SpotlightCard>
     </motion.div>
   );
 }
@@ -102,11 +103,11 @@ export function GitHubStats() {
           ))}
         </div>
       ) : (
-        <div className="github-stat-ledger">
-          <StatRow label="Repositories" value={stats?.repos ?? 0} index={0} />
-          <StatRow label="Stars" value={stats?.stars ?? 0} index={1} />
-          <StatRow label="Followers" value={stats?.followers ?? 0} index={2} />
-          <StatRow label="Pull Requests" value={stats?.prs ?? 0} index={3} />
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <StatCard label="Repositories" value={stats?.repos ?? 0} index={0} />
+          <StatCard label="Stars" value={stats?.stars ?? 0} index={1} />
+          <StatCard label="Followers" value={stats?.followers ?? 0} index={2} />
+          <StatCard label="Pull Requests" value={stats?.prs ?? 0} index={3} />
         </div>
       )}
 

@@ -501,50 +501,6 @@ html.light {
     transform: scaleX(1);
   }
 
-  .project-surface--featured {
-    display: grid;
-    gap: 2rem;
-    box-shadow: var(--shadow-featured);
-  }
-
-  .project-main {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-  }
-
-  .project-footer {
-    margin-top: auto;
-  }
-
-  .project-evidence {
-    min-width: 0;
-    padding: 1.5rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-control);
-    background: color-mix(in srgb, var(--bg-inset) 72%, transparent);
-  }
-
-  .github-stat-ledger {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    border-block: 1px solid var(--line);
-  }
-
-  .github-stat-row {
-    min-width: 0;
-    padding: 1.25rem 0;
-  }
-
-  .github-stat-row:nth-child(odd) {
-    padding-right: 1rem;
-  }
-
-  .github-stat-row:nth-child(even) {
-    padding-left: 1rem;
-    border-left: 1px solid var(--line);
-  }
-
   .experience-entry {
     min-width: 0;
     border-top: 1px solid var(--line);
@@ -580,32 +536,6 @@ html.light {
     border-left: 0;
   }
 
-  .project-surface--featured {
-    grid-template-columns: minmax(0, 1.3fr) minmax(17rem, 0.7fr);
-    gap: clamp(2rem, 5vw, 4rem);
-    padding: clamp(2rem, 4vw, 3rem);
-  }
-
-  .project-evidence {
-    align-self: stretch;
-    padding: 1.75rem;
-  }
-
-  .github-stat-ledger {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .github-stat-row,
-  .github-stat-row:nth-child(odd),
-  .github-stat-row:nth-child(even) {
-    padding: 1.4rem 1.5rem;
-    border-left: 1px solid var(--line);
-  }
-
-  .github-stat-row:first-child {
-    padding-left: 0;
-    border-left: 0;
-  }
 }
 
 @media (min-width: 64rem) {
