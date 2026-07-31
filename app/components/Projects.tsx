@@ -119,70 +119,74 @@ function ProjectCard({
       transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
     <SpotlightCard
-      className={`flex h-full flex-col p-7${featured ? " spotlight-featured" : ""}`}
+      className={`project-surface flex h-full flex-col p-7${featured ? " spotlight-featured project-surface--featured" : ""}`}
       style={featured ? { borderColor: "var(--accent-quiet)" } : undefined}
     >
-      <div className="mb-4">
-        {featured && (
-          <span className="meta mb-1 block" style={{ color: "var(--accent-text)" }}>
-            Primary Project
-          </span>
-        )}
-        <h3 className="font-display text-2xl" style={{ color: "var(--text)", letterSpacing: "-0.01em" }}>
-          {project.name}
-        </h3>
-      </div>
-
-      <p className="mb-5 leading-relaxed" style={{ color: "var(--text-muted)" }}>
-        {project.description}
-      </p>
-
-      {/* Featured projects keep their highlight list; secondary ones stay compact */}
-      {featured && project.highlights && (
-        <ul className="mb-6 space-y-2">
-          {project.highlights.map((h) => (
-            <li key={h} className="flex items-start gap-2.5 text-sm" style={{ color: "var(--text)" }}>
-              <span className="mt-2 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--accent)" }} />
-              {h}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <div className="mt-auto">
-        {downloads && (
-          <p
-            className="mb-4 flex items-center gap-2 font-mono text-xs"
-            style={{ color: "var(--text-muted)" }}
-          >
-            <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "var(--accent)" }} />
-            {downloads.weekly.toLocaleString()}/week
-            <span style={{ color: "var(--text-faint)" }}>&middot;</span>
-            {downloads.total.toLocaleString()} downloads total
-          </p>
-        )}
-        <div className="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1.5">
-          <span className="meta shrink-0" style={{ color: "var(--text-faint)" }}>
-            Built with
-          </span>
-          {project.stack.map((tech, i) => (
-            <span key={tech} className="flex items-center gap-2">
-              {i > 0 && (
-                <span className="h-0.5 w-0.5 rounded-full" style={{ background: "var(--text-faint)", opacity: 0.5 }} />
-              )}
-              <span className="tech-tag">{tech}</span>
+      <div className={featured ? "project-main" : "flex min-h-full flex-col"}>
+        <div className="mb-4">
+          {featured && (
+            <span className="meta mb-1 block" style={{ color: "var(--accent-text)" }}>
+              Primary Project
             </span>
-          ))}
+          )}
+          <h3 className="font-display text-2xl" style={{ color: "var(--text)", letterSpacing: "-0.01em" }}>
+            {project.name}
+          </h3>
         </div>
-        <div className="flex flex-wrap items-center gap-2.5 border-t pt-5" style={{ borderColor: "var(--line)" }}>
-          {project.live && <ProjectLink href={project.live} label="Live" icon="external" variant="primary" />}
-          <ProjectLink href={project.url} label="Code" icon="repo" />
-          {project.docsUrl && <ProjectLink href={project.docsUrl} label="Thesis" icon="doc" />}
-          {project.npm && <ProjectLink href={`https://www.npmjs.com/package/${project.npm}`} label="npm" icon="package" />}
-          {project.pypi && <ProjectLink href={`https://pypi.org/project/${project.pypi}/`} label="PyPI" icon="package" />}
-          {project.benchmarkUrl && <ProjectLink href={project.benchmarkUrl} label="Benchmark" icon="chart" />}
+
+        <p className="mb-5 leading-relaxed" style={{ color: "var(--text-muted)" }}>
+          {project.description}
+        </p>
+
+        <div className={featured ? "project-footer" : "mt-auto"}>
+          {downloads && (
+            <p
+              className="mb-4 flex items-center gap-2 font-mono text-xs"
+              style={{ color: "var(--text-muted)" }}
+            >
+              <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "var(--accent)" }} />
+              {downloads.weekly.toLocaleString()}/week
+              <span style={{ color: "var(--text-faint)" }}>&middot;</span>
+              {downloads.total.toLocaleString()} downloads total
+            </p>
+          )}
+          <div className="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+            <span className="meta shrink-0" style={{ color: "var(--text-faint)" }}>
+              Built with
+            </span>
+            {project.stack.map((tech, i) => (
+              <span key={tech} className="flex items-center gap-2">
+                {i > 0 && (
+                  <span className="h-0.5 w-0.5 rounded-full" style={{ background: "var(--text-faint)", opacity: 0.5 }} />
+                )}
+                <span className="tech-tag">{tech}</span>
+              </span>
+            ))}
+          </div>
+          <div className="flex flex-wrap items-center gap-2.5 border-t pt-5" style={{ borderColor: "var(--line)" }}>
+            {project.live && <ProjectLink href={project.live} label="Live" icon="external" variant="primary" />}
+            <ProjectLink href={project.url} label="Code" icon="repo" />
+            {project.docsUrl && <ProjectLink href={project.docsUrl} label="Thesis" icon="doc" />}
+            {project.npm && <ProjectLink href={`https://www.npmjs.com/package/${project.npm}`} label="npm" icon="package" />}
+            {project.pypi && <ProjectLink href={`https://pypi.org/project/${project.pypi}/`} label="PyPI" icon="package" />}
+            {project.benchmarkUrl && <ProjectLink href={project.benchmarkUrl} label="Benchmark" icon="chart" />}
+          </div>
         </div>
       </div>
+
+      {featured && project.highlights && (
+        <aside className="project-evidence" aria-label={`${project.name} highlights`}>
+          <p className="meta mb-4" style={{ color: "var(--accent-text)" }}>System evidence</p>
+          <ul className="space-y-3">
+            {project.highlights.map((h) => (
+              <li key={h} className="flex items-start gap-2.5 text-sm" style={{ color: "var(--text)" }}>
+                <span className="mt-2 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--accent)" }} />
+                {h}
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
     </SpotlightCard>
     </motion.div>
   );

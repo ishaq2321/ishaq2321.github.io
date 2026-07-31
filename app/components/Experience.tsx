@@ -34,8 +34,7 @@ function TimelineEntry({
         {!isLast && <span className="mt-2 w-px flex-1" style={{ background: "var(--line)" }} />}
       </div>
 
-      {/* Card */}
-      <div className="panel -mt-1 p-6">
+      <div className="experience-entry -mt-1 p-1 pb-6 sm:p-2 sm:pb-8">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
           <div>
             <h3 className="font-display text-xl" style={{ color: "var(--text)", letterSpacing: "-0.01em" }}>
