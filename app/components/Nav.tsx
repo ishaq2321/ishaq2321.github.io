@@ -6,12 +6,11 @@ const sections = [
   { id: "contributions", label: "Open Source", num: "01" },
   { id: "projects", label: "Projects", num: "02" },
   { id: "experience", label: "Experience", num: "03" },
-  { id: "about", label: "About", num: "04" },
-  { id: "stats", label: "GitHub", num: "05" },
-  { id: "skills", label: "Toolkit", num: "06" },
-  { id: "education", label: "Education", num: "07" },
-  { id: "books", label: "Bookshelf", num: "08" },
-  { id: "contact", label: "Contact", num: "09" },
+  { id: "stats", label: "GitHub", num: "04" },
+  { id: "skills", label: "Toolkit", num: "05" },
+  { id: "education", label: "Education", num: "06" },
+  { id: "books", label: "Bookshelf", num: "07" },
+  { id: "contact", label: "Contact", num: "08" },
 ];
 
 export function Nav() {

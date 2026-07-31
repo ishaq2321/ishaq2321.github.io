@@ -5,7 +5,7 @@ export function Contact() {
   return (
     <footer className="section-shell" id="contact" style={{ borderTop: "1px solid var(--line)" }}>
       <div className="mb-4 flex items-center gap-4">
-        <span className="chapter-index">09</span>
+        <span className="chapter-index">08</span>
         <span className="h-px flex-1" style={{ background: "var(--line)" }} />
         <span className="meta">Say hello</span>
       </div>
