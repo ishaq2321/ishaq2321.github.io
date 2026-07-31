@@ -64,7 +64,7 @@ export function Bookshelf() {
 
   return (
     <section className="section-shell" id="books">
-      <SectionHeader index="08" title="Bookshelf" kicker="Off the clock" />
+      <SectionHeader index="07" title="Bookshelf" kicker="Off the clock" />
 
       <p className="mb-10 max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
         {books.length} books across existentialist philosophy, modern non-fiction, Sufism, Urdu

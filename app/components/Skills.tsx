@@ -89,7 +89,7 @@ export function Skills() {
 
   return (
     <section className="section-shell" id="skills">
-      <SectionHeader index="06" title="Toolkit" kicker="Languages / Stacks / Tools" />
+      <SectionHeader index="05" title="Toolkit" kicker="Languages / Stacks / Tools" />
       <div style={{ borderTop: "1px solid var(--line)" }}>
         {categories.map((cat, i) => (
           <SkillCategory

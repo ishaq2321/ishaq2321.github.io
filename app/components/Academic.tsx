@@ -13,7 +13,7 @@ export function Academic() {
 
   return (
     <section className="section-shell" id="education">
-      <SectionHeader index="07" title="Education" kicker="Academic record" />
+      <SectionHeader index="06" title="Education" kicker="Academic record" />
 
       <motion.div
         ref={ref}

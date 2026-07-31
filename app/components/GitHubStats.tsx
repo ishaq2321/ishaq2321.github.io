@@ -94,7 +94,7 @@ export function GitHubStats() {
 
   return (
     <section className="section-shell" id="stats">
-      <SectionHeader index="05" title="GitHub" kicker="Activity / Signal" />
+      <SectionHeader index="04" title="GitHub" kicker="Activity / Signal" />
 
       {loading ? (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
