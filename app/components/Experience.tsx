@@ -73,7 +73,7 @@ function TimelineEntry({
 export function Experience() {
   return (
     <section className="section-shell" id="experience">
-      <SectionHeader index="02" title="Experience" kicker="Timeline" />
+      <SectionHeader index="03" title="Experience" kicker="Timeline" />
       <div>
         {config.experience.map((exp, i) => (
           <TimelineEntry

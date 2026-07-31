@@ -11,7 +11,7 @@ export function About() {
 
   return (
     <section className="section-shell" id="about">
-      <SectionHeader index="01" title="About" kicker="Who / What / Why" />
+      <SectionHeader index="04" title="About" kicker="Who / What / Why" />
 
       <motion.div
         ref={ref}

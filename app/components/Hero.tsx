@@ -8,9 +8,19 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export function Hero() {
-  const nameParts = config.name.split(" ");
+  const initials = config.name
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join("");
+  const featuredProjects = config.projects.filter((project) => project.featured).length;
+  const upstreamRepos = new Set(config.notable_contributions.map((pr) => pr.repo)).size;
+  const proofPoints = [
+    { value: config.notable_contributions.length, label: "Upstream PRs" },
+    { value: upstreamRepos, label: "Major repositories" },
+    { value: featuredProjects || config.projects.length, label: featuredProjects ? "Flagship systems" : "Shipped projects" },
+  ];
 
-  // Portrait 3D tilt driven by cursor position
   const px = useMotionValue(0);
   const py = useMotionValue(0);
   const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [8, -8]), { stiffness: 150, damping: 15 });
@@ -21,26 +31,25 @@ export function Hero() {
     px.set((e.clientX - rect.left) / rect.width - 0.5);
     py.set((e.clientY - rect.top) / rect.height - 0.5);
   }
+
   function resetPortrait() {
     px.set(0);
     py.set(0);
   }
 
   return (
-    <header className="relative flex min-h-screen items-center overflow-hidden">
-      {/* Accent glow */}
+    <header className="relative flex min-h-[min(58rem,100svh)] items-center overflow-hidden">
       <div
         className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full blur-[120px]"
         style={{ background: "var(--glow)" }}
       />
 
-      <div className="section-shell relative w-full pt-28">
-        {/* Top metadata rail */}
+      <div className="section-shell relative w-full pb-14 pt-28 sm:pb-16">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease }}
-          className="mb-12 flex flex-wrap items-center gap-x-6 gap-y-2"
+          className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-2"
         >
           <span className="meta" style={{ color: "var(--accent-text)" }}>
             Portfolio / 2026
@@ -49,7 +58,7 @@ export function Hero() {
           <span className="meta">{config.location}</span>
           <span className="h-px w-10" style={{ background: "var(--line-strong)" }} />
           <span className="meta inline-flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
+            <span className="relative flex h-2 w-2" aria-hidden>
               <span
                 className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
                 style={{ background: "var(--accent)" }}
@@ -63,47 +72,32 @@ export function Hero() {
           </span>
         </motion.div>
 
-        <div className="grid items-center gap-12 lg:grid-cols-[1fr_auto]">
-          {/* Left: name + tagline */}
-          <div>
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_auto]">
+          <div className="min-w-0">
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease }}
-              className="mb-3 font-mono text-sm tracking-wide"
+              className="mb-3 font-mono text-sm"
               style={{ color: "var(--text-muted)" }}
             >
               Software engineer &amp; open-source contributor
             </motion.p>
 
-            <h1
-              className="font-display"
-              style={{
-                fontWeight: 400,
-                lineHeight: 0.95,
-                letterSpacing: "-0.03em",
-                fontSize: "clamp(3rem, 9vw, 6.5rem)",
-              }}
+            <motion.h1
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.15, ease }}
+              className="hero-name font-display"
             >
-              {nameParts.map((part, i) => (
-                <motion.span
-                  key={part + i}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.15 + i * 0.08, ease }}
-                  className="block"
-                  style={i === nameParts.length - 1 ? { fontStyle: "italic", color: "var(--accent-text)" } : undefined}
-                >
-                  {part}
-                </motion.span>
-              ))}
-            </h1>
+              {config.name}
+            </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.45, ease }}
-              className="mt-8 max-w-xl text-lg leading-relaxed"
+              transition={{ duration: 0.6, delay: 0.35, ease }}
+              className="mt-7 max-w-2xl text-lg leading-relaxed"
               style={{ color: "var(--text-muted)" }}
             >
               {config.tagline}
@@ -112,14 +106,14 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.55, ease }}
-              className="mt-10 flex flex-wrap gap-3"
+              transition={{ duration: 0.6, delay: 0.45, ease }}
+              className="mt-8 flex flex-wrap gap-3"
             >
-              <a href={config.social.github} target="_blank" rel="noopener noreferrer" className="btn-primary">
-                GitHub →
+              <a href="#contributions" className="btn-primary">
+                View evidence <span aria-hidden>↓</span>
               </a>
-              <a href="#contact" className="btn-ghost">
-                Contact
+              <a href={config.social.github} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                GitHub <span aria-hidden>↗</span>
               </a>
               {config.resumeUrl && (
                 <a href={config.resumeUrl} target="_blank" rel="noopener noreferrer" className="btn-ghost">
@@ -129,7 +123,6 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Right: portrait framed as a plate */}
           <motion.div
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -150,16 +143,16 @@ export function Hero() {
                   className="relative h-full w-full overflow-hidden"
                   style={{
                     border: "1px solid var(--line-strong)",
-                    borderRadius: "2px",
+                    borderRadius: "var(--radius-card)",
                     background: "var(--surface)",
-                    boxShadow: "var(--shadow)",
+                    boxShadow: "var(--shadow-featured)",
                   }}
                 >
                   {config.photo ? (
                     <Image src={config.photo} alt={config.name} fill className="object-cover" priority />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center font-display text-6xl" style={{ color: "var(--text-faint)" }}>
-                      {nameParts.map((n) => n[0]).join("")}
+                      {initials}
                     </div>
                   )}
                 </div>
@@ -168,21 +161,28 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Scroll cue */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.9 }}
-          className="mt-20 flex items-center gap-3"
+        <motion.dl
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6, ease }}
+          className="proof-rail mt-12"
+          aria-label="Selected engineering evidence"
         >
-          <span className="meta">Scroll</span>
-          <motion.span
-            className="block h-8 w-px origin-top"
-            style={{ background: "var(--line-strong)" }}
-            animate={{ scaleY: [0.3, 1, 0.3] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </motion.div>
+          {proofPoints.map((point) => (
+            <div key={point.label} className="proof-point">
+              <dt className="meta mt-1">{point.label}</dt>
+              <dd className="font-display text-3xl tabular-nums" style={{ color: "var(--text)" }}>
+                {point.value}
+              </dd>
+            </div>
+          ))}
+          <div className="proof-point proof-point--text">
+            <dt className="meta mt-1">Primary architecture</dt>
+            <dd className="font-mono text-sm" style={{ color: "var(--text)" }}>
+              {config.projects.find((project) => project.featured)?.stack.slice(0, 3).join(" / ") ?? config.projects[0]?.stack.slice(0, 3).join(" / ")}
+            </dd>
+          </div>
+        </motion.dl>
       </div>
     </header>
   );

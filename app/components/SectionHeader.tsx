@@ -25,7 +25,7 @@ export function SectionHeader({
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="mb-14"
+      className="mb-10 sm:mb-12"
     >
       <div className="mb-4 flex items-center gap-4">
         <span className="chapter-index">{index}</span>
