@@ -1,3 +1,8 @@
+export interface ProjectLink {
+  label: string;
+  url: string;
+}
+
 export interface Project {
   name: string;
   url: string;
@@ -10,6 +15,7 @@ export interface Project {
   stack: string[];
   highlights?: string[];
   featured?: boolean;
+  links?: ProjectLink[];
 }
 
 export interface NotablePR {
