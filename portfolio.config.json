@@ -110,6 +110,10 @@
       "highlights": [
         "Enables Clean language support in the Tree-sitter ecosystem",
         "Available on npm and PyPI (v1.1.0)"
+      ],
+      "links": [
+        { "label": "Parser Registry", "url": "https://github.com/tree-sitter/tree-sitter/wiki/List-of-parsers" },
+        { "label": "Announcement", "url": "https://github.com/tree-sitter/tree-sitter/discussions/5681" }
       ]
     },
     {

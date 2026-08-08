@@ -181,6 +181,9 @@ function ProjectCard({
             {project.npm && <ProjectLink href={`https://www.npmjs.com/package/${project.npm}`} label="npm" icon="package" />}
             {project.pypi && <ProjectLink href={`https://pypi.org/project/${project.pypi}/`} label="PyPI" icon="package" />}
             {project.benchmarkUrl && <ProjectLink href={project.benchmarkUrl} label="Benchmark" icon="chart" />}
+            {project.links?.map((link) => (
+              <ProjectLink key={link.label} href={link.url} label={link.label} icon="external" />
+            ))}
           </div>
         </div>
       </div>
