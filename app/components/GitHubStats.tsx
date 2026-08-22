@@ -13,6 +13,53 @@ interface GitHubStats {
   updatedAt: string;
 }
 
+const GH_USER = "ishaq2321";
+
+/** Fetch numbers straight from the GitHub API so they are always current. */
+async function fetchLiveStats(): Promise<GitHubStats | null> {
+  try {
+    const headers: Record<string, string> = { Accept: "application/vnd.github+json" };
+    const [userRes, reposRes, prsRes] = await Promise.all([
+      fetch(`https://api.github.com/users/${GH_USER}`, { headers }),
+      fetch(`https://api.github.com/users/${GH_USER}/repos?per_page=100`, { headers }),
+      // "-user:" excludes PRs opened against his own repos → upstream-only count.
+      fetch(
+        `https://api.github.com/search/issues?q=author:${GH_USER}+type:pr+is:merged+-user:${GH_USER}&per_page=1`,
+        { headers },
+      ),
+    ]);
+    if (!userRes.ok || !reposRes.ok) return null;
+
+    const user = await userRes.json();
+    const repos = await reposRes.json();
+    const stars = Array.isArray(repos)
+      ? repos.filter((r) => !r.fork).reduce((sum, r) => sum + (r.stargazers_count ?? 0), 0)
+      : 0;
+    const prs = prsRes.ok ? ((await prsRes.json()).total_count ?? 0) : 0;
+
+    return {
+      repos: user.public_repos ?? 0,
+      followers: user.followers ?? 0,
+      stars,
+      prs,
+      updatedAt: new Date().toISOString(),
+    };
+  } catch {
+    return null;
+  }
+}
+
+/** Fallback to the build-time snapshot when the API is down or rate-limited. */
+async function fetchSnapshotStats(): Promise<GitHubStats | null> {
+  try {
+    const res = await fetch("/github-stats.json");
+    if (!res.ok) return null;
+    return (await res.json()) as GitHubStats;
+  } catch {
+    return null;
+  }
+}
+
 function CountUp({ value }: { value: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
@@ -58,23 +105,29 @@ function StatCard({ label, value, index }: { label: string; value: number; index
 export function GitHubStats() {
   const [stats, setStats] = useState<GitHubStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
   const [chartError, setChartError] = useState(false);
   const [chartColor, setChartColor] = useState("e2523b");
 
   useEffect(() => {
-    async function fetchStats() {
-      try {
-        const res = await fetch("/github-stats.json");
-        if (!res.ok) throw new Error("Stats unavailable");
-        const data: GitHubStats = await res.json();
-        setStats(data);
-      } catch {
-        // stats unavailable — show placeholder
-      } finally {
-        setLoading(false);
+    let cancelled = false;
+    async function load() {
+      const live = await fetchLiveStats();
+      if (cancelled) return;
+      if (live) {
+        setStats(live);
+      } else {
+        const snapshot = await fetchSnapshotStats();
+        if (cancelled) return;
+        if (snapshot) setStats(snapshot);
+        else setFailed(true);
       }
+      setLoading(false);
     }
-    fetchStats();
+    load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Match the contribution chart tint to the active theme's accent.
@@ -102,6 +155,19 @@ export function GitHubStats() {
             <div key={i} className="panel h-32 animate-pulse" />
           ))}
         </div>
+      ) : failed ? (
+        <p className="panel p-6 text-sm" style={{ color: "var(--text-muted)" }}>
+          GitHub stats are temporarily unavailable — see{" "}
+          <a
+            href={`https://github.com/${GH_USER}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-mono"
+          >
+            github.com/{GH_USER}
+          </a>{" "}
+          for live numbers.
+        </p>
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <StatCard label="Repositories" value={stats?.repos ?? 0} index={0} />

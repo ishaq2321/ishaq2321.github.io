@@ -54,7 +54,7 @@ jobs:
           DEPLOY=false
           for file in $CHANGED; do
             case "$file" in
-              app/*|portfolio.config.json|public/*|lib/*|app/globals.css)
+              app/*|portfolio.config.json|public/*|lib/*|scripts/*|package.json|package-lock.json|.github/workflows/deploy.yml)
                 DEPLOY=true
                 break
                 ;;
@@ -76,6 +76,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out

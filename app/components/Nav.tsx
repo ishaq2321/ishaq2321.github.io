@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const sections = [
   { id: "contributions", label: "Open Source", num: "01" },
@@ -27,6 +28,15 @@ export function Nav() {
   }, []);
 
   // Track the active section with IntersectionObserver — no layout thrash.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
   useEffect(() => {
     const visible = new Map<string, number>();
     const observer = new IntersectionObserver(
@@ -76,7 +86,7 @@ export function Nav() {
         </a>
 
         {/* Desktop nav */}
-        <ul className="hidden gap-7 lg:flex">
+        <ul className="hidden gap-5 lg:flex xl:gap-7">
           {sections.map((s) => (
             <li key={s.id}>
               <a
@@ -115,13 +125,18 @@ export function Nav() {
         </button>
       </div>
 
-      {menuOpen && (
-        <div
-          id="mobile-nav"
-          className="lg:hidden"
-          style={{ background: "var(--bg-raised)", borderTop: "1px solid var(--line)" }}
-        >
-          <ul className="flex flex-col gap-1 px-6 py-4">
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            id="mobile-nav"
+            className="lg:hidden"
+            style={{ background: "var(--bg-raised)", borderTop: "1px solid var(--line)" }}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <ul className="flex flex-col gap-1 overflow-hidden px-6 py-4">
             {sections.map((s) => (
               <li key={s.id}>
                 <a
@@ -139,8 +154,9 @@ export function Nav() {
               </li>
             ))}
           </ul>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

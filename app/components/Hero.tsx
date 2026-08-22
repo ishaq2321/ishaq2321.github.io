@@ -52,7 +52,7 @@ export function Hero() {
           className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-2"
         >
           <span className="meta" style={{ color: "var(--accent-text)" }}>
-            Portfolio / 2026
+            Portfolio / {new Date().getFullYear()}
           </span>
           <span className="h-px w-10" style={{ background: "var(--line-strong)" }} />
           <span className="meta">{config.location}</span>
@@ -102,6 +102,20 @@ export function Hero() {
             >
               {config.tagline}
             </motion.p>
+
+            {config.about?.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4, ease }}
+                className="mt-6 max-w-2xl space-y-3 leading-relaxed"
+                style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}
+              >
+                {config.about.map((paragraph) => (
+                  <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+                ))}
+              </motion.div>
+            )}
 
             <motion.div
               initial={{ opacity: 0, y: 16 }}

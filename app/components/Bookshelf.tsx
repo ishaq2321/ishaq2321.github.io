@@ -6,13 +6,72 @@ import { motion, useInView } from "framer-motion";
 import { books, type BookData } from "@/lib/books";
 import { SectionHeader } from "@/app/components/SectionHeader";
 
+/** Deterministic hue from title, so fallbacks vary but never clash. */
+function spineTint(title: string): { hue: number; dark: string; light: string } {
+  let hash = 0;
+  for (let i = 0; i < title.length; i++) hash = (hash * 31 + title.charCodeAt(i)) >>> 0;
+  const hue = hash % 360;
+  return {
+    hue,
+    dark: `hsl(${hue} 22% 16%)`,
+    light: `hsl(${hue} 26% 24%)`,
+  };
+}
+
+/**
+ * Styled stand-in for books without a cover image — reads as a book spine
+ * with a deterministic per-title tint instead of a flat grey box.
+ */
+function SpineFallback({ book }: { book: BookData }) {
+  const tint = spineTint(book.title);
+  return (
+    <div
+      className="flex h-full w-full flex-col justify-between p-3 text-left"
+      style={{ background: `linear-gradient(150deg, ${tint.dark}, ${tint.light})` }}
+    >
+      <span
+        className="absolute left-0 top-0 h-full w-[3px]"
+        style={{ background: `hsl(${tint.hue} 45% 55%)`, opacity: 0.75 }}
+      />
+      <p className="line-clamp-4 pl-1 font-display text-sm leading-tight" style={{ color: "var(--text)" }}>
+        {book.title}
+      </p>
+      <div>
+        <span
+          className="mb-2 block h-px w-6"
+          style={{ background: `hsl(${tint.hue} 45% 55%)`, opacity: 0.6 }}
+        />
+        <p className="line-clamp-2 pl-1 font-mono text-[10px] leading-tight" style={{ color: "var(--text-muted)" }}>
+          {book.author}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function BookCard({ book, index }: { book: BookData; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
+  // default=false → Open Library returns a real 404 instead of a blank
+  // placeholder image, so onError fires and the title card takes over.
+  const [coverFailed, setCoverFailed] = useState(false);
+  const coverUrl =
+    !coverFailed && book.isbn
+      ? `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg?default=false`
+      : null;
 
-  const coverUrl = book.isbn
-    ? `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`
-    : null;
+  const cover = coverUrl ? (
+    <Image
+      src={coverUrl}
+      alt={book.title}
+      fill
+      className="object-cover"
+      loading="lazy"
+      onError={() => setCoverFailed(true)}
+    />
+  ) : (
+    <SpineFallback book={book} />
+  );
 
   return (
     <motion.div
@@ -31,23 +90,8 @@ function BookCard({ book, index }: { book: BookData; index: number }) {
             boxShadow: "var(--shadow)",
           }}
         >
-          {coverUrl ? (
-            <Image src={coverUrl} alt={book.title} fill className="object-cover" loading="lazy" />
-          ) : (
-            <div
-              className="flex h-full w-full flex-col items-center justify-center p-3 text-center"
-              style={{ background: "linear-gradient(160deg, var(--surface-hover), var(--bg-inset))" }}
-            >
-              <p className="line-clamp-4 font-display text-sm leading-tight" style={{ color: "var(--text)" }}>
-                {book.title}
-              </p>
-              <p className="mt-1 line-clamp-2 font-mono text-[10px] leading-tight" style={{ color: "var(--text-faint)" }}>
-                {book.author}
-              </p>
-            </div>
-          )}
-        </div>
-        <h3 className="line-clamp-2 text-sm font-medium leading-snug" style={{ color: "var(--text)" }}>
+          {cover}
+        </div>        <h3 className="line-clamp-2 text-sm font-medium leading-snug" style={{ color: "var(--text)" }}>
           {book.title}
         </h3>
         <p className="mt-0.5 truncate font-mono text-xs" style={{ color: "var(--text-faint)" }}>
