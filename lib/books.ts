@@ -14,7 +14,7 @@ export const books: BookData[] = [
   { title: "A Hunger Artist", author: "Franz Kafka" },
   { title: "Letters to Milena", author: "Franz Kafka", isbn: "9780805211932" },
   { title: "The Kite Runner", author: "Khaled Hosseini", isbn: "9781594480003" },
-  { title: "A Thousand Splendid Suns", author: "Khaled Hosseini", isbn: "9780743266470" },
+  { title: "A Thousand Splendid Suns", author: "Khaled Hosseini", isbn: "9781594631931" },
   { title: "And the Mountains Echoed", author: "Khaled Hosseini", isbn: "9781594632389" },
   { title: "The Alchemist", author: "Paulo Coelho", isbn: "9780062315007" },
   { title: "Animal Farm", author: "George Orwell", isbn: "9780451526342" },

@@ -64,6 +64,10 @@ export interface PortfolioConfig {
   notable_contributions: NotablePR[];
   experience: Experience[];
   goatcounter?: string;
+  verification?: {
+    google?: string;
+    bing?: string;
+  };
   education: {
     degree: string;
     university: string;

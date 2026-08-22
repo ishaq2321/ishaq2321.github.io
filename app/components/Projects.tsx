@@ -20,16 +20,45 @@ function loadNpmStats(): Promise<NpmStatsPayload | null> {
   return npmStatsPromise;
 }
 
+/** Live numbers straight from the npm registry API. */
+async function fetchLiveNpmStat(name: string): Promise<NpmStat | null> {
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const [weeklyRes, rangeRes] = await Promise.all([
+      fetch(`https://api.npmjs.org/downloads/point/last-week/${name}`),
+      fetch(`https://api.npmjs.org/downloads/range/2000-01-01:${today}/${name}`),
+    ]);
+    if (!weeklyRes.ok && !rangeRes.ok) return null;
+    const weekly = weeklyRes.ok ? ((await weeklyRes.json()).downloads ?? 0) : 0;
+    let total = 0;
+    if (rangeRes.ok) {
+      const data = await rangeRes.json();
+      total = Array.isArray(data.downloads)
+        ? data.downloads.reduce((sum: number, d: { downloads?: number }) => sum + (d.downloads ?? 0), 0)
+        : 0;
+    }
+    return weekly > 0 || total > 0 ? { weekly, total } : null;
+  } catch {
+    return null;
+  }
+}
+
+async function loadNpmStat(name: string): Promise<NpmStat | null> {
+  const live = await fetchLiveNpmStat(name);
+  if (live) return live;
+  const snapshot = await loadNpmStats();
+  const stat = snapshot?.packages?.[name];
+  return stat && (stat.weekly > 0 || stat.total > 0) ? stat : null;
+}
+
 function useNpmDownloads(packageName?: string): NpmStat | null {
   const [downloads, setDownloads] = useState<NpmStat | null>(null);
 
   useEffect(() => {
     if (!packageName) return;
     let cancelled = false;
-    loadNpmStats().then((data) => {
-      if (cancelled) return;
-      const stat = data?.packages?.[packageName];
-      if (stat && (stat.weekly > 0 || stat.total > 0)) setDownloads(stat);
+    loadNpmStat(packageName).then((stat) => {
+      if (!cancelled) setDownloads(stat);
     });
     return () => {
       cancelled = true;

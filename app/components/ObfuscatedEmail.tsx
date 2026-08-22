@@ -29,9 +29,13 @@ export function ObfuscatedEmail({ encoded, label }: { encoded: string; label: st
     // Assemble the mailto at click time even if reveal hasn't fired yet.
     if (!decoded) {
       e.preventDefault();
-      const addr = atob(encoded);
-      setDecoded(addr);
-      window.location.href = `mailto:${addr}`;
+      try {
+        const addr = atob(encoded);
+        setDecoded(addr);
+        window.location.href = `mailto:${addr}`;
+      } catch {
+        /* ignore malformed input */
+      }
     }
   };
 

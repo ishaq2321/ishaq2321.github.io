@@ -27,13 +27,14 @@ const jetbrains = JetBrains_Mono({
 });
 
 const SITE_URL = "https://ishaq2321.github.io";
+const NAME = "Muhammad Ishaq Khan";
 const DESCRIPTION =
-  "Muhammad Ishaq Khan (ishaq2321) — software engineer and Computer Science graduate of ELTE (Eötvös Loránd University), Budapest. Builder of ProxiCall and backbencher.cc, open-source contributor to VS Code and Flutter.";
+  "Portfolio of Muhammad Ishaq Khan (ishaq2321) — software engineer and Computer Science graduate of Eötvös Loránd University (ELTE), Budapest. Builder of ProxiCall, backbencher.cc and tree-sitter-clean; open-source contributor to VS Code and Flutter.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Muhammad Ishaq Khan (ishaq2321) — Software Engineer, ELTE",
+    default: "Muhammad Ishaq Khan Portfolio — Software Engineer & ELTE Graduate (ishaq2321)",
     template: "%s — Muhammad Ishaq Khan",
   },
   description: DESCRIPTION,
@@ -66,8 +67,18 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   category: "technology",
+  ...(config.verification?.google || config.verification?.bing
+    ? {
+        verification: {
+          google: config.verification?.google || undefined,
+          other: config.verification?.bing
+            ? { "msvalidate.01": config.verification.bing }
+            : undefined,
+        },
+      }
+    : {}),
   openGraph: {
-    title: "Muhammad Ishaq Khan (ishaq2321) — Software Engineer, ELTE",
+    title: "Muhammad Ishaq Khan Portfolio — Software Engineer & ELTE Graduate (ishaq2321)",
     description: DESCRIPTION,
     url: SITE_URL,
     siteName: "Muhammad Ishaq Khan",
@@ -87,7 +98,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Muhammad Ishaq Khan (ishaq2321) — Software Engineer, ELTE",
+    title: "Muhammad Ishaq Khan Portfolio — Software Engineer & ELTE Graduate (ishaq2321)",
     description: DESCRIPTION,
     images: ["/og.png"],
   },
@@ -134,7 +145,7 @@ export default function RootLayout({
           <script
             data-goatcounter={`https://${config.goatcounter}.goatcounter.com/count`}
             async
-            src="//gc.zgo.at/count.js"
+            src="https://gc.zgo.at/count.js"
           />
         )}
       </head>
@@ -144,37 +155,65 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Muhammad Ishaq Khan",
-              alternateName: ["ishaq2321", "Muhammad Ishaq", "Ishaq Muhammad"],
-              url: SITE_URL,
-              image: `${SITE_URL}/og.png`,
-              jobTitle: "Software Engineer",
-              description: DESCRIPTION,
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Budapest",
-                addressCountry: "Hungary",
-              },
-              alumniOf: {
-                "@type": "CollegeOrUniversity",
-                name: "Eötvös Loránd University (ELTE)",
-                sameAs: "https://www.elte.hu/en/",
-              },
-              knowsAbout: [
-                "Software Engineering",
-                "Flutter",
-                "TypeScript",
-                "Next.js",
-                "Open Source",
-                "OSINT",
-                "Cybersecurity",
-                "AST Code Intelligence",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": `${SITE_URL}/#website`,
+                  url: SITE_URL,
+                  name: "Muhammad Ishaq Khan Portfolio",
+                  alternateName: ["ishaq2321 portfolio", "Muhammad Ishaq Khan portfolio"],
+                  description: DESCRIPTION,
+                  publisher: { "@id": `${SITE_URL}/#person` },
+                  inLanguage: "en",
+                },
+                {
+                  "@type": "Person",
+                  "@id": `${SITE_URL}/#person`,
+                  name: NAME,
+                  alternateName: ["ishaq2321", "Muhammad Ishaq", "Ishaq Muhammad"],
+                  url: SITE_URL,
+                  image: `${SITE_URL}/og.png`,
+                  jobTitle: "Software Engineer",
+                  description: DESCRIPTION,
+                  address: {
+                    "@type": "PostalAddress",
+                    addressLocality: "Budapest",
+                    addressCountry: "Hungary",
+                  },
+                  alumniOf: {
+                    "@type": "CollegeOrUniversity",
+                    name: "Eötvös Loránd University (ELTE)",
+                    sameAs: "https://www.elte.hu/en/",
+                  },
+                  knowsAbout: [
+                    "Software Engineering",
+                    "Flutter",
+                    "TypeScript",
+                    "Next.js",
+                    "Open Source",
+                    "OSINT",
+                    "Cybersecurity",
+                    "AST Code Intelligence",
+                  ],
+                  sameAs: [
+                    config.social?.github,
+                    config.social?.linkedin,
+                    "https://pypi.org/user/ishaq2321/",
+                  ].filter(Boolean),
+                },
+                ...config.projects
+                  .filter((p) => p.npm || p.pypi)
+                  .map((p) => ({
+                    "@type": "SoftwareApplication",
+                    name: p.name,
+                    applicationCategory: "DeveloperApplication",
+                    operatingSystem: "Cross-platform",
+                    url: p.live || p.url,
+                    codeRepository: p.url,
+                    author: { "@id": `${SITE_URL}/#person` },
+                    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+                  })),
               ],
-              sameAs: [
-                config.social?.github,
-                config.social?.linkedin,
-              ].filter(Boolean),
             }),
           }}
         />
