@@ -40,6 +40,21 @@ export interface Experience {
   skills: string[];
 }
 
+export interface PortraitConfig {
+  enabled?: boolean;
+  skin?: string;
+  skinShadow?: string;
+  skinLight?: string;
+  hair?: string;
+  hairStyle?: "fringe" | "slicked";
+  beard?: string;
+  eyes?: string;
+  mole?: boolean;
+  outfit?: string;
+  outfitShadow?: string;
+  lips?: string;
+}
+
 export interface PortfolioConfig {
   name: string;
   tagline: string;
@@ -48,6 +63,7 @@ export interface PortfolioConfig {
   emailEncoded: string;
   contactCategories?: Array<{ label: string; encoded: string }>;
   photo: string;
+  portrait?: PortraitConfig;
   resumeUrl?: string;
   social: Social;
   skills: {

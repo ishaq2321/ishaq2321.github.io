@@ -8,6 +8,20 @@
   "location": "Budapest, Hungary",
   "emailEncoded": "aXNoYXEyMzIxQHByb3Rvbi5tZQ==",
   "photo": "/photo.svg",
+  "portrait": {
+    "enabled": true,
+    "skin": "#c9906b",
+    "skinShadow": "#a9704c",
+    "skinLight": "#d8a37e",
+    "hair": "#17110c",
+    "hairStyle": "fringe",
+    "beard": "#1d150e",
+    "eyes": "#33231a",
+    "mole": true,
+    "outfit": "#26304a",
+    "outfitShadow": "#1d2538",
+    "lips": "#b06a55"
+  },
   "resumeUrl": "/resume.pdf",
   "social": {
     "github": "https://github.com/ishaq2321",
