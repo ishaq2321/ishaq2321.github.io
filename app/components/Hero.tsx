@@ -4,6 +4,7 @@ import Image from "next/image";
 import { config } from "@/lib/config";
 import type { MouseEvent } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { AnimatedPortrait } from "./AnimatedPortrait";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -162,7 +163,14 @@ export function Hero() {
                     boxShadow: "var(--shadow-featured)",
                   }}
                 >
-                  {config.photo ? (
+                  {config.portrait?.enabled ? (
+                    <AnimatedPortrait
+                      params={config.portrait}
+                      px={px}
+                      py={py}
+                      label={`Animated portrait illustration of ${config.name}`}
+                    />
+                  ) : config.photo ? (
                     <Image src={config.photo} alt={config.name} fill className="object-cover" priority />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center font-display text-6xl" style={{ color: "var(--text-faint)" }}>

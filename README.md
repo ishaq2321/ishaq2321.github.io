@@ -66,8 +66,27 @@ This portfolio is designed to be forked and reused. Most changes require editing
 | `experience` | Experience timeline |
 | `education` | Education section (university, thesis, high school, achievements) |
 | `goatcounter` | GoatCounter analytics code (optional; leave `""` to disable) |
+| `portrait` | Animated SVG portrait (optional). See below |
 
 **Project fields:** `name`, `url`, `description`, `stack[]` are required. Optional: `live`, `benchmarkUrl`, `docsUrl`, `npm`, `pypi`, `highlights[]`, `featured`.
+
+### Animated portrait
+
+When `portrait.enabled` is `true`, the hero renders a hand-coded animated SVG portrait (blinking, breathing, cursor-following eyes, theme-aware) instead of `photo`. Every visual feature is a config value, so you can tune it to approximate you without touching any component:
+
+```json
+"portrait": {
+  "enabled": true,
+  "skin": "#c9906b",       "skinShadow": "#a9704c", "skinLight": "#d8a37e",
+  "hair": "#17110c",       "hairStyle": "fringe",   // or "slicked"
+  "beard": "#1d150e",      "eyes": "#33231a",
+  "mole": true,            // beauty mark below the left eye
+  "outfit": "#26304a",     "outfitShadow": "#1d2538",
+  "lips": "#b06a55"
+}
+```
+
+Set `enabled: false` (or delete the block) to fall back to a static `photo` image — the classic fork path. Animations respect `prefers-reduced-motion`.
 
 ### 2. Books — `lib/books.ts`
 

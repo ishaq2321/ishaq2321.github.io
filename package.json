@@ -10,7 +10,8 @@
     "prebuild": "node scripts/fetch-github-stats.mjs && node scripts/fetch-npm-stats.mjs && node scripts/generate-og.mjs && node scripts/generate-resume.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "preview": "npx serve out"
+    "preview": "npx serve out",
+    "portrait:preview": "node scripts/screenshot-portrait.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.40.0",
