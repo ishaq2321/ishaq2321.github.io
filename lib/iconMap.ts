@@ -31,7 +31,6 @@ export const skillIcons: Record<string, string | null> = {
 
   // ── Mobile ──
   Android: "android",
-  "Firebase SDK (Auth, Firestore, Storage, Functions, Messaging)": "firebase",
   "Google Sign-In": "google",
   "Stripe Connect": "stripe",
   Geolocator: null,

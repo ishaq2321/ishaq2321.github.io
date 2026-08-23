@@ -57,7 +57,7 @@ function BookCard({ book, index }: { book: BookData; index: number }) {
   const [coverFailed, setCoverFailed] = useState(false);
   const coverUrl =
     !coverFailed && book.isbn
-      ? `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg?default=false`
+      ? `https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg?default=false`
       : null;
 
   const cover = coverUrl ? (

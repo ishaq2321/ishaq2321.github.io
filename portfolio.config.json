@@ -14,48 +14,117 @@
     "linkedin": "https://linkedin.com/in/2321ishaq"
   },
   "contactCategories": [
-    { "label": "ProxiCall", "encoded": "aW5mb0Bwcm94aWNhbGwuYXBw" },
-    { "label": "backbencher.cc", "encoded": "aW5mb0BiYWNrYmVuY2hlci5jYw==" },
-    { "label": "Personal", "encoded": "aXNoYXEyMzIxQHByb3Rvbi5tZQ==" }
+    {
+      "label": "ProxiCall",
+      "encoded": "aW5mb0Bwcm94aWNhbGwuYXBw"
+    },
+    {
+      "label": "backbencher.cc",
+      "encoded": "aW5mb0BiYWNrYmVuY2hlci5jYw=="
+    },
+    {
+      "label": "Personal",
+      "encoded": "aXNoYXEyMzIxQHByb3Rvbi5tZQ=="
+    }
   ],
   "skills": {
     "languages": [
-      "TypeScript", "JavaScript", "Python", "Dart", "C++",
-      "Shell/Bash", "PowerShell", "SQL", "HTML/CSS", "Java"
+      "TypeScript",
+      "JavaScript",
+      "Python",
+      "Dart",
+      "C++",
+      "Shell/Bash",
+      "PowerShell",
+      "SQL",
+      "HTML/CSS",
+      "Java"
     ],
     "frameworks": [
-      "Flutter", "Next.js", "React", "Node.js", "Express",
-      "Tailwind CSS", "Flutter Bloc", "tRPC"
+      "Flutter",
+      "Next.js",
+      "React",
+      "Node.js",
+      "Express",
+      "Tailwind CSS",
+      "Flutter Bloc",
+      "tRPC"
     ],
     "mobile": [
-      "Android", "Firebase SDK (Auth, Firestore, Storage, Functions, Messaging)",
-      "Google Sign-In", "Stripe Connect", "Geolocator", "Push Notifications"
+      "Android",
+      "Firebase",
+      "Google Sign-In",
+      "Stripe Connect",
+      "Geolocator",
+      "Push Notifications"
     ],
     "ai_ml": [
-      "XGBoost", "scikit-learn", "NLP", "SHAP", "OSINT enrichment",
-      "Word Embeddings", "Tree-sitter AST", "Semantic Search",
-      "OpenAI API", "Google AI Studio",
-      "GitHub Copilot", "Claude Code", "OpenCode"
+      "XGBoost",
+      "scikit-learn",
+      "NLP",
+      "SHAP",
+      "OSINT enrichment",
+      "Word Embeddings",
+      "Tree-sitter AST",
+      "Semantic Search",
+      "OpenAI API",
+      "Google AI Studio",
+      "GitHub Copilot",
+      "Claude Code",
+      "OpenCode"
     ],
     "security": [
-      "Aircrack-ng", "Amass", "Bettercap", "BLE recon", "Command injection hardening",
-      "DNS spoofing", "Kali Linux", "Metasploit", "Nessus", "Nmap",
-      "OnionShare", "Parrot Security", "PGP/GPG", "Phishing", "recon-ng",
-      "SecureDrop", "SpiderFoot", "Tails OS", "Vulnerability scanning (SQLi, XSS, secrets)",
+      "Aircrack-ng",
+      "Amass",
+      "Bettercap",
+      "BLE recon",
+      "Command injection hardening",
+      "DNS spoofing",
+      "Kali Linux",
+      "Metasploit",
+      "Nessus",
+      "Nmap",
+      "OnionShare",
+      "Parrot Security",
+      "PGP/GPG",
+      "Phishing",
+      "recon-ng",
+      "SecureDrop",
+      "SpiderFoot",
+      "Tails OS",
+      "Vulnerability scanning (SQLi, XSS, secrets)",
       "Wireshark"
     ],
     "platforms": [
-      "Supabase", "Firebase", "Stripe", "Docker", "GitHub Actions",
-      "SST (Serverless Stack)", "SQLite", "PostgreSQL",       "Sentry", "Mapbox", "Brevo", "Zoho",
-      "Vercel", "Netlify"
+      "Supabase",
+      "Firebase",
+      "Stripe",
+      "Docker",
+      "GitHub Actions",
+      "SST (Serverless Stack)",
+      "SQLite",
+      "PostgreSQL",
+      "Sentry",
+      "Mapbox",
+      "Brevo",
+      "Zoho",
+      "Vercel",
+      "Netlify"
     ],
     "operating_systems": [
       "Linux (Arch, Pop!_OS, EndeavourOS)",
-      "macOS", "Windows"
+      "macOS",
+      "Windows"
     ],
     "tools": [
-      "Git", "VS Code", "Bun", "npm/pnpm", "Tree-sitter",
-      "LSP", "MCP", "curl/jq"
+      "Git",
+      "VS Code",
+      "Bun",
+      "npm/pnpm",
+      "Tree-sitter",
+      "LSP",
+      "MCP",
+      "curl/jq"
     ]
   },
   "projects": [
@@ -66,7 +135,14 @@
       "benchmarkUrl": "https://gist.github.com/ishaq2321/f06da43c0bba52add6b1f18d87931c50",
       "featured": true,
       "description": "My primary project — an open-core AST-native code intelligence platform that indexes entire codebases into a local SQLite knowledge graph. Ships with 13 brain tools for semantic search, call-graph traversal, AST-precise refactoring, architectural pattern detection, cross-language migration, and security scanning across 38 languages.",
-      "stack": ["TypeScript", "Tree-sitter", "SQLite", "Bun", "PowerShell", "SST"],
+      "stack": [
+        "TypeScript",
+        "Tree-sitter",
+        "SQLite",
+        "Bun",
+        "PowerShell",
+        "SST"
+      ],
       "highlights": [
         "13 brain tools (bb_search, bb_select, bb_refactor, bb_security, bb_migrate, bb_relationships, bb_patterns, bb_visualize, bb_ask, bb_update, bb_insert, bb_delete)",
         "38-language AST parsing via Tree-sitter",
@@ -79,7 +155,14 @@
       "url": "https://github.com/ishaq2321/ProxiCall",
       "live": "https://proxicall.app",
       "description": "Production Flutter proximity super-app — location-based content delivery, Stripe Connect payment management, order management, 32-language auto-translation, and geo-targeted notifications with AI segmentation.",
-      "stack": ["Flutter", "Node.js", "Supabase", "Firebase", "Stripe", "Sentry"],
+      "stack": [
+        "Flutter",
+        "Node.js",
+        "Supabase",
+        "Firebase",
+        "Stripe",
+        "Sentry"
+      ],
       "highlights": [
         "5 integrated systems (CMS, PMS, OMS, NMS, ENS)",
         "32-language auto-translation pipeline",
@@ -93,7 +176,13 @@
       "live": "https://project-4soy4.vercel.app",
       "docsUrl": "/phishguard-thesis.pdf",
       "description": "BSc Thesis — phishing detection system combining XGBoost ML (96.45% accuracy), NLP with 10 tactic detectors, and OSINT enrichment (WHOIS, DNS, VirusTotal).",
-      "stack": ["Python", "Next.js", "XGBoost", "SHAP", "scikit-learn"],
+      "stack": [
+        "Python",
+        "Next.js",
+        "XGBoost",
+        "SHAP",
+        "scikit-learn"
+      ],
       "highlights": [
         "96.45% accuracy, 99.41% AUC-ROC",
         "725 automated tests (592 pytest + 133 Jest)",
@@ -106,27 +195,44 @@
       "npm": "tree-sitter-clean",
       "pypi": "tree-sitter-clean",
       "description": "Clean grammar for tree-sitter — enables code intelligence, syntax highlighting, and AST parsing for the Clean programming language. Published to both npm and PyPI.",
-      "stack": ["Tree-sitter", "JavaScript", "Grammar"],
+      "stack": [
+        "Tree-sitter",
+        "JavaScript",
+        "Grammar"
+      ],
       "highlights": [
         "Enables Clean language support in the Tree-sitter ecosystem",
         "Available on npm and PyPI (v1.1.0)"
       ],
       "links": [
-        { "label": "Parser Registry", "url": "https://github.com/tree-sitter/tree-sitter/wiki/List-of-parsers" },
-        { "label": "Announcement", "url": "https://github.com/tree-sitter/tree-sitter/discussions/5681" }
+        {
+          "label": "Parser Registry",
+          "url": "https://github.com/tree-sitter/tree-sitter/wiki/List-of-parsers"
+        },
+        {
+          "label": "Announcement",
+          "url": "https://github.com/tree-sitter/tree-sitter/discussions/5681"
+        }
       ]
     },
     {
       "name": "hide-and-lock",
       "url": "https://github.com/ishaq2321/hide-and-lock",
       "description": "CLI utility for encrypting sensitive files with session-based isolation and master key recovery.",
-      "stack": ["Shell", "Bash", "GPG"]
+      "stack": [
+        "Shell",
+        "Bash",
+        "GPG"
+      ]
     },
     {
       "name": "phantomVault",
       "url": "https://github.com/ishaq2321/phantomVault",
       "description": "Secure C++ storage utility with encryption support.",
-      "stack": ["C++", "Security"]
+      "stack": [
+        "C++",
+        "Security"
+      ]
     }
   ],
   "notable_contributions": [
@@ -177,14 +283,28 @@
       "organization": "backbencher.cc",
       "period": "March 2026 - Present",
       "description": "Building an open-core AST-native code intelligence platform. Indexes codebases into a queryable SQLite knowledge graph with 13 brain tools for semantic search, call-graph traversal, AST-precise refactoring, and security scanning across 38 languages.",
-      "skills": ["TypeScript", "Tree-sitter", "SQLite", "Bun", "LSP", "MCP"]
+      "skills": [
+        "TypeScript",
+        "Tree-sitter",
+        "SQLite",
+        "Bun",
+        "LSP",
+        "MCP"
+      ]
     },
     {
       "role": "Full-Stack Developer",
       "organization": "ProxiCall",
       "period": "September 2025 - Present",
       "description": "Developing a production Flutter proximity super-app with Stripe Connect payments, geo-fencing, 32-language auto-translation, and geo-targeted notifications with AI segmentation. Built 5 integrated systems: CMS, PMS, OMS, NMS, and ENS.",
-      "skills": ["Flutter", "Node.js", "Supabase", "Firebase", "Stripe", "Sentry"]
+      "skills": [
+        "Flutter",
+        "Node.js",
+        "Supabase",
+        "Firebase",
+        "Stripe",
+        "Sentry"
+      ]
     }
   ],
   "goatcounter": "ishaq2321",
@@ -201,7 +321,9 @@
         "school": "Balochistan Residential College Loralai (BRC)",
         "board": "Balochistan Board of Intermediate & Secondary Education",
         "period": "March 2016 - July 2022",
-        "achievements": ["Provincial Topper"]
+        "achievements": [
+          "Provincial Topper"
+        ]
       }
     ],
     "achievements": [

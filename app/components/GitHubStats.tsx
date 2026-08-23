@@ -107,7 +107,7 @@ export function GitHubStats() {
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
   const [chartError, setChartError] = useState(false);
-  const [chartColor, setChartColor] = useState("e2523b");
+  const [chartColor, setChartColor] = useState("de6f54");
 
   useEffect(() => {
     let cancelled = false;
@@ -134,7 +134,7 @@ export function GitHubStats() {
   useEffect(() => {
     const sync = () =>
       setChartColor(
-        document.documentElement.classList.contains("light") ? "c0392a" : "e2523b",
+        document.documentElement.classList.contains("light") ? "bf4a30" : "de6f54",
       );
     sync();
     const observer = new MutationObserver(sync);
