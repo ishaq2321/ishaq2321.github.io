@@ -61,30 +61,33 @@
 html.light {
   color-scheme: light;
 
-  --bg: #f4f1ea;           /* clean light paper, subtle warmth */
+  /* Crisp gallery, not old paper: cool paper white, ink text,
+     layered shadows for real figure-ground separation. */
+  --bg: #faf9f7;           /* crisp paper, barely warm */
   --bg-raised: #ffffff;
-  --bg-inset: #eae5da;     /* recessed wells + chips */
+  --bg-inset: #f0eee8;     /* recessed wells + chips */
   --surface: #ffffff;      /* pure white cards */
-  --surface-hover: #faf8f3;
+  --surface-hover: #fcfbf8;
 
-  --text: #17130f;         /* near-black ink, strong contrast */
-  --text-muted: #4a443c;   /* darkened for legibility */
-  --text-faint: #736a5e;
+  --text: #14110d;         /* near-black ink, strong contrast */
+  --text-muted: #514b43;
+  --text-faint: #6d6559;
 
-  --line: #ded7ca;
-  --line-strong: #c3b8a5;
+  --line: #e3ddd2;
+  --line-strong: #cbc1ae;
 
-  --accent: #c0392a;
-  --accent-quiet: #c0392a12;
-  --accent-text: #a52f1e;
+  --accent: #cf3f28;
+  --accent-quiet: #cf3f2814;
+  --accent-text: #b83318;
 
-  --gold: #856212;
-  --gold-quiet: #85621212;
+  --gold: #8a6510;
+  --gold-quiet: #8a651014;
 
-  --grid-line: #3a2e1a0d;  /* subtle engineering grid */
-  --glow: #c0392a12;
-  --shadow: 0 1px 2px #2a22151f;
-  --shadow-featured: 0 1px 2px #2a22151f, 0 16px 40px #6b5a3a24;
+  --grid-line: #00000006;  /* neutral structure, never grime */
+  --glow: transparent;     /* vermilion reads as a stain on paper — off */
+
+  --shadow: 0 1px 2px #20160a17, 0 1px 3px #20160a10;
+  --shadow-featured: 0 1px 2px #20160a17, 0 12px 32px #20160a21;
 }
 
 /* ------------------------------------------------------------
@@ -568,10 +571,5 @@ html.light {
   .bg-canvas { background-color: var(--bg); }
 }
 
-/* Brand skill icons — keep legible on both themes */
-.skill-icon {
-  filter: brightness(0.95) saturate(0.85);
-}
-html.light .skill-icon {
-  filter: brightness(0.55) saturate(1.05);
-}
+/* Brand skill icons are served pre-tinted per theme from the CDN,
+   so no CSS filtering happens here anymore. */

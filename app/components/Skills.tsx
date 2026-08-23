@@ -1,14 +1,38 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { config } from "@/lib/config";
 import { skillIcons } from "@/lib/iconMap";
 import { SectionHeader } from "@/app/components/SectionHeader";
 
-function iconUrl(skill: string): string | null {
+/** Muted ink/bone tint so brand logos never break the palette. */
+const ICON_TINT_DARK = "b8afa4";
+const ICON_TINT_LIGHT = "514b43";
+
+function useIconTint(): string {
+  const [tint, setTint] = useState(ICON_TINT_DARK);
+  useEffect(() => {
+    const sync = () =>
+      setTint(
+        document.documentElement.classList.contains("light")
+          ? ICON_TINT_LIGHT
+          : ICON_TINT_DARK,
+      );
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, []);
+  return tint;
+}
+
+function iconUrl(skill: string, tint: string): string | null {
   const slug = skillIcons[skill];
-  return slug ? `https://cdn.simpleicons.org/${slug}` : null;
+  return slug ? `https://cdn.simpleicons.org/${slug}/${tint}` : null;
 }
 
 function FallbackDot() {
@@ -26,11 +50,13 @@ function SkillCategory({
   skills,
   index,
   isLast,
+  tint,
 }: {
   title: string;
   skills: string[];
   index: number;
   isLast: boolean;
+  tint: string;
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
@@ -57,12 +83,20 @@ function SkillCategory({
       {/* Right: tags flowing */}
       <div className="flex flex-wrap gap-x-5 gap-y-2.5">
         {skills.map((skill) => {
-          const icon = iconUrl(skill);
+          const icon = iconUrl(skill, tint);
           return (
             <span key={skill} className="skill-tag">
               {icon ? (
                 // eslint-disable-next-line @next/next/no-img-element -- tiny external CDN icon, static export
-                <img src={icon} alt="" className="skill-icon h-4 w-4 shrink-0" loading="lazy" />
+                <img
+                  src={icon}
+                  alt=""
+                  className="h-4 w-4 shrink-0"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
               ) : (
                 <FallbackDot />
               )}
@@ -76,6 +110,7 @@ function SkillCategory({
 }
 
 export function Skills() {
+  const tint = useIconTint();
   const categories = [
     { title: "Languages", skills: config.skills.languages },
     { title: "Frameworks", skills: config.skills.frameworks },
@@ -98,6 +133,7 @@ export function Skills() {
             skills={cat.skills}
             index={i}
             isLast={i === categories.length - 1}
+            tint={tint}
           />
         ))}
       </div>
