@@ -10,17 +10,11 @@
   "photo": "/photo.svg",
   "portrait": {
     "enabled": true,
-    "skin": "#c9906b",
-    "skinShadow": "#a9704c",
-    "skinLight": "#d8a37e",
-    "hair": "#17110c",
-    "hairStyle": "fringe",
-    "beard": "#1d150e",
-    "eyes": "#33231a",
-    "mole": true,
+    "asset": "/portrait-traced.svg",
+    "eyelid": "#96603c",
+    "lips": "#b06a55",
     "outfit": "#26304a",
-    "outfitShadow": "#1d2538",
-    "lips": "#b06a55"
+    "outfitShadow": "#1d2538"
   },
   "resumeUrl": "/resume.pdf",
   "social": {

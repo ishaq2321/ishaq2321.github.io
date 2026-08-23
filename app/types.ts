@@ -42,17 +42,11 @@ export interface Experience {
 
 export interface PortraitConfig {
   enabled?: boolean;
-  skin?: string;
-  skinShadow?: string;
-  skinLight?: string;
-  hair?: string;
-  hairStyle?: "fringe" | "slicked";
-  beard?: string;
-  eyes?: string;
-  mole?: boolean;
+  asset?: string;
+  eyelid?: string;
+  lips?: string;
   outfit?: string;
   outfitShadow?: string;
-  lips?: string;
 }
 
 export interface PortfolioConfig {

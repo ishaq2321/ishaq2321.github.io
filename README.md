@@ -72,21 +72,27 @@ This portfolio is designed to be forked and reused. Most changes require editing
 
 ### Animated portrait
 
-When `portrait.enabled` is `true`, the hero renders a hand-coded animated SVG portrait (blinking, breathing, cursor-following eyes, theme-aware) instead of `photo`. Every visual feature is a config value, so you can tune it to approximate you without touching any component:
+When `portrait.enabled` is `true`, the hero renders an **animated portrait generated from a real reference photo**: the photo is vector-traced into flat color layers (head geometry comes from the actual face, not guesses), then rigged in code with blinking, breathing, and cursor-following eyes. Theme-aware, `prefers-reduced-motion` respected.
 
 ```json
 "portrait": {
   "enabled": true,
-  "skin": "#c9906b",       "skinShadow": "#a9704c", "skinLight": "#d8a37e",
-  "hair": "#17110c",       "hairStyle": "fringe",   // or "slicked"
-  "beard": "#1d150e",      "eyes": "#33231a",
-  "mole": true,            // beauty mark below the left eye
-  "outfit": "#26304a",     "outfitShadow": "#1d2538",
-  "lips": "#b06a55"
+  "asset": "/portrait-traced.svg",   // the traced art (see below)
+  "eyelid": "#96603c",               // eye-socket tone used by the blink rig
+  "lips": "#b06a55",
+  "outfit": "#26304a",               // clothing is drawn in code (easy to recolor)
+  "outfitShadow": "#1d2538"
 }
 ```
 
-Set `enabled: false` (or delete the block) to fall back to a static `photo` image — the classic fork path. Animations respect `prefers-reduced-motion`.
+**Make it yours** — generate a traced portrait from your own photo (runs locally, the photo is never uploaded or committed):
+
+```
+pip install vtracer pillow numpy
+python3 scripts/generate-portrait.py --photo me.jpg --crop 240,60,740,740 --wb 500,700
+```
+
+Tune the `PALETTE` / mask constants at the top of the script until the `-preview.png` looks right, point `portrait.asset` at the output, and adjust `eyelid`/`lips` to your tones. Set `enabled: false` to fall back to a static `photo` image instead.
 
 ### 2. Books — `lib/books.ts`
 
