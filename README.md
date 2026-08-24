@@ -66,33 +66,8 @@ This portfolio is designed to be forked and reused. Most changes require editing
 | `experience` | Experience timeline |
 | `education` | Education section (university, thesis, high school, achievements) |
 | `goatcounter` | GoatCounter analytics code (optional; leave `""` to disable) |
-| `portrait` | Animated SVG portrait (optional). See below |
 
 **Project fields:** `name`, `url`, `description`, `stack[]` are required. Optional: `live`, `benchmarkUrl`, `docsUrl`, `npm`, `pypi`, `highlights[]`, `featured`.
-
-### Animated portrait
-
-When `portrait.enabled` is `true`, the hero renders an **animated portrait generated from a real reference photo**: the photo is vector-traced into flat color layers (head geometry comes from the actual face, not guesses), then rigged in code with blinking, breathing, and cursor-following eyes. Theme-aware, `prefers-reduced-motion` respected.
-
-```json
-"portrait": {
-  "enabled": true,
-  "asset": "/portrait-traced.svg",   // the traced art (see below)
-  "eyelid": "#96603c",               // eye-socket tone used by the blink rig
-  "lips": "#b06a55",
-  "outfit": "#26304a",               // clothing is drawn in code (easy to recolor)
-  "outfitShadow": "#1d2538"
-}
-```
-
-**Make it yours** — generate a traced portrait from your own photo (runs locally, the photo is never uploaded or committed):
-
-```
-pip install vtracer pillow numpy
-python3 scripts/generate-portrait.py --photo me.jpg --crop 240,60,740,740 --wb 500,700
-```
-
-Check the `-preview.png` output, tune `--crop` / `--head` / `--neck` / `--tones` and re-run, then adjust `eyelid`/`lips` to your tones (sample them from the preview). Set `enabled: false` to fall back to a static `photo` image instead.
 
 ### 2. Books — `lib/books.ts`
 
