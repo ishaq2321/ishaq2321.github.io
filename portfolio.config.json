@@ -9,7 +9,7 @@
   "emailEncoded": "aXNoYXEyMzIxQHByb3Rvbi5tZQ==",
   "photo": "/photo.svg",
   "portrait": {
-    "enabled": true,
+    "enabled": false,
     "asset": "/portrait-traced.svg",
     "eyelid": "#93625f",
     "lips": "#b06a55",
