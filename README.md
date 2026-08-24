@@ -92,7 +92,7 @@ pip install vtracer pillow numpy
 python3 scripts/generate-portrait.py --photo me.jpg --crop 240,60,740,740 --wb 500,700
 ```
 
-Tune the `PALETTE` / mask constants at the top of the script until the `-preview.png` looks right, point `portrait.asset` at the output, and adjust `eyelid`/`lips` to your tones. Set `enabled: false` to fall back to a static `photo` image instead.
+Check the `-preview.png` output, tune `--crop` / `--head` / `--neck` / `--tones` and re-run, then adjust `eyelid`/`lips` to your tones (sample them from the preview). Set `enabled: false` to fall back to a static `photo` image instead.
 
 ### 2. Books — `lib/books.ts`
 

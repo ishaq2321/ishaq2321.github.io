@@ -13,7 +13,7 @@ export interface PortraitParams {
 
 const DEFAULTS: Required<PortraitParams> = {
   asset: "/portrait-traced.svg",
-  eyelid: "#96603c",
+  eyelid: "#93625f",
   lips: "#b06a55",
   outfit: "#26304a",
   outfitShadow: "#1d2538",
@@ -160,8 +160,8 @@ export function AnimatedPortrait({
                 opacity="0.85"
               />
 
-              <Eye cx={185} cy={140} eyes="#33231a" hair="#17110c" eyelid={p.eyelid} pupilX={pupilX} pupilY={pupilY} />
-              <Eye cx={252} cy={133} eyes="#33231a" hair="#17110c" eyelid={p.eyelid} pupilX={pupilX} pupilY={pupilY} />
+              <Eye cx={192} cy={136} eyes="#33231a" hair="#17110c" eyelid={p.eyelid} pupilX={pupilX} pupilY={pupilY} />
+              <Eye cx={253} cy={131} eyes="#33231a" hair="#17110c" eyelid={p.eyelid} pupilX={pupilX} pupilY={pupilY} />
             </g>
           </motion.g>
         </g>

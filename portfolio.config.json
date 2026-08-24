@@ -11,7 +11,7 @@
   "portrait": {
     "enabled": true,
     "asset": "/portrait-traced.svg",
-    "eyelid": "#96603c",
+    "eyelid": "#93625f",
     "lips": "#b06a55",
     "outfit": "#26304a",
     "outfitShadow": "#1d2538"
