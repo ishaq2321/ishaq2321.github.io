@@ -95,6 +95,8 @@ This portfolio is designed to be forked and reused. Most changes require editing
 - **Switch a section off** — set `"enabled": false`. The component and its content stay in the repo; the section disappears from the nav and the page together, and everything after it renumbers. There is no way to leave a dead `#anchor` link behind.
 - **Empty means off** — Writing and References hide themselves while their content arrays are empty, so a fork that deletes the sample entries also loses the headings.
 
+**How many sections fit in the nav?** The desktop bar shows the list only while it fits beside the wordmark — nine sections with the shipped labels. Past that the nav automatically uses the same menu as mobile at _every_ width, so a section can never be silently clipped out of the bar or break onto two lines. `FITTING_SECTIONS` in `app/components/Nav.tsx` sets the limit, and the comment above it records the measured budget if you want to retune it for longer labels.
+
 `id` is the link between this list and the component that draws the section, so treat it as a primary key: renaming `label` is free, but renaming `id` also moves the URL fragment and needs the matching key in `COMPONENTS` in `app/page.tsx`.
 
 **Adding a brand-new section** is the one change that touches code:
