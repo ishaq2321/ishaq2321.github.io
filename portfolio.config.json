@@ -31,7 +31,7 @@
     { "id": "writing", "label": "Writing", "enabled": false },
     { "id": "education", "label": "Education" },
     { "id": "books", "label": "Bookshelf" },
-    { "id": "references", "label": "Recommendations" },
+    { "id": "references", "label": "Recommendations", "enabled": false },
     { "id": "contact", "label": "Contact" }
   ],
   "contactCategories": [
@@ -330,22 +330,7 @@
       "description": "Fixed stale eagerWinner reference in GestureArenaManager when gesture rejected before arena close."
     }
   ],
-  "references": [
-    {
-      "quote": "Thank you so much for this PR and for identifying the problem! Since the code has diverged a little, I have created a bit cleaner version here.",
-      "author": "Dmitriy Vasyura",
-      "role": "VS Code maintainer, Microsoft",
-      "source": "microsoft/vscode #314005, 30 May 2026",
-      "url": "https://github.com/microsoft/vscode/pull/314005"
-    },
-    {
-      "quote": "Honestly, there's been OOM issues when using chat/agents, so anything you can contribute to cleaning that up would be appreciated.",
-      "author": "Dmitriy Vasyura",
-      "role": "VS Code maintainer, Microsoft",
-      "source": "microsoft/vscode #314005, 31 May 2026",
-      "url": "https://github.com/microsoft/vscode/pull/314005"
-    }
-  ],
+  "references": [],
   "experience": [
     {
       "role": "Founder & Developer",
