@@ -28,7 +28,7 @@
     { "id": "experience", "label": "Experience" },
     { "id": "stats", "label": "GitHub" },
     { "id": "skills", "label": "Toolkit" },
-    { "id": "writing", "label": "Writing" },
+    { "id": "writing", "label": "Writing", "enabled": false },
     { "id": "education", "label": "Education" },
     { "id": "books", "label": "Bookshelf" },
     { "id": "references", "label": "Recommendations" },
@@ -285,29 +285,7 @@
       "stack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"]
     }
   ],
-  "writing": [
-    {
-      "title": "Phishing Detection Using OSINT-Enhanced Features",
-      "venue": "BSc thesis · Eötvös Loránd University",
-      "date": "2026",
-      "url": "/phishguard-thesis.pdf",
-      "note": "The thesis itself, not a summary of it: XGBoost over OSINT-enriched features reaching 96.45% accuracy against live phishing samples."
-    },
-    {
-      "title": "Backbencher vs Copilot Benchmarks",
-      "venue": "Technical write-up",
-      "date": "2026-05-12",
-      "url": "https://gist.github.com/ishaq2321/f06da43c0bba52add6b1f18d87931c50",
-      "note": "Same prompt, same model, different tools — what a relational symbol database with AST-level indexing answers that standard file-reading with RAG does not."
-    },
-    {
-      "title": "tree-sitter-clean (Clean Programming Language)",
-      "venue": "tree-sitter maintainers' forum",
-      "date": "2026-06-11",
-      "url": "https://github.com/tree-sitter/tree-sitter/discussions/5681",
-      "note": "The announcement that put Clean language support into the Tree-sitter ecosystem."
-    }
-  ],
+  "writing": [],
   "notable_contributions": [
     {
       "repo": "microsoft/vscode",
