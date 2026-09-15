@@ -2,9 +2,11 @@
 
 import { useState, useRef } from "react";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { books, type BookData } from "@/lib/books";
 import { SectionHeader } from "@/app/components/SectionHeader";
+import { useReveal } from "@/app/components/useReveal";
+import type { SectionProps } from "@/app/types";
 
 /** Deterministic hue from title, so fallbacks vary but never clash. */
 function spineTint(title: string): { hue: number; dark: string; light: string } {
@@ -33,7 +35,10 @@ function SpineFallback({ book }: { book: BookData }) {
         className="absolute left-0 top-0 h-full w-[3px]"
         style={{ background: `hsl(${tint.hue} 45% 55%)`, opacity: 0.75 }}
       />
-      <p className="line-clamp-4 pl-1 font-display text-sm leading-tight" style={{ color: "var(--text)" }}>
+      <p
+        className="line-clamp-4 pl-1 font-display text-sm leading-tight"
+        style={{ color: "var(--text)" }}
+      >
         {book.title}
       </p>
       <div>
@@ -41,7 +46,10 @@ function SpineFallback({ book }: { book: BookData }) {
           className="mb-2 block h-px w-6"
           style={{ background: `hsl(${tint.hue} 45% 55%)`, opacity: 0.6 }}
         />
-        <p className="line-clamp-2 pl-1 font-mono text-[10px] leading-tight" style={{ color: "var(--text-muted)" }}>
+        <p
+          className="line-clamp-2 pl-1 font-mono text-[11px] leading-tight"
+          style={{ color: "var(--text-muted)" }}
+        >
           {book.author}
         </p>
       </div>
@@ -51,7 +59,7 @@ function SpineFallback({ book }: { book: BookData }) {
 
 function BookCard({ book, index }: { book: BookData; index: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
+  const isInView = useReveal(ref);
   // default=false → Open Library returns a real 404 instead of a blank
   // placeholder image, so onError fires and the title card takes over.
   const [coverFailed, setCoverFailed] = useState(false);
@@ -91,10 +99,17 @@ function BookCard({ book, index }: { book: BookData; index: number }) {
           }}
         >
           {cover}
-        </div>        <h3 className="line-clamp-2 text-sm font-medium leading-snug" style={{ color: "var(--text)" }}>
+        </div>{" "}
+        <h3
+          className="line-clamp-2 text-sm font-medium leading-snug"
+          style={{ color: "var(--text)" }}
+        >
           {book.title}
         </h3>
-        <p className="mt-0.5 truncate font-mono text-xs" style={{ color: "var(--text-faint)" }}>
+        <p
+          className="mt-0.5 truncate font-mono text-xs"
+          style={{ color: "var(--text-faint)" }}
+        >
           {book.author}
         </p>
       </div>
@@ -102,17 +117,20 @@ function BookCard({ book, index }: { book: BookData; index: number }) {
   );
 }
 
-export function Bookshelf() {
+export function Bookshelf({ anchor, index, title = "Bookshelf" }: SectionProps) {
   const [showAll, setShowAll] = useState(false);
-  const displayed = showAll ? books : books.slice(0, 12);
+  // One shelf row, not two mobile screens of covers: this section is texture,
+  // not evidence, so it no longer outweighs the work.
+  const PREVIEW = 6;
+  const displayed = showAll ? books : books.slice(0, PREVIEW);
 
   return (
-    <section className="section-shell" id="books">
-      <SectionHeader index="07" title="Bookshelf" kicker="Off the clock" />
+    <section className="section-shell section-shell--tight" id={anchor}>
+      <SectionHeader index={index} title={title} kicker="Off the clock" variant="rail" />
 
-      <p className="mb-10 max-w-xl leading-relaxed" style={{ color: "var(--text-muted)" }}>
-        {books.length} books across existentialist philosophy, modern non-fiction, Sufism, Urdu
-        Islamic scholarship, and Pashto poetry.
+      <p className="measure mb-10 leading-relaxed" style={{ color: "var(--text-muted)" }}>
+        {books.length} books across existentialist philosophy, modern non-fiction, Sufism,
+        Urdu Islamic scholarship, and Pashto poetry.
       </p>
 
       <div className="flex flex-wrap justify-center gap-5 sm:justify-start sm:gap-6">
@@ -121,7 +139,7 @@ export function Bookshelf() {
         ))}
       </div>
 
-      {books.length > 12 && (
+      {books.length > PREVIEW && (
         <div className="mt-12">
           <button onClick={() => setShowAll(!showAll)} className="btn-ghost">
             {showAll ? "Show less" : `Show all ${books.length} books →`}

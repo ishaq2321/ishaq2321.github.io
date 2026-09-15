@@ -4,7 +4,9 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const config = JSON.parse(readFileSync(join(__dirname, "..", "portfolio.config.json"), "utf-8"));
+const config = JSON.parse(
+  readFileSync(join(__dirname, "..", "portfolio.config.json"), "utf-8")
+);
 
 const edu = config.education;
 const email = Buffer.from(config.emailEncoded, "base64").toString("utf-8");
@@ -19,7 +21,7 @@ function prEntry(pr, isLastOrg) {
     <td style="width:14pt;vertical-align:top;padding-top:2pt;padding-right:6pt;text-align:right;">
       ${link(pr.url, `#${pr.pr_number}`)}
     </td>
-    <td style="vertical-align:top;padding-top:2pt;font-size:8pt;line-height:1.3;${isLastOrg ? 'padding-bottom:6pt;' : ''}">
+    <td style="vertical-align:top;padding-top:2pt;font-size:8pt;line-height:1.3;${isLastOrg ? "padding-bottom:6pt;" : ""}">
       ${pr.description}
     </td>
   </tr>`;
@@ -36,7 +38,9 @@ function orgBlock(orgName, prs) {
 }
 
 const msftPRs = config.notable_contributions.filter((p) => p.repo === "microsoft/vscode");
-const flutterPRs = config.notable_contributions.filter((p) => p.repo === "flutter/flutter");
+const flutterPRs = config.notable_contributions.filter(
+  (p) => p.repo === "flutter/flutter"
+);
 
 function projectLine(proj) {
   const links = [];
@@ -45,9 +49,10 @@ function projectLine(proj) {
   if (proj.npm) links.push(link(`https://www.npmjs.com/package/${proj.npm}`, "npm"));
   if (proj.benchmarkUrl) links.push(link(proj.benchmarkUrl, "benchmark"));
 
-  const desc = proj.description.length > 140
-    ? proj.description.slice(0, 137) + "..."
-    : proj.description;
+  const desc =
+    proj.description.length > 140
+      ? proj.description.slice(0, 137) + "..."
+      : proj.description;
 
   return `
   <tr>
@@ -118,7 +123,7 @@ const html = `<!DOCTYPE html>
 
 <h2>Profile</h2>
 <p class="profile">
-  Computer Science graduate from ELTE, Budapest. Founded <strong>backbencher.cc</strong>, an AST-native code intelligence platform shipping 13 brain tools for semantic search, call-graph traversal, AST-precise refactoring, and security scanning across 39 languages. Contributed to <strong>Microsoft VS Code</strong> (3 fixes merged) and <strong>Flutter</strong> (security hardening and gesture engine fix). Built <strong>ProxiCall</strong>, a production super-app with Stripe Connect payments and 32-language translation. BSc thesis on ML-based phishing detection achieved 96.45% accuracy across 725 automated tests.
+  Computer Science graduate from ELTE, Budapest. Founded <strong>backbencher.cc</strong>, an AST-native code intelligence platform shipping 20+ brain tools for semantic search, call-graph traversal, AST-precise refactoring, and security scanning across 35+ languages. Contributed <strong>5 merged fixes to Microsoft VS Code and Flutter</strong> (4 authored, 1 landed from my diagnosis), including command-injection hardening in Flutter's dev tooling. Built <strong>ProxiCall</strong>, a production super-app with Stripe Connect payments and 38-language content translation. BSc thesis on ML-based phishing detection achieved 96.45% accuracy across 725 automated tests.
 </p>
 
 <h2>Education</h2>
@@ -141,7 +146,7 @@ const html = `<!DOCTYPE html>
   </div>
   <p class="entry-org">backbencher.cc</p>
   <p class="entry-desc">
-    Building an open-core code intelligence platform that indexes codebases into a SQLite knowledge graph. Ships 13 brain tools (bb_search, bb_select, bb_refactor, bb_security, bb_migrate, bb_relationships, and more). Benchmarked against TypeScript and Roslyn codebases.
+    Building an open-core code intelligence platform that indexes codebases into a SQLite knowledge graph. Ships 20+ brain tools (bb_search, bb_select, bb_refactor, bb_security, bb_migrate, bb_relationships, and more). Benchmarked against TypeScript and Roslyn codebases.
   </p>
 </div>
 
@@ -152,7 +157,7 @@ const html = `<!DOCTYPE html>
   </div>
   <p class="entry-org">ProxiCall</p>
   <p class="entry-desc">
-    Production Flutter super-app: Stripe Connect payment management, geo-fenced content delivery, 32-language auto-translation, and AI-segmented push notifications. Five integrated systems: CMS, PMS, OMS, NMS, ENS.
+    Production Flutter super-app: Stripe Connect payment management, geo-fenced content delivery, 38-language content translation, and AI-segmented push notifications. Five integrated systems: CMS, PMS, OMS, NMS, ENS.
   </p>
 </div>
 

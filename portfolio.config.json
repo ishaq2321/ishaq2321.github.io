@@ -1,9 +1,18 @@
 {
   "name": "Muhammad Ishaq Khan",
-  "tagline": "Software engineer building ProxiCall — a production Flutter super-app — alongside backbencher.cc, my AST-native code intelligence platform. Code merged into VS Code and Flutter.",
+  "tagline": "I ship the products I own: ProxiCall, a live Flutter super-app, and backbencher.cc, an AST-native code intelligence platform.",
+  "proof": [
+    {
+      "derive": "mergedUpstream",
+      "label": "Merged into VS Code & Flutter",
+      "href": "#contributions"
+    },
+    { "derive": "liveProducts", "label": "Products live in production" },
+    { "value": "96.45%", "label": "BSc thesis accuracy" }
+  ],
   "about": [
-    "I'm a software engineer based in Budapest and a Computer Science graduate of Eötvös Loránd University (ELTE). Right now I'm building ProxiCall — a production Flutter proximity super-app with Stripe Connect payments, geo-fencing, and 32-language auto-translation.",
-    "Alongside it I develop backbencher.cc, an AST-native code intelligence platform that indexes codebases into a queryable knowledge graph with 13 brain tools. I've contributed to VS Code (performance) and Flutter (security hardening), and my BSc thesis on OSINT-enhanced phishing detection reached 96.45% accuracy."
+    "I'm a software engineer based in Budapest and a Computer Science graduate of Eötvös Loránd University (ELTE). Right now I'm building ProxiCall — a production Flutter proximity super-app with Stripe Connect payments, geo-fencing, and 38-language content translation.",
+    "Alongside it I develop backbencher.cc, an AST-native code intelligence platform that indexes codebases into a queryable knowledge graph with 20+ brain tools. I've contributed to VS Code (performance) and Flutter (security hardening), and my BSc thesis on OSINT-enhanced phishing detection reached 96.45% accuracy."
   ],
   "location": "Budapest, Hungary",
   "emailEncoded": "aXNoYXEyMzIxQHByb3Rvbi5tZQ==",
@@ -13,6 +22,18 @@
     "github": "https://github.com/ishaq2321",
     "linkedin": "https://linkedin.com/in/2321ishaq"
   },
+  "sections": [
+    { "id": "contributions", "label": "Open Source" },
+    { "id": "projects", "label": "Projects", "title": "Selected Work" },
+    { "id": "experience", "label": "Experience" },
+    { "id": "stats", "label": "GitHub" },
+    { "id": "skills", "label": "Toolkit" },
+    { "id": "writing", "label": "Writing" },
+    { "id": "education", "label": "Education" },
+    { "id": "books", "label": "Bookshelf" },
+    { "id": "references", "label": "Recommendations" },
+    { "id": "contact", "label": "Contact" }
+  ],
   "contactCategories": [
     {
       "label": "ProxiCall",
@@ -28,6 +49,24 @@
     }
   ],
   "skills": {
+    "core": [
+      "TypeScript",
+      "Dart",
+      "Python",
+      "C++",
+      "Flutter",
+      "Next.js",
+      "Node.js",
+      "Tree-sitter",
+      "SQLite",
+      "Supabase",
+      "Firebase",
+      "Stripe Connect",
+      "Docker",
+      "PostgreSQL",
+      "XGBoost",
+      "Kali Linux"
+    ],
     "languages": [
       "TypeScript",
       "JavaScript",
@@ -111,21 +150,8 @@
       "Vercel",
       "Netlify"
     ],
-    "operating_systems": [
-      "Linux (Arch, Pop!_OS, EndeavourOS)",
-      "macOS",
-      "Windows"
-    ],
-    "tools": [
-      "Git",
-      "VS Code",
-      "Bun",
-      "npm/pnpm",
-      "Tree-sitter",
-      "LSP",
-      "MCP",
-      "curl/jq"
-    ]
+    "operating_systems": ["Linux (Arch, Pop!_OS, EndeavourOS)", "macOS", "Windows"],
+    "tools": ["Git", "VS Code", "Bun", "npm/pnpm", "Tree-sitter", "LSP", "MCP", "curl/jq"]
   },
   "projects": [
     {
@@ -134,40 +160,68 @@
       "live": "https://backbencher.cc",
       "benchmarkUrl": "https://gist.github.com/ishaq2321/f06da43c0bba52add6b1f18d87931c50",
       "featured": true,
-      "description": "My primary project — an open-core AST-native code intelligence platform that indexes entire codebases into a local SQLite knowledge graph. Ships with 13 brain tools for semantic search, call-graph traversal, AST-precise refactoring, architectural pattern detection, cross-language migration, and security scanning across 38 languages.",
-      "stack": [
-        "TypeScript",
-        "Tree-sitter",
-        "SQLite",
-        "Bun",
-        "PowerShell",
-        "SST"
-      ],
+      "description": "My primary project — an open-core AST-native code intelligence platform that indexes entire codebases into a local SQLite knowledge graph. Ships with 20+ brain tools for semantic search, call-graph traversal, AST-precise refactoring, architectural pattern detection, cross-language migration, and security scanning across 35+ languages.",
+      "stack": ["TypeScript", "Tree-sitter", "SQLite", "Bun", "PowerShell", "SST"],
       "highlights": [
-        "13 brain tools (bb_search, bb_select, bb_refactor, bb_security, bb_migrate, bb_relationships, bb_patterns, bb_visualize, bb_ask, bb_update, bb_insert, bb_delete)",
-        "38-language AST parsing via Tree-sitter",
+        "20+ brain tools — bb_search, bb_select, bb_refactor, bb_relationships, bb_security, bb_migrate, bb_patterns, bb_visualize, bb_impact, bb_health, bb_trace, bb_explain and more",
+        "35+ languages parsed by Tree-sitter grammars",
         "Offline semantic search with word vectors",
         "Beats Copilot on compiler-level code reasoning — benchmarked against TypeScript (VS Code) and Roslyn codebases"
+      ],
+      "figures": [
+        {
+          "src": "/figures/backbencher-cli.webp",
+          "alt": "bb's zsh terminal showing bb --version returning 0.3.0 and bb --help listing its commands",
+          "aspect": "1160 / 1206",
+          "layout": "bleed",
+          "native": 580,
+          "caption": "bb v0.3.0's real CLI surface, verbatim: tool, index, setup, doctor, stats, search, health, mcp — 35+ languages behind one binary."
+        },
+        {
+          "src": "/figures/backbencher-tiers.webp",
+          "alt": "bb's three analysis tiers listing which languages get a resolved call graph, structural symbols, or a generic pass",
+          "aspect": "1824 / 296",
+          "layout": "bleed",
+          "native": 1216,
+          "scroll": true,
+          "caption": "Three resolution tiers, and the index says which one you are on: a resolved call graph for the six big languages, structural symbols for markup and query languages, a deliberately weaker generic pass for the rest."
+        }
       ]
     },
     {
       "name": "ProxiCall",
       "url": "https://github.com/ishaq2321/ProxiCall",
       "live": "https://proxicall.app",
-      "description": "Production Flutter proximity super-app — location-based content delivery, Stripe Connect payment management, order management, 32-language auto-translation, and geo-targeted notifications with AI segmentation.",
-      "stack": [
-        "Flutter",
-        "Node.js",
-        "Supabase",
-        "Firebase",
-        "Stripe",
-        "Sentry"
-      ],
+      "featured": true,
+      "description": "Production Flutter proximity super-app — location-based content delivery, Stripe Connect payment management, order management, 38-language content translation, and geo-targeted notifications with AI segmentation.",
+      "stack": ["Flutter", "Node.js", "Supabase", "Firebase", "Stripe", "Sentry"],
       "highlights": [
         "5 integrated systems (CMS, PMS, OMS, NMS, ENS)",
-        "32-language auto-translation pipeline",
+        "Instant storefronts — 9 themes, generated and published for every registered business",
+        "38 languages for content translation, one canonical code set shared by the app and the web micro-sites",
         "Geo-fenced notifications with AI segmentation",
-        "Multi-currency wallet with Stripe Connect"
+        "Multi-currency money layer on Stripe Connect — onboarding, refunds, disputes and dispute recovery",
+        "Append-only wallet ledger with a hash chain, probed by 13 SQL integrity and tamper harnesses",
+        "262 SQL migrations and row-level-security completeness checks behind the data layer",
+        "Paid Azure and DeepL translation metered per business through one gate, so a Free tier can't drain characters"
+      ],
+      "figures": [
+        {
+          "src": "/figures/proxicall-site-phone.webp",
+          "alt": "Screenshot of proxicall.app's homepage at a 430 pixel viewport, dark theme: the mobile navigation, the product headline stacked over two lines, and the two call-to-action buttons",
+          "aspect": "430 / 660",
+          "layout": "bleed",
+          "native": 430,
+          "caption": "The same front page at a 430px viewport: mobile layout, same navigation, same headline."
+        },
+        {
+          "src": "/figures/proxicall-site-desktop.webp",
+          "alt": "Screenshot of proxicall.app's homepage in dark theme: site navigation, the headline One App to Run, Grow & Get Discovered, a phone rendering a storefront dashboard, and three product claims beneath it",
+          "aspect": "1375 / 832",
+          "layout": "bleed",
+          "native": 1375,
+          "caption": "The same front page at desktop width, dark theme: full navigation, the product headline, and a storefront demo rendering live inside the phone frame."
+        }
       ]
     },
     {
@@ -176,13 +230,7 @@
       "live": "https://project-4soy4.vercel.app",
       "docsUrl": "/phishguard-thesis.pdf",
       "description": "BSc Thesis — phishing detection system combining XGBoost ML (96.45% accuracy), NLP with 10 tactic detectors, and OSINT enrichment (WHOIS, DNS, VirusTotal).",
-      "stack": [
-        "Python",
-        "Next.js",
-        "XGBoost",
-        "SHAP",
-        "scikit-learn"
-      ],
+      "stack": ["Python", "Next.js", "XGBoost", "SHAP", "scikit-learn"],
       "highlights": [
         "96.45% accuracy, 99.41% AUC-ROC",
         "725 automated tests (592 pytest + 133 Jest)",
@@ -195,14 +243,10 @@
       "npm": "tree-sitter-clean",
       "pypi": "tree-sitter-clean",
       "description": "Clean grammar for tree-sitter — enables code intelligence, syntax highlighting, and AST parsing for the Clean programming language. Published to both npm and PyPI.",
-      "stack": [
-        "Tree-sitter",
-        "JavaScript",
-        "Grammar"
-      ],
+      "stack": ["Tree-sitter", "JavaScript", "Grammar"],
       "highlights": [
         "Enables Clean language support in the Tree-sitter ecosystem",
-        "Available on npm and PyPI (v1.1.0)"
+        "Available on npm and PyPI (v1.2.5)"
       ],
       "links": [
         {
@@ -216,23 +260,52 @@
       ]
     },
     {
-      "name": "hide-and-lock",
-      "url": "https://github.com/ishaq2321/hide-and-lock",
-      "description": "CLI utility for encrypting sensitive files with session-based isolation and master key recovery.",
-      "stack": [
-        "Shell",
-        "Bash",
-        "GPG"
+      "name": "Histofy v2",
+      "url": "https://github.com/ishaq2321/histofy-v2",
+      "description": "Manifest V3 Chrome extension that turns the GitHub contribution graph into an editor: click any date tile to set a contribution level, then deploy the pattern as real commits through the GitHub API. Nine content scripts inject into github.com, state persists per user and repository, and the graph is navigable across years.",
+      "stack": ["JavaScript", "Chrome Extensions API", "Manifest V3", "GitHub API"],
+      "highlights": [
+        "Manifest V3: a background service worker plus 9 content scripts injected on github.com",
+        "Contribution-level model validated against GitHub's own intensity thresholds",
+        "Per-user, per-repository selection state persisted in extension storage",
+        "Deploys real commits through the GitHub API, creating or reusing a repository"
       ]
     },
     {
-      "name": "phantomVault",
-      "url": "https://github.com/ishaq2321/phantomVault",
-      "description": "Secure C++ storage utility with encryption support.",
-      "stack": [
-        "C++",
-        "Security"
-      ]
+      "name": "hide-and-lock",
+      "url": "https://github.com/ishaq2321/hide-and-lock",
+      "description": "CLI utility for encrypting sensitive files with session-based isolation and master key recovery.",
+      "stack": ["Shell", "Bash", "GPG"]
+    },
+    {
+      "name": "This portfolio",
+      "url": "https://github.com/ishaq2321/ishaq2321.github.io",
+      "live": "https://ishaq2321.github.io",
+      "description": "The site you are reading. Every project, skill, timeline entry, contribution and book comes from a single config file, so a fork needs that file and no component edits. Live GitHub and npm stats, a social card and a résumé PDF all generated from the same config at build time.",
+      "stack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"]
+    }
+  ],
+  "writing": [
+    {
+      "title": "Phishing Detection Using OSINT-Enhanced Features",
+      "venue": "BSc thesis · Eötvös Loránd University",
+      "date": "2026",
+      "url": "/phishguard-thesis.pdf",
+      "note": "The thesis itself, not a summary of it: XGBoost over OSINT-enriched features reaching 96.45% accuracy against live phishing samples."
+    },
+    {
+      "title": "Backbencher vs Copilot Benchmarks",
+      "venue": "Technical write-up",
+      "date": "2026-05-12",
+      "url": "https://gist.github.com/ishaq2321/f06da43c0bba52add6b1f18d87931c50",
+      "note": "Same prompt, same model, different tools — what a relational symbol database with AST-level indexing answers that standard file-reading with RAG does not."
+    },
+    {
+      "title": "tree-sitter-clean (Clean Programming Language)",
+      "venue": "tree-sitter maintainers' forum",
+      "date": "2026-06-11",
+      "url": "https://github.com/tree-sitter/tree-sitter/discussions/5681",
+      "note": "The announcement that put Clean language support into the Tree-sitter ecosystem."
     }
   ],
   "notable_contributions": [
@@ -254,11 +327,13 @@
     },
     {
       "repo": "microsoft/vscode",
-      "pr_number": 314005,
-      "title": "Fix listener leak when rerendering title file widgets in chat content parts",
+      "pr_number": 319176,
+      "title": "Prevent memory leaks in title file widget in chat components",
       "url": "https://github.com/microsoft/vscode/pull/319176",
-      "date": "2026-05-21",
-      "description": "Fixed listener leak when rerendering title file widgets in chat content parts."
+      "date": "2026-05-31",
+      "merged": false,
+      "status": "Merged upstream — based on my report",
+      "description": "I traced a listener leak that accumulated every time a chat content part re-rendered title file widgets, and opened the fix as #314005. A VS Code maintainer landed a cleaner version as this PR, whose own description opens: “Based on microsoft/vscode#314005 — Thank you @ishaq2321!”"
     },
     {
       "repo": "flutter/flutter",
@@ -277,34 +352,36 @@
       "description": "Fixed stale eagerWinner reference in GestureArenaManager when gesture rejected before arena close."
     }
   ],
+  "references": [
+    {
+      "quote": "Thank you so much for this PR and for identifying the problem! Since the code has diverged a little, I have created a bit cleaner version here.",
+      "author": "Dmitriy Vasyura",
+      "role": "VS Code maintainer, Microsoft",
+      "source": "microsoft/vscode #314005, 30 May 2026",
+      "url": "https://github.com/microsoft/vscode/pull/314005"
+    },
+    {
+      "quote": "Honestly, there's been OOM issues when using chat/agents, so anything you can contribute to cleaning that up would be appreciated.",
+      "author": "Dmitriy Vasyura",
+      "role": "VS Code maintainer, Microsoft",
+      "source": "microsoft/vscode #314005, 31 May 2026",
+      "url": "https://github.com/microsoft/vscode/pull/314005"
+    }
+  ],
   "experience": [
     {
       "role": "Founder & Developer",
       "organization": "backbencher.cc",
       "period": "March 2026 - Present",
-      "description": "Building an open-core AST-native code intelligence platform. Indexes codebases into a queryable SQLite knowledge graph with 13 brain tools for semantic search, call-graph traversal, AST-precise refactoring, and security scanning across 38 languages.",
-      "skills": [
-        "TypeScript",
-        "Tree-sitter",
-        "SQLite",
-        "Bun",
-        "LSP",
-        "MCP"
-      ]
+      "description": "Running the platform end to end — parsing pipeline, storage, CLI/MCP surface and releases — and turning it outward: five patches merged upstream — four my own PRs, plus a VS Code chat memory leak whose fix credits my report by name — and a Tree-sitter grammar published to npm and PyPI.",
+      "skills": ["TypeScript", "Tree-sitter", "SQLite", "Bun", "LSP", "MCP"]
     },
     {
       "role": "Full-Stack Developer",
       "organization": "ProxiCall",
       "period": "September 2025 - Present",
-      "description": "Developing a production Flutter proximity super-app with Stripe Connect payments, geo-fencing, 32-language auto-translation, and geo-targeted notifications with AI segmentation. Built 5 integrated systems: CMS, PMS, OMS, NMS, and ENS.",
-      "skills": [
-        "Flutter",
-        "Node.js",
-        "Supabase",
-        "Firebase",
-        "Stripe",
-        "Sentry"
-      ]
+      "description": "Own the money and location layers behind a live consumer app: Stripe Connect onboarding and payouts, geo-fenced delivery, and the notification pipeline the growth team campaigns through.",
+      "skills": ["Flutter", "Node.js", "Supabase", "Firebase", "Stripe", "Sentry"]
     }
   ],
   "goatcounter": "ishaq2321",
@@ -321,9 +398,7 @@
         "school": "Balochistan Residential College Loralai (BRC)",
         "board": "Balochistan Board of Intermediate & Secondary Education",
         "period": "March 2016 - July 2022",
-        "achievements": [
-          "Provincial Topper"
-        ]
+        "achievements": ["Provincial Topper"]
       }
     ],
     "achievements": [

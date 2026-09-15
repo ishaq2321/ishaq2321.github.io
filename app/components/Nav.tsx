@@ -2,17 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-
-const sections = [
-  { id: "contributions", label: "Open Source", num: "01" },
-  { id: "projects", label: "Projects", num: "02" },
-  { id: "experience", label: "Experience", num: "03" },
-  { id: "stats", label: "GitHub", num: "04" },
-  { id: "skills", label: "Toolkit", num: "05" },
-  { id: "education", label: "Education", num: "06" },
-  { id: "books", label: "Bookshelf", num: "07" },
-  { id: "contact", label: "Contact", num: "08" },
-];
+import { sections } from "@/lib/sections";
 
 export function Nav() {
   const [active, setActive] = useState("");
@@ -55,7 +45,7 @@ export function Nav() {
         }
         if (best) setActive(best);
       },
-      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.25, 0.5, 1] },
+      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.25, 0.5, 1] }
     );
 
     const els = sections
@@ -69,13 +59,15 @@ export function Nav() {
     <nav
       className="fixed top-0 z-50 w-full transition-all duration-300"
       style={{
-        background: scrolled ? "color-mix(in srgb, var(--bg) 80%, transparent)" : "transparent",
+        background: scrolled
+          ? "color-mix(in srgb, var(--bg) 80%, transparent)"
+          : "transparent",
         backdropFilter: scrolled ? "blur(12px)" : "none",
         borderBottom: scrolled ? "1px solid var(--line)" : "1px solid transparent",
       }}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-10">
-        <a href="#" className="group flex items-center gap-2 font-mono text-sm">
+        <a href="#" className="group flex items-center gap-2 font-mono text-[13px]">
           <span
             className="grid h-6 w-6 place-items-center rounded-[2px] text-xs font-semibold text-white"
             style={{ background: "var(--accent)" }}
@@ -96,10 +88,12 @@ export function Nav() {
                 style={{ color: active === s.id ? "var(--text)" : "var(--text-faint)" }}
               >
                 <span
-                  className="font-mono text-[10px]"
-                  style={{ color: active === s.id ? "var(--accent-text)" : "var(--text-faint)" }}
+                  className="font-mono text-[11px]"
+                  style={{
+                    color: active === s.id ? "var(--accent-text)" : "var(--text-faint)",
+                  }}
                 >
-                  {s.num}
+                  {s.index}
                 </span>
                 {s.label}
               </a>
@@ -117,9 +111,19 @@ export function Nav() {
         >
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             {menuOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.6}
+                d="M6 18L18 6M6 6l12 12"
+              />
             ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M4 7h16M4 12h16M4 17h16" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.6}
+                d="M4 7h16M4 12h16M4 17h16"
+              />
             )}
           </svg>
         </button>
@@ -137,23 +141,28 @@ export function Nav() {
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
           >
             <ul className="flex flex-col gap-1 overflow-hidden px-6 py-4">
-            {sections.map((s) => (
-              <li key={s.id}>
-                <a
-                  href={`#${s.id}`}
-                  onClick={() => setMenuOpen(false)}
-                  aria-current={active === s.id ? "true" : undefined}
-                  className="flex items-center gap-3 py-2 text-sm"
-                  style={{ color: active === s.id ? "var(--text)" : "var(--text-muted)" }}
-                >
-                  <span className="font-mono text-[10px]" style={{ color: "var(--accent-text)" }}>
-                    {s.num}
-                  </span>
-                  {s.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+              {sections.map((s) => (
+                <li key={s.id}>
+                  <a
+                    href={`#${s.id}`}
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={active === s.id ? "true" : undefined}
+                    className="flex items-center gap-3 py-2 text-sm"
+                    style={{
+                      color: active === s.id ? "var(--text)" : "var(--text-muted)",
+                    }}
+                  >
+                    <span
+                      className="font-mono text-[11px]"
+                      style={{ color: "var(--accent-text)" }}
+                    >
+                      {s.index}
+                    </span>
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </motion.div>
         )}
       </AnimatePresence>

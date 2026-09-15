@@ -33,7 +33,7 @@ const html = `<!DOCTYPE html>
   .glow {
     position: absolute; top: -180px; left: 320px;
     width: 820px; height: 520px;
-    background: #e2523b; opacity: 0.16; filter: blur(120px);
+    background: #c9402a; opacity: 0.16; filter: blur(120px);
     border-radius: 9999px;
   }
   .grid {
@@ -47,7 +47,7 @@ const html = `<!DOCTYPE html>
   .rail { display: flex; align-items: center; gap: 20px; position: relative; }
   .logo {
     display: flex; align-items: center; justify-content: center;
-    width: 44px; height: 44px; background: #e2523b; border-radius: 4px;
+    width: 44px; height: 44px; background: #c9402a; border-radius: 4px;
     color: #fff; font-size: 26px; font-weight: 700;
     font-family: "JetBrains Mono", monospace;
   }
@@ -59,13 +59,13 @@ const html = `<!DOCTYPE html>
   .name .last { font-style: italic; color: #f0836f; }
   .sub {
     margin-top: 30px; font-family: "JetBrains Mono", monospace;
-    font-size: 25px; color: #b8afa4; max-width: 920px; line-height: 1.45;
+    font-size: 25px; color: #c2b9ae; max-width: 920px; line-height: 1.45;
   }
   .foot {
     display: flex; align-items: center; gap: 24px; position: relative;
-    font-family: "JetBrains Mono", monospace; font-size: 22px; color: #7c736a;
+    font-family: "JetBrains Mono", monospace; font-size: 22px; color: #9b9081;
   }
-  .foot .divider { width: 40px; height: 1px; background: #3a352f; }
+  .foot .divider { width: 40px; height: 1px; background: #38332c; }
 </style>
 </head>
 <body>

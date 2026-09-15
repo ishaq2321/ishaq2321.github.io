@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { SectionHeader } from "@/app/components/SectionHeader";
-import { SpotlightCard } from "@/app/components/SpotlightCard";
+import { useReveal } from "@/app/components/useReveal";
+import type { SectionProps } from "@/app/types";
 
 interface GitHubStats {
   repos: number;
   followers: number;
   stars: number;
-  prs: number;
   updatedAt: string;
 }
 
@@ -19,29 +19,24 @@ const GH_USER = "ishaq2321";
 async function fetchLiveStats(): Promise<GitHubStats | null> {
   try {
     const headers: Record<string, string> = { Accept: "application/vnd.github+json" };
-    const [userRes, reposRes, prsRes] = await Promise.all([
+    const [userRes, reposRes] = await Promise.all([
       fetch(`https://api.github.com/users/${GH_USER}`, { headers }),
       fetch(`https://api.github.com/users/${GH_USER}/repos?per_page=100`, { headers }),
-      // "-user:" excludes PRs opened against his own repos → upstream-only count.
-      fetch(
-        `https://api.github.com/search/issues?q=author:${GH_USER}+type:pr+is:merged+-user:${GH_USER}&per_page=1`,
-        { headers },
-      ),
     ]);
     if (!userRes.ok || !reposRes.ok) return null;
 
     const user = await userRes.json();
     const repos = await reposRes.json();
     const stars = Array.isArray(repos)
-      ? repos.filter((r) => !r.fork).reduce((sum, r) => sum + (r.stargazers_count ?? 0), 0)
+      ? repos
+          .filter((r) => !r.fork)
+          .reduce((sum, r) => sum + (r.stargazers_count ?? 0), 0)
       : 0;
-    const prs = prsRes.ok ? ((await prsRes.json()).total_count ?? 0) : 0;
 
     return {
       repos: user.public_repos ?? 0,
       followers: user.followers ?? 0,
       stars,
-      prs,
       updatedAt: new Date().toISOString(),
     };
   } catch {
@@ -62,7 +57,7 @@ async function fetchSnapshotStats(): Promise<GitHubStats | null> {
 
 function CountUp({ value }: { value: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
+  const isInView = useReveal(ref);
   const count = useMotionValue(0);
   const rounded = useTransform(count, (v) => Math.round(v).toLocaleString());
 
@@ -78,36 +73,51 @@ function CountUp({ value }: { value: number }) {
   return <motion.span ref={ref}>{rounded}</motion.span>;
 }
 
-function StatCard({ label, value, index }: { label: string; value: number; index: number }) {
+/**
+ * A ruled data row instead of four floating cards. These are the weakest
+ * numbers on the page, so they get a quiet horizontal strip in mono — visibly
+ * quieter than the hero's display-type rail above, and no longer a second
+ * copy of the merged-PR count stated in the hero.
+ */
+function StatRail({ stats }: { stats: GitHubStats | null }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
+  const revealed = useReveal(ref);
+
+  const items = [
+    { label: "Public repositories", value: stats?.repos ?? 0 },
+    { label: "Stars earned", value: stats?.stars ?? 0 },
+    { label: "Followers", value: stats?.followers ?? 0 },
+  ];
 
   return (
-    <motion.div
+    <motion.dl
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 16 }}
+      animate={revealed ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="proof-rail"
+      data-cols="3"
+      data-tone="data"
+      aria-label="GitHub activity"
     >
-      <SpotlightCard className="p-6">
-        <p className="meta mb-3">{String(index + 1).padStart(2, "0")}</p>
-        <p className="font-display tabular-nums" style={{ fontSize: "2.75rem", lineHeight: 1, color: "var(--text)" }}>
-          <CountUp value={value} />
-        </p>
-        <p className="mt-2 text-sm" style={{ color: "var(--text-muted)" }}>
-          {label}
-        </p>
-      </SpotlightCard>
-    </motion.div>
+      {items.map((item) => (
+        <div key={item.label} className="proof-point">
+          <dt className="meta mt-1">{item.label}</dt>
+          <dd className="font-mono text-xl tabular-nums" style={{ color: "var(--text)" }}>
+            <CountUp value={item.value} />
+          </dd>
+        </div>
+      ))}
+    </motion.dl>
   );
 }
 
-export function GitHubStats() {
+export function GitHubStats({ anchor, index, title = "GitHub" }: SectionProps) {
   const [stats, setStats] = useState<GitHubStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
   const [chartError, setChartError] = useState(false);
-  const [chartColor, setChartColor] = useState("de6f54");
+  const [chartColor, setChartColor] = useState("c9402a");
 
   useEffect(() => {
     let cancelled = false;
@@ -134,7 +144,7 @@ export function GitHubStats() {
   useEffect(() => {
     const sync = () =>
       setChartColor(
-        document.documentElement.classList.contains("light") ? "bf4a30" : "de6f54",
+        document.documentElement.classList.contains("light") ? "c3391f" : "c9402a"
       );
     sync();
     const observer = new MutationObserver(sync);
@@ -146,13 +156,18 @@ export function GitHubStats() {
   }, []);
 
   return (
-    <section className="section-shell" id="stats">
-      <SectionHeader index="04" title="GitHub" kicker="Activity / Signal" />
+    <section className="section-shell section-shell--tight" id={anchor}>
+      <SectionHeader index={index} title={title} kicker="Activity / Signal" />
 
       {loading ? (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="panel h-32 animate-pulse" />
+        <div className="proof-rail" data-cols="3" data-tone="data">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="proof-point">
+              <div
+                className="mt-1 h-6 w-16 animate-pulse rounded-[2px]"
+                style={{ background: "var(--surface)" }}
+              />
+            </div>
           ))}
         </div>
       ) : failed ? (
@@ -169,18 +184,17 @@ export function GitHubStats() {
           for live numbers.
         </p>
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <StatCard label="Repositories" value={stats?.repos ?? 0} index={0} />
-          <StatCard label="Stars" value={stats?.stars ?? 0} index={1} />
-          <StatCard label="Followers" value={stats?.followers ?? 0} index={2} />
-          <StatCard label="Pull Requests" value={stats?.prs ?? 0} index={3} />
-        </div>
+        <StatRail stats={stats} />
       )}
 
       {!loading && !chartError && (
-        <div className="panel mt-6 overflow-x-auto p-4">
-          {/* Reserve the chart's intrinsic ratio (~9.6:1) to avoid layout shift */}
-          <div style={{ aspectRatio: "104 / 14", minWidth: 640 }}>
+        <div
+          className="panel mt-6 overflow-x-auto p-4"
+          style={{ overscrollBehaviorX: "contain" }}
+        >
+          {/* Reserve the chart's intrinsic ratio (~9.6:1) to avoid layout shift.
+              Narrowed from 640px so a phone scrolls ~1.5 screens instead of 2. */}
+          <div style={{ aspectRatio: "104 / 14", minWidth: 560 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`https://ghchart.rshah.org/${chartColor}/ishaq2321`}
@@ -200,8 +214,18 @@ export function GitHubStats() {
         className="link-mono mt-6 inline-flex items-center gap-2"
       >
         github.com/ishaq2321
-        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        <svg
+          className="h-3.5 w-3.5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.6}
+            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+          />
         </svg>
       </a>
     </section>

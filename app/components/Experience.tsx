@@ -1,9 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { config } from "@/lib/config";
 import { SectionHeader } from "@/app/components/SectionHeader";
+import { useReveal } from "@/app/components/useReveal";
+import type { SectionProps } from "@/app/types";
 
 function TimelineEntry({
   exp,
@@ -15,7 +17,7 @@ function TimelineEntry({
   isLast: boolean;
 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
+  const isInView = useReveal(ref);
 
   return (
     <motion.div
@@ -29,26 +31,40 @@ function TimelineEntry({
       <div className="flex flex-col items-center pt-1.5">
         <span
           className="h-2.5 w-2.5 shrink-0 rounded-full"
-          style={{ background: "var(--accent)", boxShadow: "0 0 0 4px var(--accent-quiet)" }}
+          style={{
+            background: "var(--accent)",
+            boxShadow: "0 0 0 4px var(--accent-quiet)",
+          }}
         />
-        {!isLast && <span className="mt-2 w-px flex-1" style={{ background: "var(--line)" }} />}
+        {!isLast && (
+          <span className="mt-2 w-px flex-1" style={{ background: "var(--line)" }} />
+        )}
       </div>
 
       <div className="experience-entry -mt-1 p-1 pb-6 sm:p-2 sm:pb-8">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
           <div>
-            <h3 className="font-display text-xl" style={{ color: "var(--text)", letterSpacing: "-0.01em" }}>
+            <h3
+              className="font-display text-xl"
+              style={{ color: "var(--text)", letterSpacing: "-0.01em" }}
+            >
               {exp.role}
             </h3>
             {exp.organization && (
-              <p className="font-mono text-sm" style={{ color: "var(--accent-text)" }}>
+              <p
+                className="font-mono text-[13px]"
+                style={{ color: "var(--accent-text)" }}
+              >
                 {exp.organization}
               </p>
             )}
           </div>
           <p className="meta shrink-0">{exp.period}</p>
         </div>
-        <p className="mt-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
+        <p
+          className="measure mt-4 leading-relaxed"
+          style={{ color: "var(--text-muted)" }}
+        >
           {exp.description}
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1.5">
@@ -69,10 +85,10 @@ function TimelineEntry({
   );
 }
 
-export function Experience() {
+export function Experience({ anchor, index, title = "Experience" }: SectionProps) {
   return (
-    <section className="section-shell" id="experience">
-      <SectionHeader index="03" title="Experience" kicker="Timeline" />
+    <section className="section-shell" id={anchor}>
+      <SectionHeader index={index} title={title} kicker="Timeline" variant="rail" />
       <div>
         {config.experience.map((exp, i) => (
           <TimelineEntry

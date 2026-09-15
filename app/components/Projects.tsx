@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { config } from "@/lib/config";
+import type { Figure, SectionProps } from "@/app/types";
 import { SectionHeader } from "@/app/components/SectionHeader";
 import { SpotlightCard } from "@/app/components/SpotlightCard";
+import { Plate } from "@/app/components/Plate";
+import { useReveal } from "@/app/components/useReveal";
 
-interface NpmStat { weekly: number; total: number }
+interface NpmStat {
+  weekly: number;
+  total: number;
+}
 type NpmStatsPayload = { packages: Record<string, NpmStat> };
 
 /** Shared cache so every card reads the static payload once. */
@@ -34,7 +40,10 @@ async function fetchLiveNpmStat(name: string): Promise<NpmStat | null> {
     if (rangeRes.ok) {
       const data = await rangeRes.json();
       total = Array.isArray(data.downloads)
-        ? data.downloads.reduce((sum: number, d: { downloads?: number }) => sum + (d.downloads ?? 0), 0)
+        ? data.downloads.reduce(
+            (sum: number, d: { downloads?: number }) => sum + (d.downloads ?? 0),
+            0
+          )
         : 0;
     }
     return weekly > 0 || total > 0 ? { weekly, total } : null;
@@ -70,7 +79,15 @@ function useNpmDownloads(packageName?: string): NpmStat | null {
 
 const linkIcons = {
   external: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5"
+    >
       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
       <path d="M15 3h6v6" />
       <path d="M10 14 21 3" />
@@ -82,7 +99,15 @@ const linkIcons = {
     </svg>
   ),
   package: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5"
+    >
       <path d="m7.5 4.27 9 5.15" />
       <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
       <path d="m3.3 7 8.7 5 8.7-5" />
@@ -90,14 +115,30 @@ const linkIcons = {
     </svg>
   ),
   doc: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5"
+    >
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
       <path d="M14 2v6h6" />
       <path d="M16 13H8M16 17H8M10 9H8" />
     </svg>
   ),
   chart: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5"
+    >
       <path d="M3 3v18h18" />
       <path d="m19 9-5 5-4-4-3 3" />
     </svg>
@@ -120,7 +161,9 @@ function ProjectLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={variant === "primary" ? "action-link action-link--primary" : "action-link"}
+      className={
+        variant === "primary" ? "action-link action-link--primary" : "action-link"
+      }
     >
       {linkIcons[icon]}
       {label}
@@ -128,120 +171,279 @@ function ProjectLink({
   );
 }
 
+function ProjectLinks({
+  project,
+  className,
+}: {
+  project: (typeof config.projects)[number];
+  className?: string;
+}) {
+  return (
+    <div className={className} style={{ borderColor: "var(--line)" }}>
+      {project.live && (
+        <ProjectLink href={project.live} label="Live" icon="external" variant="primary" />
+      )}
+      <ProjectLink href={project.url} label="Code" icon="repo" />
+      {project.docsUrl && (
+        <ProjectLink href={project.docsUrl} label="Thesis" icon="doc" />
+      )}
+      {project.npm && (
+        <ProjectLink
+          href={`https://www.npmjs.com/package/${project.npm}`}
+          label="npm"
+          icon="package"
+        />
+      )}
+      {project.pypi && (
+        <ProjectLink
+          href={`https://pypi.org/project/${project.pypi}/`}
+          label="PyPI"
+          icon="package"
+        />
+      )}
+      {project.benchmarkUrl && (
+        <ProjectLink href={project.benchmarkUrl} label="Benchmark" icon="chart" />
+      )}
+      {project.links?.map((link) => (
+        <ProjectLink
+          key={link.label}
+          href={link.url}
+          label={link.label}
+          icon="external"
+        />
+      ))}
+    </div>
+  );
+}
+
+function StackRow({ stack }: { stack: string[] }) {
+  return (
+    <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+      <span className="meta shrink-0" style={{ color: "var(--text-faint)" }}>
+        Built with
+      </span>
+      {stack.map((tech, i) => (
+        <span key={tech} className="flex items-center gap-2">
+          {i > 0 && (
+            <span
+              className="h-0.5 w-0.5 rounded-full"
+              style={{ background: "var(--text-faint)", opacity: 0.5 }}
+            />
+          )}
+          <span className="tech-tag">{tech}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * A flagship product, shown rather than described: the write-up and a real
+ * capture of the shipped product side by side, with a second wide plate
+ * underneath. Alternating sides give the two flagship projects different
+ * silhouettes instead of two identical cards.
+ */
+function ProjectFeature({
+  project,
+  plates,
+  flip,
+  flagship,
+}: {
+  project: (typeof config.projects)[number];
+  plates: Array<{ figure: Figure; fig: string }>;
+  flip: boolean;
+  flagship: boolean;
+}) {
+  const ref = useRef(null);
+  const revealed = useReveal(ref, { margin: "-60px" });
+  const [primary, secondary] = plates;
+
+  return (
+    <motion.article
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      animate={revealed ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className={`feature${flip ? " feature--flip" : ""}`}
+    >
+      {/* Signal an absent plate through an attribute rather than :has(): the CSS
+          pipeline silently dropped a `:not(:has(...))` selector here. */}
+      <div className="feature__grid" data-plated={primary ? "true" : "false"}>
+        <div className="feature__copy">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="section-rule" />
+            <span className="meta" style={{ color: "var(--accent-text)" }}>
+              {flagship ? "Primary project" : "Product"}
+            </span>
+          </div>
+
+          <h3
+            className="font-display text-3xl lg:text-4xl"
+            style={{ color: "var(--text)", letterSpacing: "-0.02em" }}
+          >
+            {project.name}
+          </h3>
+
+          <p
+            className="measure mt-5 leading-relaxed"
+            style={{ color: "var(--text-muted)" }}
+          >
+            {project.description}
+          </p>
+
+          {project.highlights && (
+            <ul className="mt-6 space-y-2.5">
+              {project.highlights.map((h) => (
+                <li
+                  key={h}
+                  className="flex items-start gap-2.5 text-sm leading-relaxed"
+                  style={{ color: "var(--text)" }}
+                >
+                  <span
+                    className="mt-2 h-1 w-1 shrink-0 rounded-full"
+                    style={{ background: "var(--accent)" }}
+                  />
+                  {h}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <StackRow stack={project.stack} />
+
+          <ProjectLinks
+            project={project}
+            className="mt-7 flex flex-wrap items-center gap-2.5 border-t pt-6"
+          />
+        </div>
+
+        {primary && (
+          <div className="feature__figure">
+            <Plate figure={primary.figure} fig={primary.fig} />
+          </div>
+        )}
+      </div>
+
+      {secondary && (
+        <div className="feature__wide">
+          <Plate figure={secondary.figure} fig={secondary.fig} />
+        </div>
+      )}
+    </motion.article>
+  );
+}
+
 function ProjectCard({
   project,
   index,
-  featured,
+  wide,
 }: {
   project: (typeof config.projects)[number];
   index: number;
-  featured?: boolean;
+  wide?: boolean;
 }) {
   const downloads = useNpmDownloads(project.npm);
+  const ref = useRef(null);
+  const revealed = useReveal(ref);
 
   return (
     <motion.div
-      className={featured ? "sm:col-span-2" : ""}
+      ref={ref}
+      // `wide` keeps an odd trailing card from leaving a hole in the 2-column grid.
+      className={wide ? "sm:col-span-2" : ""}
       initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      animate={revealed ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: (index % 2) * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
-    <SpotlightCard
-      className={`flex h-full flex-col p-7${featured ? " spotlight-featured" : ""}`}
-      style={featured ? { borderColor: "var(--accent-quiet)" } : undefined}
-    >
-      <div className="flex min-h-full flex-col">
-        <div className="mb-4">
-          {featured && (
-            <span className="meta mb-1 block" style={{ color: "var(--accent-text)" }}>
-              Primary Project
-            </span>
-          )}
-          <h3 className="font-display text-2xl" style={{ color: "var(--text)", letterSpacing: "-0.01em" }}>
-            {project.name}
-          </h3>
-        </div>
-
-        <p className="mb-5 leading-relaxed" style={{ color: "var(--text-muted)" }}>
-          {project.description}
-        </p>
-
-        {featured && project.highlights && (
-          <ul className="mb-6 space-y-2">
-            {project.highlights.map((h) => (
-              <li key={h} className="flex items-start gap-2.5 text-sm" style={{ color: "var(--text)" }}>
-                <span className="mt-2 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--accent)" }} />
-                {h}
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <div className="mt-auto">
-          {downloads && (
-            <p
-              className="mb-4 flex items-center gap-2 font-mono text-xs"
-              style={{ color: "var(--text-muted)" }}
+      <SpotlightCard className="flex h-full flex-col p-7">
+        <div className="flex min-h-full flex-col">
+          <div className="mb-4">
+            <h3
+              className="font-display text-2xl"
+              style={{ color: "var(--text)", letterSpacing: "-0.01em" }}
             >
-              <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "var(--accent)" }} />
-              {downloads.weekly.toLocaleString()}/week
-              <span style={{ color: "var(--text-faint)" }}>&middot;</span>
-              {downloads.total.toLocaleString()} downloads total
-            </p>
-          )}
-          <div className="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1.5">
-            <span className="meta shrink-0" style={{ color: "var(--text-faint)" }}>
-              Built with
-            </span>
-            {project.stack.map((tech, i) => (
-              <span key={tech} className="flex items-center gap-2">
-                {i > 0 && (
-                  <span className="h-0.5 w-0.5 rounded-full" style={{ background: "var(--text-faint)", opacity: 0.5 }} />
-                )}
-                <span className="tech-tag">{tech}</span>
-              </span>
-            ))}
+              {project.name}
+            </h3>
           </div>
-          <div className="flex flex-wrap items-center gap-2.5 border-t pt-5" style={{ borderColor: "var(--line)" }}>
-            {project.live && <ProjectLink href={project.live} label="Live" icon="external" variant="primary" />}
-            <ProjectLink href={project.url} label="Code" icon="repo" />
-            {project.docsUrl && <ProjectLink href={project.docsUrl} label="Thesis" icon="doc" />}
-            {project.npm && <ProjectLink href={`https://www.npmjs.com/package/${project.npm}`} label="npm" icon="package" />}
-            {project.pypi && <ProjectLink href={`https://pypi.org/project/${project.pypi}/`} label="PyPI" icon="package" />}
-            {project.benchmarkUrl && <ProjectLink href={project.benchmarkUrl} label="Benchmark" icon="chart" />}
-            {project.links?.map((link) => (
-              <ProjectLink key={link.label} href={link.url} label={link.label} icon="external" />
-            ))}
+
+          <p
+            className="measure mb-5 leading-relaxed"
+            style={{ color: "var(--text-muted)" }}
+          >
+            {project.description}
+          </p>
+
+          <div className="mt-auto">
+            {downloads && (
+              <p
+                className="mb-4 flex items-center gap-2 font-mono text-xs"
+                style={{ color: "var(--text-muted)" }}
+              >
+                <span
+                  className="inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+                  style={{ background: "var(--accent)" }}
+                />
+                {downloads.weekly.toLocaleString()}/week
+                <span style={{ color: "var(--text-faint)" }}>&middot;</span>
+                {downloads.total.toLocaleString()} downloads total
+              </p>
+            )}
+            <StackRow stack={project.stack} />
+            <ProjectLinks
+              project={project}
+              className="flex flex-wrap items-center gap-2.5 border-t pt-5"
+            />
           </div>
         </div>
-      </div>
-
-    </SpotlightCard>
+      </SpotlightCard>
     </motion.div>
   );
 }
 
-export function Projects() {
+export function Projects({ anchor, index, title = "Selected Work" }: SectionProps) {
   const featuredProjects = config.projects.filter((p) => p.featured);
   const otherProjects = config.projects.filter((p) => !p.featured);
 
+  // Plates are numbered in reading order. Fig. 01 is the hero portrait, so the
+  // first product plate is Fig. 02 — numbering stays stable as long as the
+  // projects keep their config order.
+  let counter = 1;
+  const numbered = config.projects.map((p) => ({
+    name: p.name,
+    plates: (p.figures ?? []).map((figure) => ({
+      figure,
+      fig: String(++counter).padStart(2, "0"),
+    })),
+  }));
+  const platesFor = (name: string) => numbered.find((n) => n.name === name)?.plates ?? [];
+
   return (
-    <section className="section-shell" id="projects">
-      <SectionHeader index="02" title="Selected Work" kicker="Projects & Builds" />
+    <section className="section-shell section-shell--loose" id={anchor}>
+      <SectionHeader index={index} title={title} kicker="Projects & Builds" />
 
       {featuredProjects.length > 0 && (
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div>
           {featuredProjects.map((project, i) => (
-            <ProjectCard key={project.name} project={project} index={i} featured />
+            <ProjectFeature
+              key={project.name}
+              project={project}
+              plates={platesFor(project.name)}
+              flip={i % 2 === 1}
+              flagship={i === 0}
+            />
           ))}
         </div>
       )}
 
       {otherProjects.length > 0 && (
-        <div className="mt-5 grid gap-5 sm:grid-cols-2">
+        <div className="mt-14 grid gap-5 sm:grid-cols-2">
           {otherProjects.map((project, i) => (
-            <ProjectCard key={project.name} project={project} index={featuredProjects.length + i} />
+            <ProjectCard
+              key={project.name}
+              project={project}
+              index={i}
+              wide={otherProjects.length % 2 === 1 && i === otherProjects.length - 1}
+            />
           ))}
         </div>
       )}

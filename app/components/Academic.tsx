@@ -1,19 +1,21 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { config } from "@/lib/config";
 import { SectionHeader } from "@/app/components/SectionHeader";
+import { useReveal } from "@/app/components/useReveal";
+import type { SectionProps } from "@/app/types";
 
-export function Academic() {
+export function Academic({ anchor, index, title = "Education" }: SectionProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const isInView = useReveal(ref, { margin: "-60px" });
   const edu = config.education;
   const tsinghuaAchievement = edu.achievements?.find((a) => a.includes("Tsinghua"));
 
   return (
-    <section className="section-shell" id="education">
-      <SectionHeader index="06" title="Education" kicker="Academic record" />
+    <section className="section-shell" id={anchor}>
+      <SectionHeader index={index} title={title} kicker="Academic record" />
 
       <motion.div
         ref={ref}
@@ -34,7 +36,10 @@ export function Academic() {
             <p className="meta" style={{ color: "var(--gold)" }}>
               ★ Top Achievement
             </p>
-            <p className="mt-3 font-display text-2xl" style={{ color: "var(--text)", letterSpacing: "-0.01em" }}>
+            <p
+              className="measure mt-3 font-display text-2xl"
+              style={{ color: "var(--text)", letterSpacing: "-0.01em" }}
+            >
               Selected for BSc Computer Science at Tsinghua University — full scholarship
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
@@ -60,9 +65,9 @@ export function Academic() {
           </div>
         )}
 
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-10 md:grid-cols-2 md:gap-12">
           {/* University */}
-          <div className="panel p-7">
+          <div className="edu-block">
             <p className="meta">University</p>
             <h3 className="mt-2 font-display text-xl" style={{ color: "var(--text)" }}>
               {edu.university}
@@ -73,17 +78,35 @@ export function Academic() {
             <p className="meta mt-1">{edu.period}</p>
             <div className="my-5 hairline" />
             <ul className="space-y-2.5">
-              <li className="flex items-start gap-2.5 text-sm" style={{ color: "var(--text-muted)" }}>
-                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--text-faint)" }} />
+              <li
+                className="flex items-start gap-2.5 text-sm"
+                style={{ color: "var(--text-muted)" }}
+              >
+                <span
+                  className="mt-1.5 h-1 w-1 shrink-0 rounded-full"
+                  style={{ background: "var(--text-faint)" }}
+                />
                 {edu.faculty}
               </li>
-              <li className="flex items-start gap-2.5 text-sm" style={{ color: "var(--text-muted)" }}>
-                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--text-faint)" }} />
+              <li
+                className="flex items-start gap-2.5 text-sm"
+                style={{ color: "var(--text-muted)" }}
+              >
+                <span
+                  className="mt-1.5 h-1 w-1 shrink-0 rounded-full"
+                  style={{ background: "var(--text-faint)" }}
+                />
                 Thesis: {edu.thesis}
               </li>
               {edu.scholarship && (
-                <li className="flex items-start gap-2.5 text-sm" style={{ color: "var(--accent-text)" }}>
-                  <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--accent)" }} />
+                <li
+                  className="flex items-start gap-2.5 text-sm"
+                  style={{ color: "var(--accent-text)" }}
+                >
+                  <span
+                    className="mt-1.5 h-1 w-1 shrink-0 rounded-full"
+                    style={{ background: "var(--accent)" }}
+                  />
                   {edu.scholarship}
                 </li>
               )}
@@ -91,11 +114,14 @@ export function Academic() {
           </div>
 
           {/* High School */}
-          <div className="panel p-7">
+          <div className="edu-block">
             <p className="meta">Higher Secondary</p>
             {edu.highSchool?.map((hs, i) => (
               <div key={i}>
-                <h3 className="mt-2 font-display text-xl" style={{ color: "var(--text)" }}>
+                <h3
+                  className="mt-2 font-display text-xl"
+                  style={{ color: "var(--text)" }}
+                >
                   {hs.school}
                 </h3>
                 <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
@@ -104,13 +130,26 @@ export function Academic() {
                 <p className="meta mt-1">{hs.period}</p>
                 <div className="my-5 hairline" />
                 <ul className="space-y-2.5">
-                  <li className="flex items-start gap-2.5 text-sm" style={{ color: "var(--text-muted)" }}>
-                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--text-faint)" }} />
+                  <li
+                    className="flex items-start gap-2.5 text-sm"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    <span
+                      className="mt-1.5 h-1 w-1 shrink-0 rounded-full"
+                      style={{ background: "var(--text-faint)" }}
+                    />
                     {hs.board}
                   </li>
                   {hs.achievements?.map((a, j) => (
-                    <li key={j} className="flex items-start gap-2.5 text-sm" style={{ color: "var(--gold)" }}>
-                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full" style={{ background: "var(--gold)" }} />
+                    <li
+                      key={j}
+                      className="flex items-start gap-2.5 text-sm"
+                      style={{ color: "var(--gold)" }}
+                    >
+                      <span
+                        className="mt-1.5 h-1 w-1 shrink-0 rounded-full"
+                        style={{ background: "var(--gold)" }}
+                      />
                       {a}
                     </li>
                   ))}
