@@ -1,5 +1,13 @@
 name: Deploy to GitHub Pages
 
+# Action versions are pinned to majors that declare `runs.using: node24`.
+# node20 actions still work, but the runner force-upgrades them and emits a
+# deprecation annotation on every job, which buries real failures in the log.
+#
+# Paired deliberately: upload-pages-artifact@v5 wraps upload-artifact@v7 (v3
+# wrapped @v4, which is where this workflow's warning came from), and
+# deploy-pages@v5 is the matching deploy half. Bump the two together.
+
 on:
   push:
     branches: [main]
@@ -17,8 +25,8 @@ jobs:
   typecheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -28,8 +36,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -42,7 +50,7 @@ jobs:
     outputs:
       deploy: ${{ steps.check.outputs.deploy }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 2
       - name: Check if deploy is needed
@@ -69,8 +77,8 @@ jobs:
     needs: [should-deploy]
     if: needs.should-deploy.outputs.deploy == 'true'
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -78,7 +86,7 @@ jobs:
       - run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: out
 
@@ -90,5 +98,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v5
         id: deployment
