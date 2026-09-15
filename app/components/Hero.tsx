@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { config } from "@/lib/config";
+import { sections } from "@/lib/sections";
 import type { ProofPoint } from "@/app/types";
 import type { MouseEvent } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -28,6 +29,15 @@ export function Hero() {
     upstreamRepos: String(upstreamRepos),
     liveProducts: String(liveProducts),
   };
+  // The hero links into the section list, and a fork can switch any of those off
+  // one entry at a time. Resolving the anchors against the registry means a
+  // disabled section costs a link rather than leaving one pointing at an anchor
+  // that no longer exists — the same failure the nav used to have.
+  const renderedIds = new Set(sections.map((section) => section.id));
+  const firstAnchor = sections[0] ? `#${sections[0].id}` : undefined;
+  const sectionHref = (href?: string) =>
+    href && href.startsWith("#") && !renderedIds.has(href.slice(1)) ? undefined : href;
+
   const proofSource: ProofPoint[] =
     config.proof && config.proof.length > 0
       ? config.proof
@@ -151,9 +161,14 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.45, ease }}
               className="mt-8 flex flex-wrap gap-3"
             >
-              <a href="#contributions" className="btn-primary">
-                View evidence <span aria-hidden>↓</span>
-              </a>
+              {/* Points at whatever section renders first, so it stays honest
+                  when a fork switches "Open Source" off. Gone entirely if the
+                  page has no sections left to view. */}
+              {firstAnchor && (
+                <a href={firstAnchor} className="btn-primary">
+                  View evidence <span aria-hidden>↓</span>
+                </a>
+              )}
               <a
                 href={config.social.github}
                 target="_blank"
@@ -232,6 +247,7 @@ export function Hero() {
         >
           {proofPoints.map((point) => {
             const numeric = /^[\d.,%+]+$/.test(point.value);
+            const href = sectionHref(point.href);
             return (
               <div key={point.label} className="proof-point">
                 <dt className="meta mt-1">{point.label}</dt>
@@ -243,9 +259,9 @@ export function Hero() {
                   }
                   style={{ color: numeric ? "var(--accent-text)" : "var(--text)" }}
                 >
-                  {point.href ? (
+                  {href ? (
                     <a
-                      href={point.href}
+                      href={href}
                       className="inline-block min-w-6 py-1 transition-colors hover:text-[var(--accent-text)]"
                     >
                       {point.value}
