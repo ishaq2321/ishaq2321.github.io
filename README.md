@@ -166,6 +166,37 @@ request from one — nothing is written and `lib/portrait.ts` resolves the missi
 away, so the hero renders the monogram it already falls back to. `config.photo` names
 the path to *request*; only a path that exists reaches an `<Image>`.
 
+#### The offer letter — why it is encrypted instead
+
+`public/tsinghua-offer.pdf` is a personal document and gets the same goal — still served
+on the site, not published in the repository — but it **cannot** ride a secret the way
+the photograph does. Its base64 is 893 KB, and GitHub refuses secrets anywhere near that
+size (48 KB per secret), as does the kernel's limit for one process-environment string
+(128 KB). So the repository carries the file **encrypted** and only the key is a secret:
+
+```
+# one-off: make a key, encrypt, keep the key out of git (temp/ is ignored)
+openssl rand -base64 32 > temp/private/offer-letter.key
+openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt \
+  -in public/tsinghua-offer.pdf -out encrypted/offer-letter.pdf.enc \
+  -pass file:temp/private/offer-letter.key
+gh secret set OFFER_LETTER_KEY < temp/private/offer-letter.key
+
+# to rotate the key, or to replace the document: repeat the three lines above
+```
+
+A public repository holding ciphertext gives a crawler nothing, which is the point — the
+plaintext is never committed, and a `raw.githubusercontent.com` hit returns noise. The
+build decrypts it into `public/` before the export and checks the `%PDF` signature, so a
+wrong key fails the deploy loudly instead of serving a corrupt file. The ciphertext is a
+committed blob, so replacing the document adds a new blob and the old one stays in
+history, which is worth knowing before you put anything genuinely sensitive in there.
+
+When you fork: the link is not gated on the file existing, so a fork that keeps the
+Tsinghua achievement without its own PDF links to a missing file (`OFFER_LETTER_KEY` is
+unset, so the build warns and serves nothing). Drop the achievement, or bring your own
+document — and if you want this treatment, keep your own copy of `encrypted/` intact.
+
 #### What this does and does not protect
 
 Honest scope, because it is easy to over-claim here:
@@ -173,9 +204,10 @@ Honest scope, because it is easy to over-claim here:
 - **The image is still public on the live site.** Any file a browser can display can be
 downloaded by a person or a bot; there is no way around that while showing it.
 - **`app/robots.ts` asks AI crawlers not to take it** (GPTBot, ClaudeBot, CCBot,
-  Google-Extended and others are disallowed from the two portrait paths only — the rest
-  of the site stays open, since being found is the point). That is a request that
-  well-behaved crawlers honour, not access control.
+  Google-Extended and others are disallowed from the three personal paths only — the two
+  portrait files and the offer letter — while the rest of the site stays open, since
+  being found is the point). That is a request that well-behaved crawlers honour, not
+  access control.
 - **The licence carves the personal content out.** `LICENSE` is MIT for the code, but the
   photographs, CV and other personal documents are © all rights reserved, so a fork
   cannot claim them as part of the template it licensed.
@@ -224,6 +256,7 @@ The lowest number is the best band to end the cut — in this photograph it is t
 y≈1560, where the cut sits, rather than y≈1330 across the beard, where it started.
 
 Drop in `resume.pdf` (or let the generator build one). `og.png` is generated automatically.
+`encrypted/offer-letter.pdf.enc` is the one committed blob a build decrypts — see above.
 
 ---
 

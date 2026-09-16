@@ -83,20 +83,41 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # The hero photograph is a personal image, so it is not in this repository: it is
-      # generated locally by scripts/prepare-portrait.py and carried here as base64 in
-      # repository secrets. Committing it instead would publish it forever, including
-      # in the git history. If the secrets are absent (a fork, or a pull request from
-      # one) nothing is written and the hero falls back to the monogram.
-      - name: Add the portrait from repository secrets
+      # Two personal files are not in this repository: the hero photograph (with its
+      # cutout layer) and the Tsinghua offer letter. They are generated/kept locally and
+      # carried here as base64 in repository secrets, because committing them would
+      # publish them forever, including in the git history. With no secret - a fork, or a
+      # pull request from one - nothing is written and the site degrades instead of
+      # shipping a broken image or a 404 link.
+      - name: Materialise the personal files that are not in this repository
         env:
           PORTRAIT_B64: ${{ secrets.PORTRAIT_B64 }}
           PORTRAIT_HEAD_B64: ${{ secrets.PORTRAIT_HEAD_B64 }}
+          OFFER_LETTER_KEY: ${{ secrets.OFFER_LETTER_KEY }}
         run: |
           set -euo pipefail
 
-          add() {
-            name="$1"; data="$2"; without="$3"
+          # Signatures, read in one go (a `tail | head` pipeline dies of SIGPIPE under
+          # `pipefail` and would report exit 141 instead of a message): WebP is
+          # RIFF + 4 length bytes + WEBP, PDF is %PDF.
+          check() {
+            header=$(od -An -tx1 -N 12 "public/$1" | tr -d ' \n')
+            case "$2:$header" in
+              webp:52494646????????57454250) ;;
+              pdf:25504446????????????????) ;;
+              *)
+                echo "::error::public/$1 is not a $2 file (header $header) - refusing to ship it."
+                exit 1
+                ;;
+            esac
+            echo "public/$1: $(stat -c %s "public/$1") bytes, sha256 $(sha256sum "public/$1" | cut -d' ' -f1)"
+          }
+
+          # Small files ride as base64 in a secret. 48 KB is GitHub's limit per secret
+          # and 128 KB is the kernel's per-string limit for a process environment, so
+          # only the 17 KB and 12 KB WebPs can travel this way.
+          from_secret() {
+            name="$1"; data="$2"; without="$3"; kind="$4"
             if [ -z "$data" ]; then
               echo "::warning::secret for $name is not set - $without"
               return 0
@@ -105,26 +126,34 @@ jobs:
               echo "::error::secret for $name is not valid base64 - re-run: base64 -w0 public/$name | gh secret set ..."
               exit 1
             fi
-
-            # Fail loudly on a mis-pasted secret rather than shipping a broken image.
-            # The WebP signature is RIFF + 4 length bytes + WEBP; read those 12 bytes in
-            # one go, because a `tail | head` pipeline dies of SIGPIPE under `pipefail`
-            # and would report exit 141 instead of this message.
-            header=$(od -An -tx1 -N 12 "public/$name" | tr -d ' \n')
-            case "$header" in
-              52494646????????57454250) ;;
-              *)
-                echo "::error::public/$name is not a WebP file (header $header) - the secret should hold base64 of the .webp itself."
-                exit 1
-                ;;
-            esac
-            echo "public/$name: $(stat -c %s "public/$name") bytes, sha256 $(sha256sum "public/$name" | cut -d' ' -f1)"
+            check "$name" "$kind"
           }
 
-          add portrait.webp "$PORTRAIT_B64" \
-            "the hero will render the monogram rather than a photo."
-          add portrait-head.webp "$PORTRAIT_HEAD_B64" \
-            "the hero will show the photo with no depth motion."
+          # The 670 KB offer letter cannot: base64 of it is 893 KB. So the repository
+          # carries it encrypted (encrypted/offer-letter.pdf.enc) and only the key is a
+          # secret. Ciphertext in a public repository reveals nothing, while the URL
+          # crawlers and raw.githubusercontent.com would find serves gibberish.
+          from_encrypted() {
+            name="$1"; key="$2"; without="$3"
+            if [ -z "$key" ]; then
+              echo "::warning::secret for $name is not set - $without"
+              return 0
+            fi
+            if ! printf '%s' "$(printf '%s' "$key" | tr -d '\r\n')" \
+                 | openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -pass stdin \
+                     -in encrypted/offer-letter.pdf.enc -out "public/$name" 2>/dev/null; then
+              echo "::error::could not decrypt encrypted/offer-letter.pdf.enc - is OFFER_LETTER_KEY the key it was encrypted with?"
+              exit 1
+            fi
+            check "$name" pdf
+          }
+
+          from_secret portrait.webp "$PORTRAIT_B64" \
+            "the hero will render the monogram rather than a photo." webp
+          from_secret portrait-head.webp "$PORTRAIT_HEAD_B64" \
+            "the hero will show the photo with no depth motion." webp
+          from_encrypted tsinghua-offer.pdf "$OFFER_LETTER_KEY" \
+            "the Tsinghua chip will link to a missing file."
       - run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

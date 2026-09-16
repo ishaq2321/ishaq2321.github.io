@@ -44,9 +44,17 @@ next-env.d.ts
 /temp/
 portrait-preview/
 
+# keys for the encrypted personal files (see README, "The offer letter")
+*.key
+
 # The hero photograph and its cutout layer. Both are personal images and are kept out
 # of the repository and its history on purpose: scripts/prepare-portrait.py writes them
 # from a local photo, and the deploy injects them from repository secrets. Committing
 # either one would publish it permanently, including in the GitHub history.
 /public/portrait.webp
 /public/portrait-head.webp
+
+# A personal document, same treatment for the same reason: it stays served on the site
+# (the Tsinghua chip links to it) but is injected from a repository secret rather than
+# committed, so it is not in the repository or its history.
+/public/tsinghua-offer.pdf
