@@ -254,7 +254,10 @@ If you want that effect anyway, `prepare-portrait.py --subject` still produces t
 (it is a good tool for a plain background), but expect the seam: it is inherent, not a
 tuning problem. Motion on *one* image is the version that cannot break a face.
 
-Drop in `resume.pdf` (or let the generator build one). `og.png` is generated automatically.
+`resume.pdf` is generated from your config on every build and is **not committed** — it is a
+personal document, and committing it puts an address and a phone number into the
+repository permanently. `og.png` is committed, since it carries nothing private and social
+previews need a stable URL for it.
 `encrypted/offer-letter.pdf.enc` is the one committed blob a build decrypts — see above.
 
 ---

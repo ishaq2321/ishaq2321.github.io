@@ -47,12 +47,18 @@ portrait-preview/
 # keys for the encrypted personal files (see README, "The offer letter")
 *.key
 
-# The hero photograph and its cutout layer. Both are personal images and are kept out
-# of the repository and its history on purpose: scripts/prepare-portrait.py writes them
-# from a local photo, and the deploy injects them from repository secrets. Committing
-# either one would publish it permanently, including in the GitHub history.
+# The hero photograph. A personal image, kept out of the repository and its history on
+# purpose: scripts/prepare-portrait.py writes it from a local photo, and the deploy
+# injects it from a repository secret. Committing it would publish it permanently,
+# including in the GitHub history.
 /public/portrait.webp
-/public/portrait-head.webp
+
+# The curriculum vitae: generated from portfolio.config.json by scripts/generate-resume.mjs
+# on every build, and deliberately not committed. It carries an address and a phone
+# number, and every time it was regenerated and committed the whole document went back
+# into history -- which is how a personal mailbox ended up in seven old revisions of it.
+# Generating it in the deploy keeps the published copy and the repository separate.
+/public/resume.pdf
 
 # A personal document, same treatment for the same reason: it stays served on the site
 # (the Tsinghua chip links to it) but is injected from a repository secret rather than
