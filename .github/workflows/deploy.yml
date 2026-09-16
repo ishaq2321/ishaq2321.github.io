@@ -52,23 +52,48 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          fetch-depth: 2
+          fetch-depth: 0
       - name: Check if deploy is needed
         id: check
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.event.after }}
         run: |
-          CHANGED=$(git diff --name-only HEAD^ HEAD 2>/dev/null || echo "deploy")
-          echo "Changed files: $CHANGED"
+          # The whole push, not just its tip. Comparing HEAD^..HEAD looked equivalent and
+          # wasn't: a push of five commits whose *last* one only edited the README reported
+          # "Changed files: README.md" and skipped the build, so the four commits that had
+          # changed the site never reached Pages.
+          #
+          # When the range cannot be worked out -- a force-push leaves the previous tip
+          # unreachable, and `actions/checkout` cannot fetch a commit that is gone -- ship
+          # anyway. A needless build costs a minute; silently not shipping cost a
+          # deployment, which is how this was found.
+          KNOWN=false
+          CHANGED=""
+          ZERO=0000000000000000000000000000000000000000
+          if [ -n "$BEFORE" ] && [ "$BEFORE" != "$ZERO" ] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            CHANGED=$(git diff --name-only "$BEFORE" "$AFTER")
+            KNOWN=true
+          elif [ "$BEFORE" = "$ZERO" ] && git rev-parse -q --verify HEAD^ >/dev/null 2>&1; then
+            CHANGED=$(git diff --name-only HEAD^ HEAD)
+            KNOWN=true
+          fi
 
           DEPLOY=false
-          for file in $CHANGED; do
-            case "$file" in
-              app/*|portfolio.config.json|public/*|lib/*|scripts/*|package.json|package-lock.json|.github/workflows/deploy.yml)
-                DEPLOY=true
-                break
-                ;;
-            esac
-          done
+          if [ "$KNOWN" = true ] && [ -n "$CHANGED" ]; then
+            for file in $CHANGED; do
+              case "$file" in
+                app/*|portfolio.config.json|public/*|lib/*|scripts/*|package.json|package-lock.json|.github/workflows/deploy.yml)
+                  DEPLOY=true
+                  break
+                  ;;
+              esac
+            done
+          else
+            DEPLOY=true
+          fi
 
+          echo "Changed files: ${CHANGED:-<range unknown>}"
           echo "deploy=$DEPLOY" >> $GITHUB_OUTPUT
           echo "Deploy decision: $DEPLOY"
 
