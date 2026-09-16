@@ -16,7 +16,8 @@
   ],
   "location": "Budapest, Hungary",
   "emailEncoded": "aXNoYXEyMzIxQHByb3Rvbi5tZQ==",
-  "photo": "/photo.svg",
+  "photo": "/portrait.webp",
+  "photoHead": "/portrait-head.webp",
   "resumeUrl": "/resume.pdf",
   "social": {
     "github": "https://github.com/ishaq2321",

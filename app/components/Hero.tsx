@@ -3,13 +3,19 @@
 import Image from "next/image";
 import { config } from "@/lib/config";
 import { sections } from "@/lib/sections";
-import type { ProofPoint } from "@/app/types";
+import type { Portrait, ProofPoint } from "@/app/types";
 import type { MouseEvent } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-export function Hero() {
+export function Hero({ portrait }: { portrait: Portrait }) {
   const initials = config.name
     .split(/\s+/)
     .filter(Boolean)
@@ -60,14 +66,21 @@ export function Hero() {
 
   const px = useMotionValue(0);
   const py = useMotionValue(0);
-  const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [8, -8]), {
-    stiffness: 150,
-    damping: 15,
-  });
-  const rotateY = useSpring(useTransform(px, [-0.5, 0.5], [-8, 8]), {
-    stiffness: 150,
-    damping: 15,
-  });
+  // Pointer-driven motion is still motion: honour the OS setting and hold the portrait still.
+  const reduceMotion = useReducedMotion();
+  const spring = { stiffness: 150, damping: 15 };
+  const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [6, -6]), spring);
+  const rotateY = useSpring(useTransform(px, [-0.5, 0.5], [-6, 6]), spring);
+
+  // Depth: the two layers drift against each other, the near one further and opposite to
+  // the far one, the way a near object moves more than a distant one when you move your head.
+  // Offsets are percentages, not pixels, so the drift keeps its proportion to the card as
+  // the card scales down (224px on desktop, 112px on mobile) and can never outrun the
+  // scale margin that hides the layer edges.
+  const farX = useSpring(useTransform(px, [-0.5, 0.5], ["-1.1%", "1.1%"]), spring);
+  const farY = useSpring(useTransform(py, [-0.5, 0.5], ["-0.9%", "0.9%"]), spring);
+  const nearX = useSpring(useTransform(px, [-0.5, 0.5], ["2.2%", "-2.2%"]), spring);
+  const nearY = useSpring(useTransform(py, [-0.5, 0.5], ["1.8%", "-1.8%"]), spring);
 
   function handlePortraitMove(e: MouseEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -201,9 +214,13 @@ export function Hero() {
                 Fig. 01
               </span>
               <motion.div
-                onMouseMove={handlePortraitMove}
-                onMouseLeave={resetPortrait}
-                style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+                onMouseMove={reduceMotion ? undefined : handlePortraitMove}
+                onMouseLeave={reduceMotion ? undefined : resetPortrait}
+                style={
+                  reduceMotion
+                    ? undefined
+                    : { rotateX, rotateY, transformStyle: "preserve-3d" }
+                }
                 className="relative h-28 w-28 overflow-hidden sm:h-36 sm:w-36 lg:h-56 lg:w-56"
               >
                 <div
@@ -215,14 +232,48 @@ export function Hero() {
                     boxShadow: "var(--shadow-featured)",
                   }}
                 >
-                  {config.photo ? (
-                    <Image
-                      src={config.photo}
-                      alt={config.name}
-                      fill
-                      className="object-cover"
-                      priority
-                    />
+                  {portrait.photo ? (
+                    <>
+                      {/* Far layer: always rendered, and slightly oversized so the drift
+                          never exposes a card edge. */}
+                      <motion.div
+                        className="absolute inset-0"
+                        style={
+                          reduceMotion
+                            ? { scale: 1.04 }
+                            : { scale: 1.04, x: farX, y: farY }
+                        }
+                      >
+                        <Image
+                          src={portrait.photo}
+                          alt={config.name}
+                          fill
+                          className="object-cover"
+                          priority
+                        />
+                      </motion.div>
+                      {/* Near layer: optional cutout of the subject, drifting further and
+                          the other way. Decorative, so it is hidden from assistive tech. */}
+                      {portrait.photoHead ? (
+                        <motion.div
+                          aria-hidden
+                          className="absolute inset-0"
+                          style={
+                            reduceMotion
+                              ? { scale: 1.06 }
+                              : { scale: 1.06, x: nearX, y: nearY }
+                          }
+                        >
+                          <Image
+                            src={portrait.photoHead}
+                            alt=""
+                            fill
+                            className="object-cover"
+                            priority
+                          />
+                        </motion.div>
+                      ) : null}
+                    </>
                   ) : (
                     <div
                       className="flex h-full w-full items-center justify-center font-display text-6xl"

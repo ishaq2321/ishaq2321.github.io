@@ -168,6 +168,20 @@ export interface SectionProps {
   title?: string;
 }
 
+/**
+ * Portrait files that actually exist in `public/` at build time.
+ *
+ * The hero photograph is a personal photograph, so it is not kept in this repository:
+ * it is generated locally and injected into the deploy from repository secrets. That
+ * means `config.photo` names an intended path that may not be on disk, and the hero
+ * has to fall back rather than point a browser at a missing file. `lib/portrait.ts`
+ * resolves config into this, and only a resolved field should reach an `<Image>`.
+ */
+export interface Portrait {
+  photo?: string;
+  photoHead?: string;
+}
+
 export interface PortfolioConfig {
   name: string;
   tagline: string;
@@ -178,6 +192,13 @@ export interface PortfolioConfig {
   emailEncoded: string;
   contactCategories?: Array<{ label: string; encoded: string }>;
   photo: string;
+  /**
+   * Optional near layer for the hero portrait: an alpha cutout of the subject, made
+   * with `scripts/prepare-portrait.py --subject`. When present the hero drifts the two
+   * layers against each other on pointer move, which reads as depth. Without it the
+   * hero shows `photo` on its own.
+   */
+  photoHead?: string;
   resumeUrl?: string;
   social: Social;
   /**
