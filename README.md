@@ -230,6 +230,20 @@ Three places can carry an address, and they are all deliberate:
   does not publish a mailbox either. If you fork this, that is the habit worth copying:
   an address you would not put on a business card does not belong in a commit.
 
+Your git identity is what decides this, not the project, so set it once and every future
+commit is safe by default — `noreply` addresses keep the commits attributed to your GitHub
+account without exposing a mailbox:
+
+```
+git config --global user.name  "Your Name"
+git config --global user.email "<your-github-user-id>+<your-username>@users.noreply.github.com"
+```
+
+Find the id with `gh api users/<your-username> --jq .id`. Worth checking the result of
+`git log --format='%an <%ae>' | sort -u` in a repository you are about to make public:
+every commit you ever make carries that address, and rewriting it later means rewriting
+the whole history.
+
 If you would rather not publish a photograph at all, delete the `photo` entry from
 `portfolio.config.json`: the hero renders your monogram and nothing is exposed.
 
