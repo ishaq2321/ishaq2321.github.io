@@ -60,7 +60,8 @@ This portfolio is designed to be forked and reused. Most changes require editing
 | `name`, `tagline`                                  | Hero headline — one claim, stated once                                                                                                                   |
 | `proof`                                            | Hero evidence rail: `{ value, label, href? }`. Give each fact a number and a link to where it is proven; the hero then never repeats the sections below. |
 | `about`                                            | Fallback hero deck, used only when `tagline` is empty                                                                                                    |
-| `location`, `email`, `emails`, `contactCategories` | Contact section                                                                                                                                          |
+| `location`                                         | Where you are — shown in the hero meta line and the Contact section                                                                                      |
+| `emailEncoded`, `contactCategories`                | Contact addresses, base64-encoded so a scraper reading the HTML finds no literal address. `contactCategories` is what the section lists as labelled links (`{ label, encoded }`); `emailEncoded` is the single address the generated résumé prints. Put only addresses you are happy to publish — the site shows exactly these and nothing else. |
 | `social`                                           | GitHub / LinkedIn links                                                                                                                                  |
 | `sections`                                         | **The section registry** — nav labels, page order and on/off switches. See [Sections](#2-sections--order-labels-and-numbers).                            |
 | `skills.core`                                      | Curated short list shown in the Toolkit section                                                                                                          |
@@ -89,6 +90,8 @@ This portfolio is designed to be forked and reused. Most changes require editing
   { "id": "contact", "label": "Contact" }
 ]
 ```
+
+Out of the box these ids exist, in the order they ship: `contributions`, `projects`, `experience`, `stats`, `skills`, `writing`, `education`, `books`, `references`, `contact`. Any of them can be reordered, renamed or switched off from this one list; `writing` and `references` also disappear on their own while their content arrays are empty, and `books` reads its entries from `lib/books.ts` rather than the config.
 
 - **Reorder** — just move a row. Chapter numbers are derived from the position among _visible_ sections, so they renumber themselves and can never end up with a gap.
 - **Rename** — change `label` (the nav entry) and, if you want the heading to differ from it, `title`. `projects` above renders as “Selected Work” while the nav says “Projects”.
@@ -151,12 +154,11 @@ the same family as the type, without sepia-washing the shadows.
 
 #### Getting it into the deploy
 
-Two repository secrets carry the two files as base64, and the build job writes them into
-`public/` before `npm run build`. Set or rotate them with:
+One repository secret carries the file as base64, and the build job writes it into
+`public/` before `npm run build`. Set or rotate it with:
 
 ```
-base64 -w0 public/portrait.webp      | gh secret set PORTRAIT_B64
-base64 -w0 public/portrait-head.webp | gh secret set PORTRAIT_HEAD_B64
+base64 -w0 public/portrait.webp | gh secret set PORTRAIT_B64
 ```
 
 The step prints the byte count and `sha256` of each decoded file, so a bad paste is
@@ -204,56 +206,53 @@ Honest scope, because it is easy to over-claim here:
 - **The image is still public on the live site.** Any file a browser can display can be
 downloaded by a person or a bot; there is no way around that while showing it.
 - **`app/robots.ts` asks AI crawlers not to take it** (GPTBot, ClaudeBot, CCBot,
-  Google-Extended and others are disallowed from the three personal paths only — the two
-  portrait files and the offer letter — while the rest of the site stays open, since
-  being found is the point). That is a request that well-behaved crawlers honour, not
-  access control.
+  Google-Extended and others are disallowed from the two personal paths only — the
+  photograph and the offer letter — while the rest of the site stays open, since being
+  found is the point). That is a request that well-behaved crawlers honour, not access
+  control.
 - **The licence carves the personal content out.** `LICENSE` is MIT for the code, but the
   photographs, CV and other personal documents are © all rights reserved, so a fork
   cannot claim them as part of the template it licensed.
 - **It is not in git, so it is not in the history** — which is the part that cannot be
   undone later. Removing a committed image means rewriting history and force-pushing.
 
-If you would rather not publish a photograph at all, delete the two `photo`/`photoHead`
-entries from `portfolio.config.json`: the hero renders your monogram and nothing is
-exposed.
+#### Which addresses appear, and where
 
-**Depth motion (optional).** Set `config.photoHead` to a second image — an alpha cutout of
-the subject — and the hero drifts the two layers against each other as the pointer moves,
-which reads as depth instead of a flat card:
+Three places can carry an address, and they are all deliberate:
 
-```
-python3 scripts/prepare-portrait.py --photo me.jpg --face 1231,877,1077 \
-  --out public/portrait.webp --subject public/portrait-head.webp
-```
+- **The page** lists `contactCategories` only — the labelled work addresses. Nothing else
+  is printed, so a personal mailbox is not on the site even though the code could show it.
+- **The résumé PDF** prints `emailEncoded`, chosen separately from the addresses above.
+  It is one address, and it is the one you are willing to hand to recruiters.
+- **Git** should not carry one at all. A personal address that was once written into
+  `portfolio.config.json` was removed from every commit, not just from the current
+  version, and the commits are authored with a GitHub `noreply` address so the history
+  does not publish a mailbox either. If you fork this, that is the habit worth copying:
+  an address you would not put on a business card does not belong in a commit.
 
-The cutout is taken from the same crop, so at rest the layers line up exactly. A plain
-background is cut automatically; for a busy one, pass `--subject-polygon "x,y x,y ..."`
-with an outline read off `--guide`, and `--cutout-check out.jpg` to see it on a loud
-background where a bad edge is obvious. Omit `photoHead` and the hero just shows `photo`.
-Pointer motion is disabled under `prefers-reduced-motion`.
+If you would rather not publish a photograph at all, delete the `photo` entry from
+`portfolio.config.json`: the hero renders your monogram and nothing is exposed.
 
-An outline is in source-photo pixels, so it is only reusable with the same crop — worth
-keeping beside the photo (`portrait-preview/` is gitignored for exactly this).
+**The hero's motion.** The card tilts with the pointer and the photograph drifts and
+zooms very slightly inside it — one image, moved as one piece, so the face stays crisp
+while it moves. Pointer motion is disabled under `prefers-reduced-motion`, leaving a
+still photograph.
 
-**Where to put the edge of the cut.** The two layers hold the same photograph, so they
-differ by the couple of pixels the drift pulls them apart. Where the cut crosses smooth
-content that difference is invisible; where it crosses textured detail it shows as a
-seam. So run the outline through the *smoothest* part of the subject — hair against sky,
-smooth skin, a dark jacket — and never across a beard, stripes or a busy edge. You can
-measure it instead of guessing:
+An earlier version moved *two* layers — the photograph plus an alpha cutout of the head —
+in opposite directions, which is the usual way to fake parallax. It was removed, and the
+reason is worth recording so nobody rebuilds it: the two layers hold the same crop, so
+any separation shows as a second copy of the subject offset by exactly that separation.
+Measured at the card edge the two were **6.4px apart**, which put a doubled outline of the
+head and beard over the real one and ran the cut visibly across the jaw; they were not
+even registered at rest, because the near layer carried a larger scale than the far one.
+Feathering the cut only converts a hard seam into a soft halo, and filling the hidden area
+with reconstructed background (blur, then diffusion inpainting) leaves a smudge where the
+surrounding night scene has detail — two copies of one photograph always disagree
+somewhere, and a face is the worst place for it to happen.
 
-```
-python3 - <<'PY'
-from PIL import Image
-px = Image.open("me.jpg").convert("L").load()
-for y in range(1300, 1700, 20):
-    print(y, sum(abs(px[x, y + 3] - px[x, y - 3]) for x in range(1060, 1520, 4)) / 115)
-PY
-```
-
-The lowest number is the best band to end the cut — in this photograph it is the neck at
-y≈1560, where the cut sits, rather than y≈1330 across the beard, where it started.
+If you want that effect anyway, `prepare-portrait.py --subject` still produces the cutout
+(it is a good tool for a plain background), but expect the seam: it is inherent, not a
+tuning problem. Motion on *one* image is the version that cannot break a face.
 
 Drop in `resume.pdf` (or let the generator build one). `og.png` is generated automatically.
 `encrypted/offer-letter.pdf.enc` is the one committed blob a build decrypts — see above.

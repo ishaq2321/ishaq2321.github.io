@@ -28,7 +28,5 @@ export function resolvePortrait(): Portrait {
 
   return {
     photo: present(config.photo),
-    // The cutout is a near layer for depth motion; without the plate it is pointless.
-    photoHead: present(config.photo) ? present(config.photoHead) : undefined,
   };
 }

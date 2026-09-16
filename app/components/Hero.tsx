@@ -66,21 +66,28 @@ export function Hero({ portrait }: { portrait: Portrait }) {
 
   const px = useMotionValue(0);
   const py = useMotionValue(0);
+  const hover = useMotionValue(0);
   // Pointer-driven motion is still motion: honour the OS setting and hold the portrait still.
   const reduceMotion = useReducedMotion();
   const spring = { stiffness: 150, damping: 15 };
   const rotateX = useSpring(useTransform(py, [-0.5, 0.5], [6, -6]), spring);
   const rotateY = useSpring(useTransform(px, [-0.5, 0.5], [-6, 6]), spring);
 
-  // Depth: the two layers drift against each other, the near one further and opposite to
-  // the far one, the way a near object moves more than a distant one when you move your head.
+  // The photograph moves as ONE piece: drift plus a slight zoom on hover. Two layers of
+  // the same crop, drifting against each other, is what made the face look broken -- they
+  // disagree by the whole separation (6.4px at the card edge), so a doubled outline of the
+  // head and beard sat on top of the real one and the cut ran visibly across the jaw. No
+  // amount of feathering fixes that: two copies of one photograph always disagree
+  // somewhere, and the eye finds it on a face faster than anywhere else. Moving the single
+  // image cannot double anything, because there is nothing for it to disagree with.
+  //
   // Offsets are percentages, not pixels, so the drift keeps its proportion to the card as
   // the card scales down (224px on desktop, 112px on mobile) and can never outrun the
-  // scale margin that hides the layer edges.
-  const farX = useSpring(useTransform(px, [-0.5, 0.5], ["-1.1%", "1.1%"]), spring);
-  const farY = useSpring(useTransform(py, [-0.5, 0.5], ["-0.9%", "0.9%"]), spring);
-  const nearX = useSpring(useTransform(px, [-0.5, 0.5], ["2.2%", "-2.2%"]), spring);
-  const nearY = useSpring(useTransform(py, [-0.5, 0.5], ["1.8%", "-1.8%"]), spring);
+  // scale margin that hides the image edges.
+  const photoX = useSpring(useTransform(px, [-0.5, 0.5], ["-1.1%", "1.1%"]), spring);
+  const photoY = useSpring(useTransform(py, [-0.5, 0.5], ["-0.9%", "0.9%"]), spring);
+  // 1.04 is the overscan the drift needs; the zoom is the part that reads as depth.
+  const photoScale = useSpring(useTransform(hover, [0, 1], [1.04, 1.07]), spring);
 
   function handlePortraitMove(e: MouseEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -88,9 +95,14 @@ export function Hero({ portrait }: { portrait: Portrait }) {
     py.set((e.clientY - rect.top) / rect.height - 0.5);
   }
 
+  function enterPortrait() {
+    hover.set(1);
+  }
+
   function resetPortrait() {
     px.set(0);
     py.set(0);
+    hover.set(0);
   }
 
   return (
@@ -215,6 +227,7 @@ export function Hero({ portrait }: { portrait: Portrait }) {
               </span>
               <motion.div
                 onMouseMove={reduceMotion ? undefined : handlePortraitMove}
+                onMouseEnter={reduceMotion ? undefined : enterPortrait}
                 onMouseLeave={reduceMotion ? undefined : resetPortrait}
                 style={
                   reduceMotion
@@ -233,47 +246,24 @@ export function Hero({ portrait }: { portrait: Portrait }) {
                   }}
                 >
                   {portrait.photo ? (
-                    <>
-                      {/* Far layer: always rendered, and slightly oversized so the drift
-                          never exposes a card edge. */}
-                      <motion.div
-                        className="absolute inset-0"
-                        style={
-                          reduceMotion
-                            ? { scale: 1.04 }
-                            : { scale: 1.04, x: farX, y: farY }
-                        }
-                      >
-                        <Image
-                          src={portrait.photo}
-                          alt={config.name}
-                          fill
-                          className="object-cover"
-                          priority
-                        />
-                      </motion.div>
-                      {/* Near layer: optional cutout of the subject, drifting further and
-                          the other way. Decorative, so it is hidden from assistive tech. */}
-                      {portrait.photoHead ? (
-                        <motion.div
-                          aria-hidden
-                          className="absolute inset-0"
-                          style={
-                            reduceMotion
-                              ? { scale: 1.06 }
-                              : { scale: 1.06, x: nearX, y: nearY }
-                          }
-                        >
-                          <Image
-                            src={portrait.photoHead}
-                            alt=""
-                            fill
-                            className="object-cover"
-                            priority
-                          />
-                        </motion.div>
-                      ) : null}
-                    </>
+                    /* Oversized so the drift can never expose a card edge, and it never
+                       separates from itself, so the face stays crisp while it moves. */
+                    <motion.div
+                      className="absolute inset-0"
+                      style={
+                        reduceMotion
+                          ? { scale: 1.04 }
+                          : { scale: photoScale, x: photoX, y: photoY }
+                      }
+                    >
+                      <Image
+                        src={portrait.photo}
+                        alt={config.name}
+                        fill
+                        className="object-cover"
+                        priority
+                      />
+                    </motion.div>
                   ) : (
                     <div
                       className="flex h-full w-full items-center justify-center font-display text-6xl"

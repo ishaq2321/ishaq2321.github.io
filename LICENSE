@@ -30,8 +30,8 @@ fork, modify and reuse as a portfolio template.
 It grants no rights to the personal content, which remains © 2026 Muhammad Ishaq Khan,
 all rights reserved:
 
-  - the hero photograph and its cutout layer (public/portrait.webp,
-    public/portrait-head.webp), and every other photograph of the site owner;
+  - the hero photograph (public/portrait.webp) and every other photograph of the
+    site owner;
   - the curriculum vitae and other personal documents (public/resume.pdf,
     public/phishguard-thesis.pdf, public/tsinghua-offer.pdf);
   - the personal history written in portfolio.config.json — employment, education,

@@ -17,7 +17,6 @@
   "location": "Budapest, Hungary",
   "emailEncoded": "aXNoYXEyMzIxQHByb3Rvbi5tZQ==",
   "photo": "/portrait.webp",
-  "photoHead": "/portrait-head.webp",
   "resumeUrl": "/resume.pdf",
   "social": {
     "github": "https://github.com/ishaq2321",
@@ -43,10 +42,6 @@
     {
       "label": "backbencher.cc",
       "encoded": "aW5mb0BiYWNrYmVuY2hlci5jYw=="
-    },
-    {
-      "label": "Personal",
-      "encoded": "aXNoYXEyMzIxQHByb3Rvbi5tZQ=="
     }
   ],
   "skills": {

@@ -179,7 +179,6 @@ export interface SectionProps {
  */
 export interface Portrait {
   photo?: string;
-  photoHead?: string;
 }
 
 export interface PortfolioConfig {
@@ -192,13 +191,6 @@ export interface PortfolioConfig {
   emailEncoded: string;
   contactCategories?: Array<{ label: string; encoded: string }>;
   photo: string;
-  /**
-   * Optional near layer for the hero portrait: an alpha cutout of the subject, made
-   * with `scripts/prepare-portrait.py --subject`. When present the hero drifts the two
-   * layers against each other on pointer move, which reads as depth. Without it the
-   * hero shows `photo` on its own.
-   */
-  photoHead?: string;
   resumeUrl?: string;
   social: Social;
   /**

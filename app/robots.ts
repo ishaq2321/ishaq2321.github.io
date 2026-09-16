@@ -6,15 +6,15 @@ const SITE_URL = "https://ishaq2321.github.io";
 
 /**
  * Two personal files live on this site and are not meant to be collected: the hero
- * photograph (and its cutout layer) and the Tsinghua offer letter. Everything else stays
- * wide open — this is a portfolio, and being found is the point.
+ * photograph and the Tsinghua offer letter. Everything else stays wide open — this is a
+ * portfolio, and being found is the point.
  *
  * Be clear about what this does and does not do: `robots.txt` is a request that
  * well-behaved crawlers honour. It is not access control. Any file a browser can display
  * can be downloaded by a person or a bot that ignores this file, so treat this as "not
  * offered for training", not as protection. See README, "Your photograph".
  */
-const PERSONAL = ["/portrait.webp", "/portrait-head.webp", "/tsinghua-offer.pdf"];
+const PERSONAL = ["/portrait.webp", "/tsinghua-offer.pdf"];
 
 /** Crawlers that exist to build training sets, answer engines and image databases. */
 const AI_CRAWLERS = [

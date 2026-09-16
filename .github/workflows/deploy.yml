@@ -83,8 +83,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # Two personal files are not in this repository: the hero photograph (with its
-      # cutout layer) and the Tsinghua offer letter. They are generated/kept locally and
+      # Two personal files are not in this repository: the hero photograph and the
+      # Tsinghua offer letter. They are generated/kept locally and
       # carried here as base64 in repository secrets, because committing them would
       # publish them forever, including in the git history. With no secret - a fork, or a
       # pull request from one - nothing is written and the site degrades instead of
@@ -92,7 +92,6 @@ jobs:
       - name: Materialise the personal files that are not in this repository
         env:
           PORTRAIT_B64: ${{ secrets.PORTRAIT_B64 }}
-          PORTRAIT_HEAD_B64: ${{ secrets.PORTRAIT_HEAD_B64 }}
           OFFER_LETTER_KEY: ${{ secrets.OFFER_LETTER_KEY }}
         run: |
           set -euo pipefail
@@ -150,8 +149,6 @@ jobs:
 
           from_secret portrait.webp "$PORTRAIT_B64" \
             "the hero will render the monogram rather than a photo." webp
-          from_secret portrait-head.webp "$PORTRAIT_HEAD_B64" \
-            "the hero will show the photo with no depth motion." webp
           from_encrypted tsinghua-offer.pdf "$OFFER_LETTER_KEY" \
             "the Tsinghua chip will link to a missing file."
       - run: npm run build
