@@ -19,3 +19,24 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+Scope of this licence
+
+The MIT licence above covers the source code of this project, and that is what you may
+fork, modify and reuse as a portfolio template.
+
+It grants no rights to the personal content, which remains © 2026 Muhammad Ishaq Khan,
+all rights reserved:
+
+  - the hero photograph and its cutout layer (public/portrait.webp,
+    public/portrait-head.webp), and every other photograph of the site owner;
+  - the curriculum vitae and other personal documents (public/resume.pdf,
+    public/phishguard-thesis.pdf, public/tsinghua-offer.pdf);
+  - the personal history written in portfolio.config.json — employment, education,
+    achievements, contact details and likeness.
+
+If you fork this project, replace that content with your own. It is not part of what
+you are licensed to reuse, and re-publishing it as your own would misrepresent both
+parties.

@@ -10,6 +10,7 @@ import { Projects } from "@/app/components/Projects";
 import { References } from "@/app/components/References";
 import { Skills } from "@/app/components/Skills";
 import { Writing } from "@/app/components/Writing";
+import { resolvePortrait } from "@/lib/portrait";
 import { sections } from "@/lib/sections";
 import type { SectionProps } from "@/app/types";
 
@@ -54,7 +55,9 @@ export default function Home() {
 
   return (
     <>
-      <Hero />
+      {/* Resolved here, on the server, because the hero photo is not in the repo: a
+          build without it renders the monogram instead of a broken image. */}
+      <Hero portrait={resolvePortrait()} />
       {rendered.map(({ section, Section }) => (
         <Section
           key={section.id}

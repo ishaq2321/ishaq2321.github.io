@@ -83,6 +83,48 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # The hero photograph is a personal image, so it is not in this repository: it is
+      # generated locally by scripts/prepare-portrait.py and carried here as base64 in
+      # repository secrets. Committing it instead would publish it forever, including
+      # in the git history. If the secrets are absent (a fork, or a pull request from
+      # one) nothing is written and the hero falls back to the monogram.
+      - name: Add the portrait from repository secrets
+        env:
+          PORTRAIT_B64: ${{ secrets.PORTRAIT_B64 }}
+          PORTRAIT_HEAD_B64: ${{ secrets.PORTRAIT_HEAD_B64 }}
+        run: |
+          set -euo pipefail
+
+          add() {
+            name="$1"; data="$2"; without="$3"
+            if [ -z "$data" ]; then
+              echo "::warning::secret for $name is not set - $without"
+              return 0
+            fi
+            if ! printf '%s' "$data" | base64 -d > "public/$name"; then
+              echo "::error::secret for $name is not valid base64 - re-run: base64 -w0 public/$name | gh secret set ..."
+              exit 1
+            fi
+
+            # Fail loudly on a mis-pasted secret rather than shipping a broken image.
+            # The WebP signature is RIFF + 4 length bytes + WEBP; read those 12 bytes in
+            # one go, because a `tail | head` pipeline dies of SIGPIPE under `pipefail`
+            # and would report exit 141 instead of this message.
+            header=$(od -An -tx1 -N 12 "public/$name" | tr -d ' \n')
+            case "$header" in
+              52494646????????57454250) ;;
+              *)
+                echo "::error::public/$name is not a WebP file (header $header) - the secret should hold base64 of the .webp itself."
+                exit 1
+                ;;
+            esac
+            echo "public/$name: $(stat -c %s "public/$name") bytes, sha256 $(sha256sum "public/$name" | cut -d' ' -f1)"
+          }
+
+          add portrait.webp "$PORTRAIT_B64" \
+            "the hero will render the monogram rather than a photo."
+          add portrait-head.webp "$PORTRAIT_HEAD_B64" \
+            "the hero will show the photo with no depth motion."
       - run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

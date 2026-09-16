@@ -43,3 +43,10 @@ next-env.d.ts
 # local reference material (never commit personal photos)
 /temp/
 portrait-preview/
+
+# The hero photograph and its cutout layer. Both are personal images and are kept out
+# of the repository and its history on purpose: scripts/prepare-portrait.py writes them
+# from a local photo, and the deploy injects them from repository secrets. Committing
+# either one would publish it permanently, including in the GitHub history.
+/public/portrait.webp
+/public/portrait-head.webp

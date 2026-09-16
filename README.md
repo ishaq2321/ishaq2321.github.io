@@ -121,7 +121,109 @@ All colors are CSS variables under `:root` (dark) and `html.light` (light). Chan
 
 ### 6. Assets — `public/`
 
-Replace `photo.svg` with your portrait, and drop in `resume.pdf` (or let the generator build one). `og.png` is generated automatically.
+#### Your photograph never enters the repository
+
+The hero shows `config.photo`, a 1:1 image. That file is **not committed**. It is a
+personal photograph, and anything committed to a public repository is published
+permanently — including in the git history, via `raw.githubusercontent.com`, and to
+every crawler that reads it. So the photograph is generated on your machine, kept out
+of git (`.gitignore`), and injected into the deploy from repository secrets.
+
+Frame your own with:
+
+```
+pip install pillow
+python3 scripts/prepare-portrait.py --photo me.jpg --face 1231,877,1077
+```
+
+`--face` is `head centre x, eye-line y, crown-to-chin height` in pixels; `--guide out.png`
+writes your photo back with a coordinate grid to measure them, and `--preview out.jpg`
+shows the result at the hero's real sizes on both theme backgrounds. Add `--tone neutral`
+for plain greyscale, or `--tone color` to keep the original colour. The script crops and
+grades only — it never redraws the face, so the likeness stays exact because the output
+*is* the photograph.
+
+The default `warm` tone is tuned to the palette, not to taste: the page's large areas are
+nearly neutral (`--bg` ink is +2 warm, paper +7) while its type is warm (bone `#c2b9ae`
+is +20, muted +26). The grade is a duotone onto ink → bone with the chroma lifted and a
+faint vignette, which lands the face at +21 warmth and the shadowed background at +7 —
+the same family as the type, without sepia-washing the shadows.
+
+#### Getting it into the deploy
+
+Two repository secrets carry the two files as base64, and the build job writes them into
+`public/` before `npm run build`. Set or rotate them with:
+
+```
+base64 -w0 public/portrait.webp      | gh secret set PORTRAIT_B64
+base64 -w0 public/portrait-head.webp | gh secret set PORTRAIT_HEAD_B64
+```
+
+The step prints the byte count and `sha256` of each decoded file, so a bad paste is
+visible against `sha256sum public/portrait.webp` locally, and a file that is not a WebP
+fails the build instead of shipping a broken image. With no secret — a fork, or a pull
+request from one — nothing is written and `lib/portrait.ts` resolves the missing file
+away, so the hero renders the monogram it already falls back to. `config.photo` names
+the path to *request*; only a path that exists reaches an `<Image>`.
+
+#### What this does and does not protect
+
+Honest scope, because it is easy to over-claim here:
+
+- **The image is still public on the live site.** Any file a browser can display can be
+downloaded by a person or a bot; there is no way around that while showing it.
+- **`app/robots.ts` asks AI crawlers not to take it** (GPTBot, ClaudeBot, CCBot,
+  Google-Extended and others are disallowed from the two portrait paths only — the rest
+  of the site stays open, since being found is the point). That is a request that
+  well-behaved crawlers honour, not access control.
+- **The licence carves the personal content out.** `LICENSE` is MIT for the code, but the
+  photographs, CV and other personal documents are © all rights reserved, so a fork
+  cannot claim them as part of the template it licensed.
+- **It is not in git, so it is not in the history** — which is the part that cannot be
+  undone later. Removing a committed image means rewriting history and force-pushing.
+
+If you would rather not publish a photograph at all, delete the two `photo`/`photoHead`
+entries from `portfolio.config.json`: the hero renders your monogram and nothing is
+exposed.
+
+**Depth motion (optional).** Set `config.photoHead` to a second image — an alpha cutout of
+the subject — and the hero drifts the two layers against each other as the pointer moves,
+which reads as depth instead of a flat card:
+
+```
+python3 scripts/prepare-portrait.py --photo me.jpg --face 1231,877,1077 \
+  --out public/portrait.webp --subject public/portrait-head.webp
+```
+
+The cutout is taken from the same crop, so at rest the layers line up exactly. A plain
+background is cut automatically; for a busy one, pass `--subject-polygon "x,y x,y ..."`
+with an outline read off `--guide`, and `--cutout-check out.jpg` to see it on a loud
+background where a bad edge is obvious. Omit `photoHead` and the hero just shows `photo`.
+Pointer motion is disabled under `prefers-reduced-motion`.
+
+An outline is in source-photo pixels, so it is only reusable with the same crop — worth
+keeping beside the photo (`portrait-preview/` is gitignored for exactly this).
+
+**Where to put the edge of the cut.** The two layers hold the same photograph, so they
+differ by the couple of pixels the drift pulls them apart. Where the cut crosses smooth
+content that difference is invisible; where it crosses textured detail it shows as a
+seam. So run the outline through the *smoothest* part of the subject — hair against sky,
+smooth skin, a dark jacket — and never across a beard, stripes or a busy edge. You can
+measure it instead of guessing:
+
+```
+python3 - <<'PY'
+from PIL import Image
+px = Image.open("me.jpg").convert("L").load()
+for y in range(1300, 1700, 20):
+    print(y, sum(abs(px[x, y + 3] - px[x, y - 3]) for x in range(1060, 1520, 4)) / 115)
+PY
+```
+
+The lowest number is the best band to end the cut — in this photograph it is the neck at
+y≈1560, where the cut sits, rather than y≈1330 across the beard, where it started.
+
+Drop in `resume.pdf` (or let the generator build one). `og.png` is generated automatically.
 
 ---
 
@@ -135,6 +237,10 @@ fetch-npm-stats.mjs     → public/npm-stats.json       (weekly + total download
 generate-og.mjs         → public/og.png               (1200×630 social share card)
 generate-resume.mjs     → public/resume.pdf           (one-page PDF résumé from config)
 ```
+
+`scripts/prepare-portrait.py` is deliberately **not** in that chain: the portrait is an authored
+asset, so a build must never regenerate or overwrite it. The deploy workflow does write it
+into `public/` from repository secrets just before the build (see "Your photograph" above).
 
 To refresh GitHub stats without hitting rate limits, set a `GITHUB_TOKEN` environment variable before building.
 
