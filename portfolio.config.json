@@ -229,7 +229,7 @@
       "stack": ["Python", "Next.js", "XGBoost", "SHAP", "scikit-learn"],
       "highlights": [
         "96.45% accuracy, 99.41% AUC-ROC",
-        "725 automated tests (592 pytest + 133 Jest)",
+        "1,219 automated tests (1,015 pytest, 173 Jest, 31 Playwright)",
         "Full-featured UI with dark/light theme"
       ]
     },
