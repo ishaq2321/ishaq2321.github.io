@@ -64,3 +64,7 @@ portrait-preview/
 # (the Tsinghua chip links to it) but is injected from a repository secret rather than
 # committed, so it is not in the repository or its history.
 /public/tsinghua-offer.pdf
+
+# Evidence written by scripts/check-palette.mjs: the rendered hero in each colour-scheme
+# state, kept for a human to look at when the guard fails. Regenerated on every run.
+/palette-guard/

@@ -124,6 +124,16 @@ All colors are CSS variables under `:root` — one palette, dark. Change the acc
 
 A light palette (`html.light`), its toggle and its flash-prevention script used to live here and were removed deliberately: it had never been tuned as a set with the accent and the portrait, so it read as a different site. Adding one back means re-grading the portrait and re-checking every contrast pair — not just flipping a class.
 
+That decision is enforced rather than remembered. `npm run check:palette` scans the
+export for a light palette, a light token, a toggle or a stored-theme script, then
+renders the built site under `prefers-color-scheme: light` — and with a stored `"light"`
+preference — at desktop and mobile widths, asserting the ink background, `color-scheme:
+dark`, no toggle in the DOM, and a hero that actually painted. The deploy runs it before
+uploading the artifact, so a regression fails the build instead of reaching visitors who
+happen to prefer light. `scripts/test-palette-guard.sh` mutates a build to prove the
+guard still fails when it should (7 cases, including a light palette injected only via a
+media query, which no string scan would name).
+
 ### 6. Assets — `public/`
 
 #### Your photograph never enters the repository

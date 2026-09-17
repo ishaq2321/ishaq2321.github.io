@@ -11,6 +11,7 @@
     "prebuild": "node scripts/fetch-github-stats.mjs && node scripts/fetch-npm-stats.mjs && node scripts/generate-og.mjs && node scripts/generate-resume.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "check:palette": "node scripts/check-palette.mjs",
     "preview": "npx serve out"
   },
   "dependencies": {

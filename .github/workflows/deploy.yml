@@ -179,6 +179,14 @@ jobs:
       - run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # The site is dark only on purpose, and this is a regression that hides: it shows
+      # up on a machine that prefers light, and only if someone opens the page there.
+      # The guard renders the export in every colour-scheme state and fails the build if
+      # a light palette, a theme toggle, or an unpainted hero comes back — see
+      # scripts/check-palette.mjs for what it asserts, and scripts/test-palette-guard.sh
+      # (run it locally against a build) for proof that it fails when it should.
+      - name: Guard the palette (dark only)
+        run: npm run check:palette
       - uses: actions/upload-pages-artifact@v5
         with:
           path: out
