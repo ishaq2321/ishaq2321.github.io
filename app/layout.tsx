@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Fraunces, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/app/components/Nav";
-import { ThemeToggle } from "@/app/components/ThemeToggle";
 import { ScrollProgress } from "@/app/components/ScrollProgress";
 import { MotionProvider } from "@/app/components/MotionProvider";
 import { config } from "@/lib/config";
@@ -124,23 +123,8 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${fraunces.variable} ${hanken.variable} ${jetbrains.variable}`}
-      suppressHydrationWarning
     >
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var theme = localStorage.getItem('theme');
-                if (theme === 'light') {
-                  document.documentElement.classList.add('light');
-                } else {
-                  document.documentElement.classList.remove('light');
-                }
-              })();
-            `,
-          }}
-        />
         {config.goatcounter && (
           <script
             data-goatcounter={`https://${config.goatcounter}.goatcounter.com/count`}
@@ -223,9 +207,6 @@ export default function RootLayout({
           </a>
           <ScrollProgress />
           <Nav />
-          <div className="fixed bottom-6 right-6 z-50">
-            <ThemeToggle />
-          </div>
           <main id="main-content">{children}</main>
         </MotionProvider>
       </body>

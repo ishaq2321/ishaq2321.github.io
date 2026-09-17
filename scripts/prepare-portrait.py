@@ -27,10 +27,11 @@ import sys
 
 from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageOps
 
-# --- the two themes the portrait has to sit on (app/globals.css) ----------------
-INK = (13, 12, 11)        # --bg   dark theme
-BONE = (244, 239, 233)    # --text dark theme
-PAPER = (246, 244, 239)   # --bg   light theme
+# --- the palette the portrait has to sit on (app/globals.css) ------------------
+# The site is dark-only, so the grade is judged against ink alone. It used to be
+# checked on a paper-white background too; that theme was removed.
+INK = (13, 12, 11)        # --bg
+BONE = (244, 239, 233)    # --text
 
 # Warm grade. Measured against the palette rather than eyeballed: the page's large
 # areas are close to neutral (--bg ink is only +2 warm, paper +7) while its type is
@@ -207,27 +208,25 @@ def write_guide(src, box, side, out):
 
 
 def write_preview(portrait, out):
-    """The portrait as the hero actually renders it: 224px on desktop, 112px on mobile,
-    on both theme backgrounds, so framing and tone can be judged before shipping."""
+    """The portrait as the hero actually renders it: 224px on desktop above 112px on
+    mobile, on the page's ink, so framing and tone can be judged before shipping."""
     big = portrait.resize((224, 224), Image.LANCZOS)
     small = big.resize((112, 112), Image.LANCZOS)
-    pad, gap = 18, 34
-    w = pad * 2 + 224 * 2 + gap
+    pad, gap = 18, 26
+    w = pad * 2 + 224
     h = 24 + pad + 224 + gap + 112 + pad
     sheet = Image.new("RGB", (w, h), (60, 58, 55))
     d = ImageDraw.Draw(sheet)
     d.rectangle([0, 0, w, 24], fill=(20, 19, 17))
-    d.text((pad, 8), "portrait at hero size - dark theme (224px)  |  light theme (224px)", fill=(240, 236, 230))
-    for i, bg in enumerate((INK, PAPER)):
-        x = pad + i * (224 + gap)
-        d.rectangle([x - 12, 24 + pad - 12, x + 224 + 12, 24 + pad + 224 + 12], fill=bg)
-        sheet.paste(big, (x, 24 + pad))
-    for i, bg in enumerate((INK, PAPER)):
-        x = pad + i * (224 + gap) + 56
-        y = 24 + pad + 224 + gap
-        d.rectangle([x - 10, y - 10, x + 112 + 10, y + 112 + 10], fill=bg)
-        sheet.paste(small, (x, y))
-    d.text((pad, h - pad + 4), "bottom row: 112px as on mobile", fill=(230, 226, 220))
+    d.text((pad, 8), "portrait at hero size, on the page's ink", fill=(240, 236, 230))
+    x, y = pad, 24 + pad
+    d.rectangle([x - 12, y - 12, x + 224 + 12, y + 224 + 12], fill=INK)
+    sheet.paste(big, (x, y))
+    y += 224 + gap
+    x += 56
+    d.rectangle([x - 10, y - 10, x + 112 + 10, y + 112 + 10], fill=INK)
+    sheet.paste(small, (x, y))
+    d.text((pad, h - pad + 4), "bottom: 112px as on mobile", fill=(230, 226, 220))
     sheet.save(out, quality=92)
     print(f"preview -> {out}")
 
@@ -249,7 +248,7 @@ def main():
     ap.add_argument("--subject-feather", type=float, default=6.0, help="alpha edge softening, in output px (default 6, which is 2.6px once shown at 224)")
     ap.add_argument("--cutout-check", help="write the cutout over a loud background so a bad edge is obvious")
     ap.add_argument("--guide", help="also write the source photo with a grid and the crop drawn on it")
-    ap.add_argument("--preview", help="also write a sheet at the hero's real sizes, on both theme backgrounds")
+    ap.add_argument("--preview", help="also write a sheet at the hero's real sizes, on the page's ink")
     args = ap.parse_args()
 
     if not args.face and not args.box:

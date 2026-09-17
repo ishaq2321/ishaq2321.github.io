@@ -4,7 +4,7 @@
    THE ENGINEERED MONOGRAPH — design system
    A refined technical-journal aesthetic.
    Warm ink canvas · bone text · single vermilion accent.
-   Dual theme driven entirely by CSS variables (no !important).
+   One dark palette, driven entirely by CSS variables (no !important).
    ============================================================ */
 
 @theme {
@@ -13,14 +13,17 @@
   --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
 
-  /* Static brand ramp (used sparingly; theme tokens below do the work) */
+  /* Static brand ramp (used sparingly; the palette below does the work) */
   --color-accent: #e2523b;
   --color-accent-soft: #f0836f;
 }
 
 /* ------------------------------------------------------------
    THEME TOKENS
-   Default (:root) = DARK. .light class on <html> flips to light.
+   Dark only. One palette, tuned as a set: the accent, the hairlines and the
+   grain were all judged against ink, and the hero portrait is graded onto it.
+   A light palette used to live here and was removed rather than patched — see
+   "Theme & design" in the README before adding another one.
    Every component reads these vars via bg-[var(--..)] etc.
    ------------------------------------------------------------ */
 :root {
@@ -57,39 +60,6 @@
   --duration-fast: 140ms;
   --duration-normal: 220ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-html.light {
-  color-scheme: light;
-
-  /* Crisp gallery, not old paper: cool paper white, ink text,
-     layered shadows for real figure-ground separation. */
-  --bg: #f6f4ef;           /* paper tint deep enough for white cards to separate */
-  --bg-raised: #ffffff;
-  --bg-inset: #ebe7de;     /* recessed wells + chips */
-  --surface: #ffffff;      /* pure white cards */
-  --surface-hover: #fdfcf9;
-
-  --text: #14110d;         /* near-black ink, strong contrast */
-  --text-muted: #4c463e;
-  --text-faint: #675f53;
-
-  --line: #d9d1c2;
-  --line-strong: #b9ae99;
-
-  --accent: #c3391f;
-  --accent-quiet: #c3391f1a;
-  --accent-text: #a92c14;
-
-  --gold: #7d5a0c;
-  --gold-quiet: #7d5a0c1a;
-
-  --grid-line: #00000008;  /* neutral structure, never grime */
-  --glow: transparent;     /* vermilion reads as a stain on paper — off */
-
-  --edge: inset 0 1px 0 #ffffff;
-  --shadow: 0 1px 2px #20160a1f, 0 6px 18px #20160a14;
-  --shadow-featured: 0 1px 2px #20160a1f, 0 14px 36px #20160a26;
 }
 
 /* ------------------------------------------------------------
@@ -131,11 +101,6 @@ html.light {
     opacity: 0.035;
     pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  /* Grain reads as atmosphere on dark ink but as dirt on light paper — kill it */
-  html.light body::after {
-    display: none;
   }
 
   ::selection {
@@ -845,5 +810,5 @@ html.light {
   .bg-canvas { background-color: var(--bg); }
 }
 
-/* Brand skill icons are served pre-tinted per theme from the CDN,
-   so no CSS filtering happens here anymore. */
+/* Brand skill icons are served pre-tinted from the CDN (they need the
+   palette's bone tint baked in), so no CSS filtering happens here. */

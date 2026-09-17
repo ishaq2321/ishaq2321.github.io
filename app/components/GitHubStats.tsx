@@ -15,6 +15,9 @@ interface GitHubStats {
 
 const GH_USER = "ishaq2321";
 
+/** Contribution-chart tint: the accent of the dark theme, the only theme there is. */
+const CHART_TINT = "c9402a";
+
 /** Fetch numbers straight from the GitHub API so they are always current. */
 async function fetchLiveStats(): Promise<GitHubStats | null> {
   try {
@@ -117,7 +120,6 @@ export function GitHubStats({ anchor, index, title = "GitHub" }: SectionProps) {
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
   const [chartError, setChartError] = useState(false);
-  const [chartColor, setChartColor] = useState("c9402a");
 
   useEffect(() => {
     let cancelled = false;
@@ -138,21 +140,6 @@ export function GitHubStats({ anchor, index, title = "GitHub" }: SectionProps) {
     return () => {
       cancelled = true;
     };
-  }, []);
-
-  // Match the contribution chart tint to the active theme's accent.
-  useEffect(() => {
-    const sync = () =>
-      setChartColor(
-        document.documentElement.classList.contains("light") ? "c3391f" : "c9402a"
-      );
-    sync();
-    const observer = new MutationObserver(sync);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => observer.disconnect();
   }, []);
 
   return (
@@ -197,7 +184,7 @@ export function GitHubStats({ anchor, index, title = "GitHub" }: SectionProps) {
           <div style={{ aspectRatio: "104 / 14", minWidth: 560 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`https://ghchart.rshah.org/${chartColor}/ishaq2321`}
+              src={`https://ghchart.rshah.org/${CHART_TINT}/ishaq2321`}
               alt="GitHub contribution graph for the past year"
               className="h-full w-full"
               loading="lazy"

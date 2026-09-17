@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { config } from "@/lib/config";
 import { skillIcons } from "@/lib/iconMap";
@@ -8,29 +8,8 @@ import { SectionHeader } from "@/app/components/SectionHeader";
 import { useReveal } from "@/app/components/useReveal";
 import type { SectionProps } from "@/app/types";
 
-/** Muted ink/bone tint so brand logos never break the palette. */
-const ICON_TINT_DARK = "b8afa4";
-const ICON_TINT_LIGHT = "514b43";
-
-function useIconTint(): string {
-  const [tint, setTint] = useState(ICON_TINT_DARK);
-  useEffect(() => {
-    const sync = () =>
-      setTint(
-        document.documentElement.classList.contains("light")
-          ? ICON_TINT_LIGHT
-          : ICON_TINT_DARK
-      );
-    sync();
-    const observer = new MutationObserver(sync);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => observer.disconnect();
-  }, []);
-  return tint;
-}
+/** Muted bone tint so brand logos never break the palette. */
+const ICON_TINT = "b8afa4";
 
 function iconUrl(skill: string, tint: string): string | null {
   const slug = skillIcons[skill];
@@ -114,7 +93,7 @@ function SkillCategory({
 }
 
 export function Skills({ anchor, index, title = "Toolkit" }: SectionProps) {
-  const tint = useIconTint();
+  const tint = ICON_TINT;
   const [full, setFull] = useState(false);
 
   const categories = [

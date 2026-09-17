@@ -1,6 +1,6 @@
 # Developer Portfolio
 
-A fast, config-driven developer portfolio built with **Next.js 16**, **Tailwind CSS v4**, and **TypeScript**, statically exported to GitHub Pages. Editorial "engineered monograph" design with a distinctive serif/mono/sans type system, dual light/dark themes, and scroll-triggered motion.
+A fast, config-driven developer portfolio built with **Next.js 16**, **Tailwind CSS v4**, and **TypeScript**, statically exported to GitHub Pages. Editorial "engineered monograph" design with a distinctive serif/mono/sans type system, one dark palette, and scroll-triggered motion.
 
 **Live:** [ishaq2321.github.io](https://ishaq2321.github.io)
 
@@ -13,9 +13,9 @@ A fast, config-driven developer portfolio built with **Next.js 16**, **Tailwind 
 - **Single source of truth** — nearly all content lives in `portfolio.config.json`, including which sections appear and in what order. No component edits needed to update your info.
 - **Static export** — ships as plain HTML/CSS/JS to GitHub Pages (or any static host). No server required.
 - **Build-time data** — GitHub stats, npm download counts, the OG social image, and your PDF résumé are all generated during `prebuild`.
-- **Accessible** — respects `prefers-reduced-motion`, visible focus rings, skip-to-content link, ARIA-annotated navigation, WCAG AA contrast in both themes.
+- **Accessible** — respects `prefers-reduced-motion`, visible focus rings, skip-to-content link, ARIA-annotated navigation, WCAG AA contrast.
 - **SEO-ready** — rich metadata, JSON-LD `Person` schema, sitemap, robots, and an auto-generated Open Graph image.
-- **Dual theme** — CSS-variable-driven light/dark with a flash-prevention script and persisted preference.
+- **Dark only** — a single CSS-variable palette in `app/globals.css`, so the accent, the hairlines and the graded hero portrait are all judged against the same ink. No theme switch, no boot script, nothing to flash.
 
 ---
 
@@ -120,7 +120,9 @@ Maps a skill name to a [Simple Icons](https://simpleicons.org) slug. Unmapped sk
 
 ### 5. Theme & design — `app/globals.css`
 
-All colors are CSS variables under `:root` (dark) and `html.light` (light). Change the accent by editing `--accent` / `--accent-text` in both blocks. Fonts are wired in `app/layout.tsx`.
+All colors are CSS variables under `:root` — one palette, dark. Change the accent by editing `--accent` / `--accent-text`. Fonts are wired in `app/layout.tsx`.
+
+A light palette (`html.light`), its toggle and its flash-prevention script used to live here and were removed deliberately: it had never been tuned as a set with the accent and the portrait, so it read as a different site. Adding one back means re-grading the portrait and re-checking every contrast pair — not just flipping a class.
 
 ### 6. Assets — `public/`
 
@@ -141,7 +143,7 @@ python3 scripts/prepare-portrait.py --photo me.jpg --face 1231,877,1077
 
 `--face` is `head centre x, eye-line y, crown-to-chin height` in pixels; `--guide out.png`
 writes your photo back with a coordinate grid to measure them, and `--preview out.jpg`
-shows the result at the hero's real sizes on both theme backgrounds. Add `--tone neutral`
+shows the result at the hero's real sizes on the page's ink. Add `--tone neutral`
 for plain greyscale, or `--tone color` to keep the original colour. The script crops and
 grades only — it never redraws the face, so the likeness stays exact because the output
 *is* the photograph.
@@ -301,7 +303,7 @@ To refresh GitHub stats without hitting rate limits, set a `GITHUB_TOKEN` enviro
 app/
   components/        UI components (Hero, About, Projects, Skills, …)
   globals.css        Design system: theme tokens, component utilities
-  layout.tsx         Metadata, fonts, JSON-LD, theme script
+  layout.tsx         Metadata, fonts, JSON-LD
   page.tsx           Section composition
   opengraph-image…   (generated) — see scripts/generate-og.mjs
   robots.ts          robots.txt
