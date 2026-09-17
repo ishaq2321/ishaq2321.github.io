@@ -258,10 +258,10 @@
     {
       "name": "Histofy v2",
       "url": "https://github.com/ishaq2321/histofy-v2",
-      "description": "Manifest V3 Chrome extension that turns the GitHub contribution graph into an editor: click any date tile to set a contribution level, then deploy the pattern as real commits through the GitHub API. Nine content scripts inject into github.com, state persists per user and repository, and the graph is navigable across years.",
-      "stack": ["JavaScript", "Chrome Extensions API", "Manifest V3", "GitHub API"],
+      "description": "Chrome extension, built on Chrome's Manifest V3 platform (extension version 2.0.0), that turns the GitHub contribution graph into an editor: click any date tile to set a contribution level, then deploy the pattern as real commits through the GitHub API. Nine content scripts inject into github.com, state persists per user and repository, and the graph is navigable across years.",
+      "stack": ["JavaScript", "Chrome Extensions API", "GitHub API"],
       "highlights": [
-        "Manifest V3: a background service worker plus 9 content scripts injected on github.com",
+        "Chrome's Manifest V3 platform: a background service worker plus 9 content scripts injected on github.com",
         "Contribution-level model validated against GitHub's own intensity thresholds",
         "Per-user, per-repository selection state persisted in extension storage",
         "Deploys real commits through the GitHub API, creating or reusing a repository"
